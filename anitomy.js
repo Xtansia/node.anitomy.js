@@ -1,3 +1,5 @@
-var anitomy = require('bindings')('anitomy');
+var anitomyjs = require('bindings')('anitomyjs');
 
-console.log(anitomy.hello());
+var anitomy = new anitomyjs.Anitomy();
+var res = anitomy.Parse('[Ecchihiro]_Netoge_no_Yome_wa_Onnanoko_ja_Nai_to_Omotta？_-_07_[720p_Hi10P_AAC][C74A839D].mkv');
+console.log("Parse result: " + res);
