@@ -1,2 +1,2 @@
 # anitomyjs
-NodeJS binding for the Anitomy library
+NodeJS binding for the Anitomy anime video filename parsing library
