@@ -26,8 +26,8 @@ namespace objects {
 
 		static NAN_METHOD(New);
 		static v8::Local<v8::Value> New(const anitomy::element_pair_t& pair);
-		static NAN_GETTER(GetFirst);
-		static NAN_GETTER(GetSecond);
+		static NAN_GETTER(GetCategory);
+		static NAN_GETTER(GetValue);
 
 		static inline Nan::Persistent<v8::Function>& constructor() {
 			static Nan::Persistent<v8::Function> constructor_;

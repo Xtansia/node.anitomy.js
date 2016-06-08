@@ -19,8 +19,8 @@ namespace objects {
 		tpl->InstanceTemplate()->SetInternalFieldCount(1);
 
 		// Prototype
-		Nan::SetAccessor(tpl->InstanceTemplate(), Nan::New("first").ToLocalChecked(), GetFirst, READ_ONLY_SETTER);
-		Nan::SetAccessor(tpl->InstanceTemplate(), Nan::New("second").ToLocalChecked(), GetSecond, READ_ONLY_SETTER);
+		Nan::SetAccessor(tpl->InstanceTemplate(), Nan::New("category").ToLocalChecked(), GetCategory, READ_ONLY_SETTER);
+		Nan::SetAccessor(tpl->InstanceTemplate(), Nan::New("value").ToLocalChecked(), GetValue, READ_ONLY_SETTER);
 
 		constructor().Reset(tpl->GetFunction());
 		Nan::Set(target, Nan::New("ElementPair").ToLocalChecked(), tpl->GetFunction());
@@ -56,12 +56,12 @@ namespace objects {
 		return scope.Escape(obj);
 	}
 
-	NAN_GETTER(ElementPair::GetFirst) {
+	NAN_GETTER(ElementPair::GetCategory) {
 		ElementPair* elementPair = ObjectWrap::Unwrap<ElementPair>(info.Holder());
-		info.GetReturnValue().Set(elementPair->pair_.first);
+		info.GetReturnValue().Set(static_cast<uint32_t>(elementPair->pair_.first));
 	}
 
-	NAN_GETTER(ElementPair::GetSecond) {
+	NAN_GETTER(ElementPair::GetValue) {
 		ElementPair* elementPair = ObjectWrap::Unwrap<ElementPair>(info.Holder());
 		info.GetReturnValue().Set(Nan::New(WstrToStr(elementPair->pair_.second)).ToLocalChecked());
 	}
