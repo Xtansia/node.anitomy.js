@@ -11,5 +11,8 @@ console.log('elements.empty() = ' + elements.empty());
 console.log('elements.size() = ' + elements.size());
 
 for (var i = 0; i < elements.size() ; i++) {
+    console.log('elements[' + i + '] = ');
     console.log(elements[i]);
 }
+
+console.log('elements.get(2/*AKA AnimeTitle*/) = ' + elements.get(2));
