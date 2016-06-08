@@ -8,7 +8,10 @@
 
 #include "elements_obj.h"
 #include "anitomy_obj.h"
+#include "elementpair_obj.h"
 #include "../util.h"
+
+#include <anitomy/element.h>
 
 namespace objects {
 	NAN_MODULE_INIT(Elements::Init) {
@@ -21,16 +24,16 @@ namespace objects {
 
 		// Prototype
 		Nan::SetPrototypeMethod(tpl, "empty", IsEmpty);
-		/*Nan::SetPrototypeMethod(tpl, "size", size);
-		Nan::SetPrototypeMethod(tpl, "at", at);
-		Nan::SetPrototypeMethod(tpl, "get", get);
-		Nan::SetPrototypeMethod(tpl, "get_all", getAll);
-		Nan::SetPrototypeMethod(tpl, "clear", clear);
-		Nan::SetPrototypeMethod(tpl, "insert", insert);
-		Nan::SetPrototypeMethod(tpl, "erase", erase);
-		Nan::SetPrototypeMethod(tpl, "count", count);
-		Nan::SetPrototypeMethod(tpl, "find", find);
-		Nan::SetPrototypeMethod(tpl, "forEach", forEach);*/
+		Nan::SetPrototypeMethod(tpl, "size", Size);
+		Nan::SetPrototypeMethod(tpl, "at", At);
+		//Nan::SetPrototypeMethod(tpl, "get", get);
+		//Nan::SetPrototypeMethod(tpl, "get_all", getAll);
+		//Nan::SetPrototypeMethod(tpl, "clear", clear);
+		//Nan::SetPrototypeMethod(tpl, "insert", insert);
+		//Nan::SetPrototypeMethod(tpl, "erase", erase);
+		//Nan::SetPrototypeMethod(tpl, "count", count);
+		//Nan::SetPrototypeMethod(tpl, "find", find);
+		//Nan::SetPrototypeMethod(tpl, "forEach", forEach);
 
 		constructor().Reset(tpl->GetFunction());
 		Nan::Set(target, Nan::New("Elements").ToLocalChecked(), tpl->GetFunction());
@@ -74,5 +77,33 @@ namespace objects {
 		Anitomy* anitomy = ObjectWrap::Unwrap<Anitomy>(obj);
 
 		info.GetReturnValue().Set(anitomy->GetElements().empty());
+	}
+
+	NAN_METHOD(Elements::Size) {
+		Nan::HandleScope scope;
+
+		v8::Local<v8::Object> obj = info.This()->GetHiddenValue(Nan::New("anitomy_").ToLocalChecked()).As<v8::Object>();
+		Anitomy* anitomy = ObjectWrap::Unwrap<Anitomy>(obj);
+
+		info.GetReturnValue().Set(static_cast<uint32_t>(anitomy->GetElements().size()));
+	}
+
+	NAN_METHOD(Elements::At) {
+		Nan::HandleScope scope;
+
+		v8::Local<v8::Object> obj = info.This()->GetHiddenValue(Nan::New("anitomy_").ToLocalChecked()).As<v8::Object>();
+		Anitomy* anitomy = ObjectWrap::Unwrap<Anitomy>(obj);
+
+		if (info.Length() < 1) {
+			Nan::ThrowError("index must be given");
+			return;
+		}
+		if (!info[0]->IsNumber()) {
+			Nan::ThrowTypeError("index must be an integer");
+			return;
+		}
+
+		size_t index = static_cast<size_t>(info[0]->IntegerValue());
+		info.GetReturnValue().Set(ElementPair::New(anitomy->GetElements().at(index)));
 	}
 }
