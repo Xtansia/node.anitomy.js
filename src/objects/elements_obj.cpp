@@ -71,8 +71,6 @@ namespace objects {
 	}
 
 	NAN_METHOD(Elements::IsEmpty) {
-		Nan::HandleScope scope;
-
 		v8::Local<v8::Object> obj = info.This()->GetHiddenValue(Nan::New("anitomy_").ToLocalChecked()).As<v8::Object>();
 		Anitomy* anitomy = ObjectWrap::Unwrap<Anitomy>(obj);
 
@@ -80,8 +78,6 @@ namespace objects {
 	}
 
 	NAN_METHOD(Elements::Size) {
-		Nan::HandleScope scope;
-
 		v8::Local<v8::Object> obj = info.This()->GetHiddenValue(Nan::New("anitomy_").ToLocalChecked()).As<v8::Object>();
 		Anitomy* anitomy = ObjectWrap::Unwrap<Anitomy>(obj);
 
@@ -89,8 +85,6 @@ namespace objects {
 	}
 
 	NAN_METHOD(Elements::At) {
-		Nan::HandleScope scope;
-
 		v8::Local<v8::Object> obj = info.This()->GetHiddenValue(Nan::New("anitomy_").ToLocalChecked()).As<v8::Object>();
 		Anitomy* anitomy = ObjectWrap::Unwrap<Anitomy>(obj);
 

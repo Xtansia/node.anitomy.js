@@ -69,7 +69,6 @@ namespace objects {
 	}
 
 	NAN_METHOD(Anitomy::GetElements) {
-		Nan::HandleScope scope;
 		info.GetReturnValue().Set(info.This()->GetHiddenValue(Nan::New("elements_").ToLocalChecked()));
 	}
 
