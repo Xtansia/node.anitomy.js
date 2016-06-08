@@ -26,6 +26,7 @@ namespace objects {
 		Nan::SetPrototypeMethod(tpl, "empty", IsEmpty);
 		Nan::SetPrototypeMethod(tpl, "size", Size);
 		Nan::SetPrototypeMethod(tpl, "at", At);
+		Nan::SetIndexedPropertyHandler(tpl->InstanceTemplate(), IndexGetter, 0, 0, 0, IndexEnumerator);
 		//Nan::SetPrototypeMethod(tpl, "get", get);
 		//Nan::SetPrototypeMethod(tpl, "get_all", getAll);
 		//Nan::SetPrototypeMethod(tpl, "clear", clear);
@@ -105,5 +106,31 @@ namespace objects {
 		}
 
 		info.GetReturnValue().Set(ElementPair::New(anitomy->GetElements().at(index)));
+	}
+
+	NAN_INDEX_GETTER(Elements::IndexGetter) {
+		v8::Local<v8::Object> obj = info.This()->GetHiddenValue(Nan::New("anitomy_").ToLocalChecked()).As<v8::Object>();
+		Anitomy* anitomy = ObjectWrap::Unwrap<Anitomy>(obj);
+
+		if (index >= anitomy->GetElements().size()) {
+			Nan::ThrowRangeError("index out of range");
+			return;
+		}
+
+		info.GetReturnValue().Set(ElementPair::New(anitomy->GetElements()[static_cast<size_t>(index)]));
+	}
+
+	NAN_INDEX_ENUMERATOR(Elements::IndexEnumerator) {
+		v8::Local<v8::Object> obj = info.This()->GetHiddenValue(Nan::New("anitomy_").ToLocalChecked()).As<v8::Object>();
+		Anitomy* anitomy = ObjectWrap::Unwrap<Anitomy>(obj);
+		uint32_t size = static_cast<uint32_t>(anitomy->GetElements().size());
+
+		v8::Local<v8::Array> arr = Nan::New<v8::Array>(size);
+		
+		for (uint32_t i = 0; i < size; ++i) {
+			arr->Set(i, Nan::New(i));
+		}
+
+		info.GetReturnValue().Set(arr);
 	}
 }

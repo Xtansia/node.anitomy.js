@@ -11,7 +11,5 @@ console.log('elements.empty() = ' + elements.empty());
 console.log('elements.size() = ' + elements.size());
 
 for (var i = 0; i < elements.size() ; i++) {
-    var elemPair = elements.at(i);
-    console.log('elements.at(' + i + ').first = ' + elemPair.first);
-    console.log('elements.at(' + i + ').second = ' + elemPair.second);
+    console.log(elements[i]);
 }
