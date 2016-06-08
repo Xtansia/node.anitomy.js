@@ -19,8 +19,8 @@ namespace objects {
 		tpl->InstanceTemplate()->SetInternalFieldCount(1);
 
 		// Prototype
-		Nan::SetAccessor(tpl->InstanceTemplate(), Nan::New("first").ToLocalChecked(), GetFirst, ReadOnlySetter);
-		Nan::SetAccessor(tpl->InstanceTemplate(), Nan::New("second").ToLocalChecked(), GetSecond, ReadOnlySetter);
+		Nan::SetAccessor(tpl->InstanceTemplate(), Nan::New("first").ToLocalChecked(), GetFirst, READ_ONLY_SETTER);
+		Nan::SetAccessor(tpl->InstanceTemplate(), Nan::New("second").ToLocalChecked(), GetSecond, READ_ONLY_SETTER);
 
 		constructor().Reset(tpl->GetFunction());
 		Nan::Set(target, Nan::New("ElementPair").ToLocalChecked(), tpl->GetFunction());
@@ -45,7 +45,7 @@ namespace objects {
 		}
 	}
 
-	v8::Local<v8::Value> ElementPair::New(anitomy::element_pair_t& pair) {
+	v8::Local<v8::Value> ElementPair::New(const anitomy::element_pair_t& pair) {
 		Nan::EscapableHandleScope scope;
 
 		ElementPair* wrapped = new ElementPair(pair);
@@ -64,12 +64,5 @@ namespace objects {
 	NAN_GETTER(ElementPair::GetSecond) {
 		ElementPair* elementPair = ObjectWrap::Unwrap<ElementPair>(info.Holder());
 		info.GetReturnValue().Set(Nan::New(WstrToStr(elementPair->pair_.second)).ToLocalChecked());
-	}
-
-	NAN_SETTER(ElementPair::ReadOnlySetter) {
-		Nan::HandleScope scope;
-		std::string name = *Nan::Utf8String(property);
-		std::string err = name + " is a read-only property";
-		Nan::ThrowError(err.c_str());
 	}
 }

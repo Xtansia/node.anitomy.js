@@ -26,3 +26,9 @@ std::wstring StrToWstr(const std::string& input) {
 std::string WstrToStr(const std::wstring& input) {
 	return wstrConv.to_bytes(input);
 }
+
+NAN_SETTER(READ_ONLY_SETTER) {
+	std::string name = *Nan::Utf8String(property);
+	std::string err = name + " is a read-only property";
+	Nan::ThrowError(err.c_str());
+}

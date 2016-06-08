@@ -11,9 +11,11 @@
 #define ANITOMYJS_UTIL_H
 
 #include <string>
+#include <nan.h>
 
 std::wstring StrToWstr(const std::string& input);
-
 std::string WstrToStr(const std::wstring& input);
+
+NAN_SETTER(READ_ONLY_SETTER);
 
 #endif // !ANITOMYJS_UTIL_H
