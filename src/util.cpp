@@ -11,13 +11,13 @@
 #include "util.h"
 
 template<class Facet>
-struct deletable_facet : Facet {
+struct DeletableFacet : Facet {
 	template<class ...Args>
-	deletable_facet(Args&& ...args) : Facet(std::forward<Args>(args)...) {}
-	~deletable_facet() {}
+	DeletableFacet(Args&& ...args) : Facet(std::forward<Args>(args)...) {}
+	~DeletableFacet() {}
 };
 
-static std::wstring_convert<deletable_facet<std::codecvt<wchar_t, char, std::mbstate_t>>, wchar_t> wstrConv;
+static std::wstring_convert<DeletableFacet<std::codecvt<wchar_t, char, std::mbstate_t>>, wchar_t> wstrConv;
 
 std::wstring StrToWstr(const std::string& input) {
 	return wstrConv.from_bytes(input);
