@@ -92,12 +92,18 @@ namespace objects {
 			Nan::ThrowError("index must be given");
 			return;
 		}
-		if (!info[0]->IsNumber()) {
+		if (!info[0]->IsInt32() || !info[0]->IsUint32()) {
 			Nan::ThrowTypeError("index must be an integer");
 			return;
 		}
 
-		size_t index = static_cast<size_t>(info[0]->IntegerValue());
+		size_t index = static_cast<size_t>(info[0]->Uint32Value());
+
+		if (index >= anitomy->GetElements().size()) {
+			Nan::ThrowRangeError("index out of range");
+			return;
+		}
+
 		info.GetReturnValue().Set(ElementPair::New(anitomy->GetElements().at(index)));
 	}
 }
