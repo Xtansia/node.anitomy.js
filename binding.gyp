@@ -6,6 +6,7 @@
         'src/anitomyjs.cpp',
         'src/util.cpp',
         'src/objects/anitomy_obj.cpp',
+        'src/objects/elementpair_obj.cpp',
         'src/objects/elements_obj.cpp',
         'deps/anitomy/anitomy/anitomy.cpp',
         'deps/anitomy/anitomy/element.cpp',
