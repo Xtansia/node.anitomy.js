@@ -17,7 +17,7 @@
       ],
       "include_dirs": [
         "<!(node -e \"require('nan')\")",
-        "deps/include"
+        "deps/anitomy"
       ],
       "ccflags": [
         "-Wall",
