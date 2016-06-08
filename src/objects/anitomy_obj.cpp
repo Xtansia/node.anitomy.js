@@ -49,8 +49,12 @@ namespace objects {
 	NAN_METHOD(Anitomy::Parse) {
 		Anitomy* obj = ObjectWrap::Unwrap<Anitomy>(info.Holder());
 
-		if (info.Length() != 1 || !info[0]->IsString()) {
-			Nan::ThrowTypeError("Expected 1 string argument");
+		if (info.Length() < 1) {
+			Nan::ThrowError("filename must be given");
+			return;
+		}
+		if (!info[0]->IsString()) {
+			Nan::ThrowTypeError("filename must be a string");
 			return;
 		}
 
