@@ -27,4 +27,15 @@ NAN_SETTER(READ_ONLY_SETTER);
 #define LOCAL_WSTRING(str) \
 	Nan::New(WstrToStr(str)).ToLocalChecked()
 
+#define STRING_ARG(i, name) \
+	if (info.Length() < i + 1) { \
+		Nan::ThrowError(#name " must be given"); \
+		return; \
+	} \
+	if (!info[i]->IsString()) { \
+		Nan::ThrowTypeError(#name " must be a string"); \
+		return; \
+	} \
+	std::wstring name = StrToWstr(*Nan::Utf8String(info[i]));
+
 #endif // !ANITOMYJS_UTIL_H

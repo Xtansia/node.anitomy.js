@@ -47,18 +47,10 @@ namespace objects {
 	}
 
 	NAN_METHOD(Anitomy::Parse) {
-		if (info.Length() < 1) {
-			Nan::ThrowError("filename must be given");
-			return;
-		}
-		if (!info[0]->IsString()) {
-			Nan::ThrowTypeError("filename must be a string");
-			return;
-		}
-
+		STRING_ARG(0, filename);
 		UNWRAP_OBJ(Anitomy);
 
-		info.GetReturnValue().Set(obj->anitomy_.Parse(StrToWstr(*Nan::Utf8String(info[0]))));
+		info.GetReturnValue().Set(obj->anitomy_.Parse(filename));
 	}
 
 	NAN_GETTER(Anitomy::GetElements) {
