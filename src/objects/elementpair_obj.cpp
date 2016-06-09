@@ -15,15 +15,15 @@ namespace objects {
 
 		// Prepare constructor template
 		v8::Local<v8::FunctionTemplate> tpl = Nan::New<v8::FunctionTemplate>(New);
-		tpl->SetClassName(Nan::New("ElementPair").ToLocalChecked());
+		tpl->SetClassName(LOCAL_STRING("ElementPair"));
 		tpl->InstanceTemplate()->SetInternalFieldCount(1);
 
 		// Prototype
-		Nan::SetAccessor(tpl->InstanceTemplate(), Nan::New("category").ToLocalChecked(), GetCategory, READ_ONLY_SETTER);
-		Nan::SetAccessor(tpl->InstanceTemplate(), Nan::New("value").ToLocalChecked(), GetValue, READ_ONLY_SETTER);
+		Nan::SetAccessor(tpl->InstanceTemplate(), LOCAL_STRING("category"), GetCategory, READ_ONLY_SETTER);
+		Nan::SetAccessor(tpl->InstanceTemplate(), LOCAL_STRING("value"), GetValue, READ_ONLY_SETTER);
 
 		constructor().Reset(tpl->GetFunction());
-		Nan::Set(target, Nan::New("ElementPair").ToLocalChecked(), tpl->GetFunction());
+		Nan::Set(target, LOCAL_STRING("ElementPair"), tpl->GetFunction());
 	}
 
 	NAN_METHOD(ElementPair::New) {
@@ -57,12 +57,12 @@ namespace objects {
 	}
 
 	NAN_GETTER(ElementPair::GetCategory) {
-		ElementPair* obj = ObjectWrap::Unwrap<ElementPair>(info.Holder());
-		info.GetReturnValue().Set(Nan::New(WstrToStr(obj->category_)).ToLocalChecked());
+		UNWRAP_OBJ(ElementPair);
+		info.GetReturnValue().Set(LOCAL_WSTRING(obj->category_));
 	}
 
 	NAN_GETTER(ElementPair::GetValue) {
-		ElementPair* obj = ObjectWrap::Unwrap<ElementPair>(info.Holder());
-		info.GetReturnValue().Set(Nan::New(WstrToStr(obj->value_)).ToLocalChecked());
+		UNWRAP_OBJ(ElementPair);
+		info.GetReturnValue().Set(LOCAL_WSTRING(obj->value_));
 	}
 }

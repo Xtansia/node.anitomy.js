@@ -16,17 +16,17 @@ namespace objects {
 
 		// Prepare constructor template
 		v8::Local<v8::FunctionTemplate> tpl = Nan::New<v8::FunctionTemplate>(New);
-		tpl->SetClassName(Nan::New("Anitomy").ToLocalChecked());
+		tpl->SetClassName(LOCAL_STRING("Anitomy"));
 		tpl->InstanceTemplate()->SetInternalFieldCount(1);
 
 		// Prototype
 		Nan::SetPrototypeMethod(tpl, "parse", Parse);
-		Nan::SetAccessor(tpl->InstanceTemplate(), Nan::New("elements").ToLocalChecked(), GetElements, READ_ONLY_SETTER);
-		Nan::SetAccessor(tpl->InstanceTemplate(), Nan::New("options").ToLocalChecked(), GetOptions, READ_ONLY_SETTER);
-		Nan::SetAccessor(tpl->InstanceTemplate(), Nan::New("tokens").ToLocalChecked(), GetTokens, READ_ONLY_SETTER);
+		Nan::SetAccessor(tpl->InstanceTemplate(), LOCAL_STRING("elements"), GetElements, READ_ONLY_SETTER);
+		Nan::SetAccessor(tpl->InstanceTemplate(), LOCAL_STRING("options"), GetOptions, READ_ONLY_SETTER);
+		Nan::SetAccessor(tpl->InstanceTemplate(), LOCAL_STRING("tokens"), GetTokens, READ_ONLY_SETTER);
 
 		constructor().Reset(tpl->GetFunction());
-		Nan::Set(target, Nan::New("Anitomy").ToLocalChecked(), tpl->GetFunction());
+		Nan::Set(target, LOCAL_STRING("Anitomy"), tpl->GetFunction());
 	}
 
 	NAN_METHOD(Anitomy::New) {
@@ -41,14 +41,12 @@ namespace objects {
 
 		Anitomy* wrapped = new Anitomy();
 		v8::Local<v8::Value> elements = Elements::New(wrapped->anitomy_.elements());
-		info.This()->SetHiddenValue(Nan::New("elements_").ToLocalChecked(), elements);
+		info.This()->SetHiddenValue(LOCAL_STRING("elements_"), elements);
 		wrapped->Wrap(info.This());
 		info.GetReturnValue().Set(info.This());
 	}
 
 	NAN_METHOD(Anitomy::Parse) {
-		Anitomy* obj = ObjectWrap::Unwrap<Anitomy>(info.Holder());
-
 		if (info.Length() < 1) {
 			Nan::ThrowError("filename must be given");
 			return;
@@ -58,20 +56,22 @@ namespace objects {
 			return;
 		}
 
+		UNWRAP_OBJ(Anitomy);
+
 		info.GetReturnValue().Set(obj->anitomy_.Parse(StrToWstr(*Nan::Utf8String(info[0]))));
 	}
 
 	NAN_GETTER(Anitomy::GetElements) {
-		info.GetReturnValue().Set(info.This()->GetHiddenValue(Nan::New("elements_").ToLocalChecked()));
+		info.GetReturnValue().Set(info.This()->GetHiddenValue(LOCAL_STRING("elements_")));
 	}
 
 	NAN_GETTER(Anitomy::GetOptions) {
 		// TODO: Get options
-		info.GetReturnValue().Set(Nan::New("options").ToLocalChecked());
+		info.GetReturnValue().Set(LOCAL_STRING("options"));
 	}
 
 	NAN_GETTER(Anitomy::GetTokens) {
 		// TODO: Get tokens
-		info.GetReturnValue().Set(Nan::New("tokens").ToLocalChecked());
+		info.GetReturnValue().Set(LOCAL_STRING("tokens"));
 	}
 }

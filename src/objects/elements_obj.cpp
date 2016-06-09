@@ -17,7 +17,7 @@ namespace objects {
 
 		// Prepare constructor template
 		v8::Local<v8::FunctionTemplate> tpl = Nan::New<v8::FunctionTemplate>(New);
-		tpl->SetClassName(Nan::New("Elements").ToLocalChecked());
+		tpl->SetClassName(LOCAL_STRING("Elements"));
 		tpl->InstanceTemplate()->SetInternalFieldCount(1);
 
 		// Prototype
@@ -35,7 +35,7 @@ namespace objects {
 		//Nan::SetPrototypeMethod(tpl, "forEach", forEach);
 
 		constructor().Reset(tpl->GetFunction());
-		Nan::Set(target, Nan::New("Elements").ToLocalChecked(), tpl->GetFunction());
+		Nan::Set(target, LOCAL_STRING("Elements"), tpl->GetFunction());
 	}
 
 	NAN_METHOD(Elements::New) {
@@ -69,13 +69,20 @@ namespace objects {
 	}
 
 	NAN_METHOD(Elements::IsEmpty) {
-		Elements* obj = ObjectWrap::Unwrap<Elements>(info.Holder());
+		UNWRAP_OBJ(Elements);
 
-		info.GetReturnValue().Set(obj->elements_.empty());
+		if (info.Length() < 1) { // empty()
+			info.GetReturnValue().Set(obj->elements_.empty());
+		}
+		else { // empty(category)
+			ELEMENT_CATEGORY_ARG(0);
+
+			info.GetReturnValue().Set(obj->elements_.empty(category));
+		}
 	}
 
 	NAN_METHOD(Elements::Size) {
-		Elements* obj = ObjectWrap::Unwrap<Elements>(info.Holder());
+		UNWRAP_OBJ(Elements);
 
 		info.GetReturnValue().Set(static_cast<uint32_t>(obj->elements_.size()));
 	}
@@ -90,7 +97,7 @@ namespace objects {
 			return;
 		}
 
-		Elements* obj = ObjectWrap::Unwrap<Elements>(info.Holder());
+		UNWRAP_OBJ(Elements);
 
 		size_t index = static_cast<size_t>(info[0]->Uint32Value());
 
@@ -103,7 +110,7 @@ namespace objects {
 	}
 
 	NAN_INDEX_GETTER(Elements::IndexGetter) {
-		Elements* obj = ObjectWrap::Unwrap<Elements>(info.Holder());
+		UNWRAP_OBJ(Elements);
 
 		if (index >= obj->elements_.size()) {
 			Nan::ThrowRangeError("index out of range");
@@ -114,7 +121,7 @@ namespace objects {
 	}
 
 	NAN_INDEX_ENUMERATOR(Elements::IndexEnumerator) {
-		Elements* obj = ObjectWrap::Unwrap<Elements>(info.Holder());
+		UNWRAP_OBJ(Elements);
 		uint32_t size = static_cast<uint32_t>(obj->elements_.size());
 
 		v8::Local<v8::Array> arr = Nan::New<v8::Array>(size);
@@ -127,51 +134,23 @@ namespace objects {
 	}
 
 	NAN_METHOD(Elements::Get) {
-		if (info.Length() < 1) {
-			Nan::ThrowError("category must be given");
-			return;
-		}
-		if (!info[0]->IsString()) {
-			Nan::ThrowTypeError("category must be a string");
-			return;
-		}
+		ELEMENT_CATEGORY_ARG(0);
+		UNWRAP_OBJ(Elements);
 
-		auto it = ElementCategoryNames.find(StrToWstr(*Nan::Utf8String(info[0])));
-
-		if (it == ElementCategoryNames.end()) {
-			Nan::ThrowTypeError("category is not a valid ElementCategory");
-			return;
-		}
-
-		Elements* obj = ObjectWrap::Unwrap<Elements>(info.Holder());
-
-		const std::wstring& value = obj->elements_.get(it->second);
-
-		info.GetReturnValue().Set(Nan::New(WstrToStr(value)).ToLocalChecked());
+		info.GetReturnValue().Set(LOCAL_WSTRING(obj->elements_.get(category)));
 	}
 
 	NAN_METHOD(Elements::GetAll) {
-		if (!info[0]->IsString()) {
-			Nan::ThrowTypeError("category must be a string");
-			return;
-		}
+		ELEMENT_CATEGORY_ARG(0);
+		UNWRAP_OBJ(Elements);
 
-		auto it = ElementCategoryNames.find(StrToWstr(*Nan::Utf8String(info[0])));
-
-		if (it == ElementCategoryNames.end()) {
-			Nan::ThrowTypeError("category is not a valid ElementCategory");
-			return;
-		}
-
-		Elements* obj = ObjectWrap::Unwrap<Elements>(info.Holder());
-
-		std::vector<std::wstring> values = obj->elements_.get_all(it->second);
+		std::vector<std::wstring> values = obj->elements_.get_all(category);
 		uint32_t size = static_cast<uint32_t>(values.size());
 
 		v8::Local<v8::Array> arr = Nan::New<v8::Array>(size);
 
 		for (uint32_t i = 0; i < size; ++i) {
-			arr->Set(i, Nan::New(WstrToStr(values[i])).ToLocalChecked());
+			arr->Set(i, LOCAL_WSTRING(values[i]));
 		}
 
 		info.GetReturnValue().Set(arr);

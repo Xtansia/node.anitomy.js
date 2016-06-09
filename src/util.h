@@ -18,4 +18,13 @@ std::string WstrToStr(const std::wstring& input);
 
 NAN_SETTER(READ_ONLY_SETTER);
 
+#define UNWRAP_OBJ(Type) \
+	Type* obj = ObjectWrap::Unwrap<Type>(info.Holder());
+
+#define LOCAL_STRING(str) \
+	Nan::New(str).ToLocalChecked()
+
+#define LOCAL_WSTRING(str) \
+	Nan::New(WstrToStr(str)).ToLocalChecked()
+
 #endif // !ANITOMYJS_UTIL_H

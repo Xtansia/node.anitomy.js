@@ -1,3 +1,4 @@
+
 /*
 ** Copyright (c) 2016, Thomas Farr
 **
@@ -92,6 +93,23 @@ namespace objects {
 
 		friend class Anitomy;
 	};
+
+#define ELEMENT_CATEGORY_ARG(i) \
+	if (info.Length() < i + 1) { \
+		Nan::ThrowError("category must be given"); \
+		return; \
+	} \
+	if (!info[i]->IsString()) { \
+		Nan::ThrowTypeError("category must be a string"); \
+		return; \
+	} \
+	auto elementCategoryNamesIt = ElementCategoryNames.find(StrToWstr(*Nan::Utf8String(info[i]))); \
+	if (elementCategoryNamesIt == ElementCategoryNames.end()) { \
+		Nan::ThrowTypeError("category is not a valid ElementCategory"); \
+		return; \
+	} \
+	anitomy::ElementCategory category = elementCategoryNamesIt->second;
+
 }
 
 #endif // !ANITOMYJS_OBJECTS_ELEMENTS_H
