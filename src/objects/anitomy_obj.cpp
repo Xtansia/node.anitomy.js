@@ -21,9 +21,9 @@ namespace objects {
 
 		// Prototype
 		Nan::SetPrototypeMethod(tpl, "parse", Parse);
-		Nan::SetPrototypeMethod(tpl, "elements", GetElements);
-		Nan::SetPrototypeMethod(tpl, "options", GetOptions);
-		Nan::SetPrototypeMethod(tpl, "tokens", GetTokens);
+		Nan::SetAccessor(tpl->InstanceTemplate(), Nan::New("elements").ToLocalChecked(), GetElements, READ_ONLY_SETTER);
+		Nan::SetAccessor(tpl->InstanceTemplate(), Nan::New("options").ToLocalChecked(), GetOptions, READ_ONLY_SETTER);
+		Nan::SetAccessor(tpl->InstanceTemplate(), Nan::New("tokens").ToLocalChecked(), GetTokens, READ_ONLY_SETTER);
 
 		constructor().Reset(tpl->GetFunction());
 		Nan::Set(target, Nan::New("Anitomy").ToLocalChecked(), tpl->GetFunction());
@@ -58,29 +58,20 @@ namespace objects {
 			return;
 		}
 
-		Nan::Utf8String filenameArg(info[0]);
-		std::basic_string<wchar_t> filename(L"");
-		if (filenameArg.length() > 0 && *filenameArg != NULL) {
-			filename = StrToWstr(*filenameArg);
-		}
-
-		bool res = obj->anitomy_.Parse(filename);
-		info.GetReturnValue().Set(res);
+		info.GetReturnValue().Set(obj->anitomy_.Parse(StrToWstr(*Nan::Utf8String(info[0]))));
 	}
 
-	NAN_METHOD(Anitomy::GetElements) {
+	NAN_GETTER(Anitomy::GetElements) {
 		info.GetReturnValue().Set(info.This()->GetHiddenValue(Nan::New("elements_").ToLocalChecked()));
 	}
 
-	NAN_METHOD(Anitomy::GetOptions) {
+	NAN_GETTER(Anitomy::GetOptions) {
 		// TODO: Get options
-		Anitomy* obj = ObjectWrap::Unwrap<Anitomy>(info.Holder());
 		info.GetReturnValue().Set(Nan::New("options").ToLocalChecked());
 	}
 
-	NAN_METHOD(Anitomy::GetTokens) {
+	NAN_GETTER(Anitomy::GetTokens) {
 		// TODO: Get tokens
-		Anitomy* obj = ObjectWrap::Unwrap<Anitomy>(info.Holder());
 		info.GetReturnValue().Set(Nan::New("tokens").ToLocalChecked());
 	}
 }
