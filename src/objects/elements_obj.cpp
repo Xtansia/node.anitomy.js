@@ -75,7 +75,7 @@ namespace objects {
 			info.GetReturnValue().Set(obj->elements_.empty());
 		}
 		else { // empty(category)
-			ELEMENT_CATEGORY_ARG(0);
+			ELEMENT_CATEGORY_ARG(0, category);
 
 			info.GetReturnValue().Set(obj->elements_.empty(category));
 		}
@@ -134,14 +134,14 @@ namespace objects {
 	}
 
 	NAN_METHOD(Elements::Get) {
-		ELEMENT_CATEGORY_ARG(0);
+		ELEMENT_CATEGORY_ARG(0, category);
 		UNWRAP_OBJ(Elements);
 
 		info.GetReturnValue().Set(LOCAL_WSTRING(obj->elements_.get(category)));
 	}
 
 	NAN_METHOD(Elements::GetAll) {
-		ELEMENT_CATEGORY_ARG(0);
+		ELEMENT_CATEGORY_ARG(0, category);
 		UNWRAP_OBJ(Elements);
 
 		std::vector<std::wstring> values = obj->elements_.get_all(category);
