@@ -24,5 +24,7 @@ console.log('anitomy.elements.insert(\'AnimeTitle\', \'Toradora\')'); anitomy.el
 console.log('anitomy.elements.get(\'AnimeTitle\') = ' + anitomy.elements.get('AnimeTitle'));
 
 var elems = new anitomyjs.Elements();
-elems.insert('AnimeTitle', 'Kiznaiver');
-console.log(elems.get('AnimeTitle'));
+console.log('elems.insert(\'AnimeTitle\', \'Kiznaiver\')'); elems.insert('AnimeTitle', 'Kiznaiver');
+console.log('elems.get(\'AnimeTitle\') = ' + elems.get('AnimeTitle'));
+console.log('elems.erase(\'AnimeTitle\')'); elems.erase('AnimeTitle');
+console.log('elems.empty(\'AnimeTitle\') = ' + elems.empty('AnimeTitle'));

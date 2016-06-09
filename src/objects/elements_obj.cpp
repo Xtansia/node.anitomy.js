@@ -29,8 +29,8 @@ namespace objects {
 		Nan::SetPrototypeMethod(tpl, "get_all", GetAll);
 		Nan::SetPrototypeMethod(tpl, "clear", Clear);
 		Nan::SetPrototypeMethod(tpl, "insert", Insert);
-		//Nan::SetPrototypeMethod(tpl, "erase", erase);
 		//Nan::SetPrototypeMethod(tpl, "count", count);
+		Nan::SetPrototypeMethod(tpl, "erase", Erase);
 		//Nan::SetPrototypeMethod(tpl, "find", find);
 		//Nan::SetPrototypeMethod(tpl, "forEach", forEach);
 
@@ -177,4 +177,12 @@ namespace objects {
 
 		obj->elements_->insert(category, value);
 	}
+
+	NAN_METHOD(Elements::Erase) {
+		ELEMENT_CATEGORY_ARG(0, category);
+		UNWRAP_OBJ(Elements);
+
+		obj->elements_->erase(category);
+	}
+
 }

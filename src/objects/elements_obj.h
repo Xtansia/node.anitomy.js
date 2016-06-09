@@ -83,8 +83,8 @@ namespace objects {
 		static NAN_METHOD(GetAll);
 		static NAN_METHOD(Clear);
 		static NAN_METHOD(Insert);
-		//static NAN_METHOD(erase);
 		//static NAN_METHOD(count);
+		static NAN_METHOD(Erase);
 		//static NAN_METHOD(find);
 		//static NAN_METHOD(forEach);
 
