@@ -18,3 +18,5 @@ console.log('anitomy.elements.get(\'AnimeTitle\') = ' + anitomy.elements.get('An
 console.log('anitomy.elements.get_all(\'EpisodeNumber\') = ' + anitomy.elements.get_all('EpisodeNumber'));
 console.log('anitomy.elements.empty(\'AnimeTitle\') = ' + anitomy.elements.empty('AnimeTitle'));
 console.log('anitomy.elements.empty(\'AnimeYear\') = ' + anitomy.elements.empty('AnimeYear'));
+console.log('anitomy.elements.clear()'); anitomy.elements.clear();
+console.log('anitomy.elements.empty() = ' + anitomy.elements.empty());

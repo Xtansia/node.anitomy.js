@@ -27,7 +27,7 @@ namespace objects {
 		Nan::SetIndexedPropertyHandler(tpl->InstanceTemplate(), IndexGetter, 0, 0, 0, IndexEnumerator);
 		Nan::SetPrototypeMethod(tpl, "get", Get);
 		Nan::SetPrototypeMethod(tpl, "get_all", GetAll);
-		//Nan::SetPrototypeMethod(tpl, "clear", clear);
+		Nan::SetPrototypeMethod(tpl, "clear", Clear);
 		//Nan::SetPrototypeMethod(tpl, "insert", insert);
 		//Nan::SetPrototypeMethod(tpl, "erase", erase);
 		//Nan::SetPrototypeMethod(tpl, "count", count);
@@ -154,5 +154,11 @@ namespace objects {
 		}
 
 		info.GetReturnValue().Set(arr);
+	}
+
+	NAN_METHOD(Elements::Clear) {
+		UNWRAP_OBJ(Elements);
+
+		obj->elements_.clear();
 	}
 }
