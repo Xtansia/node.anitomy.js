@@ -131,45 +131,41 @@ namespace objects {
 			Nan::ThrowError("category must be given");
 			return;
 		}
-		if (!info[0]->IsInt32() && !info[0]->IsUint32()) {
-			Nan::ThrowTypeError("category must be of type ElementCategory");
+		if (!info[0]->IsString()) {
+			Nan::ThrowTypeError("category must be a string");
 			return;
 		}
 
-		anitomy::ElementCategory category = static_cast<anitomy::ElementCategory>(info[0]->Uint32Value());
+		auto it = ElementCategoryNames.find(StrToWstr(*Nan::Utf8String(info[0])));
 
-		if (category < anitomy::kElementIterateFirst || category > anitomy::kElementIterateLast) {
+		if (it == ElementCategoryNames.end()) {
 			Nan::ThrowTypeError("category is not a valid ElementCategory");
 			return;
 		}
 
 		Elements* obj = ObjectWrap::Unwrap<Elements>(info.Holder());
 
-		const std::wstring& value = obj->elements_.get(category);
+		const std::wstring& value = obj->elements_.get(it->second);
 
 		info.GetReturnValue().Set(Nan::New(WstrToStr(value)).ToLocalChecked());
 	}
 
 	NAN_METHOD(Elements::GetAll) {
-		if (info.Length() < 1) {
-			Nan::ThrowError("category must be given");
-			return;
-		}
-		if (!info[0]->IsInt32() && !info[0]->IsUint32()) {
-			Nan::ThrowTypeError("category must be of type ElementCategory");
+		if (!info[0]->IsString()) {
+			Nan::ThrowTypeError("category must be a string");
 			return;
 		}
 
-		anitomy::ElementCategory category = static_cast<anitomy::ElementCategory>(info[0]->Uint32Value());
+		auto it = ElementCategoryNames.find(StrToWstr(*Nan::Utf8String(info[0])));
 
-		if (category < anitomy::kElementIterateFirst || category > anitomy::kElementIterateLast) {
+		if (it == ElementCategoryNames.end()) {
 			Nan::ThrowTypeError("category is not a valid ElementCategory");
 			return;
 		}
 
 		Elements* obj = ObjectWrap::Unwrap<Elements>(info.Holder());
 
-		std::vector<std::wstring> values = obj->elements_.get_all(category);
+		std::vector<std::wstring> values = obj->elements_.get_all(it->second);
 		uint32_t size = static_cast<uint32_t>(values.size());
 
 		v8::Local<v8::Array> arr = Nan::New<v8::Array>(size);

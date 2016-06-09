@@ -15,5 +15,5 @@ for (var i = 0; i < elements.size() ; i++) {
     console.log(elements[i]);
 }
 
-console.log('elements.get(2/*AKA AnimeTitle*/) = ' + elements.get(2));
-console.log('elements.get_all(7/*AKA EpisodeNumber*/) = ' + elements.get_all(7))
+console.log('elements.get(\'AnimeTitle\') = ' + elements.get('AnimeTitle'));
+console.log('elements.get_all(\'EpisodeNumber\') = ' + elements.get_all('EpisodeNumber'))
