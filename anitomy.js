@@ -20,3 +20,5 @@ console.log('anitomy.elements.empty(\'AnimeTitle\') = ' + anitomy.elements.empty
 console.log('anitomy.elements.empty(\'AnimeYear\') = ' + anitomy.elements.empty('AnimeYear'));
 console.log('anitomy.elements.clear()'); anitomy.elements.clear();
 console.log('anitomy.elements.empty() = ' + anitomy.elements.empty());
+console.log('anitomy.elements.insert(\'AnimeTitle\', \'Toradora\')'); anitomy.elements.insert('AnimeTitle', 'Toradora');
+console.log('anitomy.elements.get(\'AnimeTitle\') = ' + anitomy.elements.get('AnimeTitle'));

@@ -28,7 +28,7 @@ namespace objects {
 		Nan::SetPrototypeMethod(tpl, "get", Get);
 		Nan::SetPrototypeMethod(tpl, "get_all", GetAll);
 		Nan::SetPrototypeMethod(tpl, "clear", Clear);
-		//Nan::SetPrototypeMethod(tpl, "insert", insert);
+		Nan::SetPrototypeMethod(tpl, "insert", Insert);
 		//Nan::SetPrototypeMethod(tpl, "erase", erase);
 		//Nan::SetPrototypeMethod(tpl, "count", count);
 		//Nan::SetPrototypeMethod(tpl, "find", find);
@@ -160,5 +160,13 @@ namespace objects {
 		UNWRAP_OBJ(Elements);
 
 		obj->elements_.clear();
+	}
+
+	NAN_METHOD(Elements::Insert) {
+		ELEMENT_CATEGORY_ARG(0, category);
+		STRING_ARG(1, value);
+		UNWRAP_OBJ(Elements);
+
+		obj->elements_.insert(category, value);
 	}
 }
