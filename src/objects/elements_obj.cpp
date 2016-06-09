@@ -31,7 +31,6 @@ namespace objects {
 		Nan::SetPrototypeMethod(tpl, "insert", Insert);
 		Nan::SetPrototypeMethod(tpl, "erase", Erase);
 		Nan::SetPrototypeMethod(tpl, "count", Count);
-		//Nan::SetPrototypeMethod(tpl, "find", find);
 		//Nan::SetPrototypeMethod(tpl, "forEach", forEach);
 
 		constructor().Reset(tpl->GetFunction());

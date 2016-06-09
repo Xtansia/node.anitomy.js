@@ -85,7 +85,6 @@ namespace objects {
 		static NAN_METHOD(Insert);
 		static NAN_METHOD(Erase);
 		static NAN_METHOD(Count);
-		//static NAN_METHOD(find);
 		//static NAN_METHOD(forEach);
 
 		static inline Nan::Persistent<v8::Function>& constructor() {
