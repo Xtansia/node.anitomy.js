@@ -28,7 +28,7 @@ namespace objects {
 		Nan::SetPrototypeMethod(tpl, "at", At);
 		Nan::SetIndexedPropertyHandler(tpl->InstanceTemplate(), IndexGetter, 0, 0, 0, IndexEnumerator);
 		Nan::SetPrototypeMethod(tpl, "get", Get);
-		//Nan::SetPrototypeMethod(tpl, "get_all", getAll);
+		Nan::SetPrototypeMethod(tpl, "get_all", GetAll);
 		//Nan::SetPrototypeMethod(tpl, "clear", clear);
 		//Nan::SetPrototypeMethod(tpl, "insert", insert);
 		//Nan::SetPrototypeMethod(tpl, "erase", erase);
@@ -135,9 +135,6 @@ namespace objects {
 	}
 
 	NAN_METHOD(Elements::Get) {
-		v8::Local<v8::Object> obj = info.This()->GetHiddenValue(Nan::New("anitomy_").ToLocalChecked()).As<v8::Object>();
-		Anitomy* anitomy = ObjectWrap::Unwrap<Anitomy>(obj);
-
 		if (info.Length() < 1) {
 			Nan::ThrowError("category must be given");
 			return;
@@ -154,8 +151,43 @@ namespace objects {
 			return;
 		}
 
+		v8::Local<v8::Object> obj = info.This()->GetHiddenValue(Nan::New("anitomy_").ToLocalChecked()).As<v8::Object>();
+		Anitomy* anitomy = ObjectWrap::Unwrap<Anitomy>(obj);
+
 		const std::wstring& value = anitomy->GetElements().get(category);
 
 		info.GetReturnValue().Set(Nan::New(WstrToStr(value)).ToLocalChecked());
+	}
+
+	NAN_METHOD(Elements::GetAll) {
+		if (info.Length() < 1) {
+			Nan::ThrowError("category must be given");
+			return;
+		}
+		if (!info[0]->IsInt32() && !info[0]->IsUint32()) {
+			Nan::ThrowTypeError("category must be of type ElementCategory");
+			return;
+		}
+
+		anitomy::ElementCategory category = static_cast<anitomy::ElementCategory>(info[0]->Uint32Value());
+
+		if (category < anitomy::kElementIterateFirst || category > anitomy::kElementIterateLast) {
+			Nan::ThrowTypeError("category is not a valid ElementCategory");
+			return;
+		}
+
+		v8::Local<v8::Object> obj = info.This()->GetHiddenValue(Nan::New("anitomy_").ToLocalChecked()).As<v8::Object>();
+		Anitomy* anitomy = ObjectWrap::Unwrap<Anitomy>(obj);
+
+		std::vector<std::wstring> values = anitomy->GetElements().get_all(category);
+		uint32_t size = static_cast<uint32_t>(values.size());
+
+		v8::Local<v8::Array> arr = Nan::New<v8::Array>(size);
+
+		for (uint32_t i = 0; i < size; ++i) {
+			arr->Set(i, Nan::New(WstrToStr(values[i])).ToLocalChecked());
+		}
+
+		info.GetReturnValue().Set(arr);
 	}
 }

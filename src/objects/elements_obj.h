@@ -29,7 +29,7 @@ namespace objects {
 		static NAN_INDEX_GETTER(IndexGetter);
 		static NAN_INDEX_ENUMERATOR(IndexEnumerator);
 		static NAN_METHOD(Get);
-		//static NAN_METHOD(getAll);
+		static NAN_METHOD(GetAll);
 		//static NAN_METHOD(clear);
 		//static NAN_METHOD(insert);
 		//static NAN_METHOD(erase);

@@ -2,7 +2,7 @@ var anitomyjs = require('bindings')('anitomyjs');
 
 var anitomy = new anitomyjs.Anitomy();
 var elements = anitomy.elements();
-var filename = '[Ecchihiro]_Netoge_no_Yome_wa_Onnanoko_ja_Nai_to_Omotta？_-_07_[720p_Hi10P_AAC][C74A839D].mkv';
+var filename = '[Ecchihiro]_Netoge_no_Yome_wa_Onnanoko_ja_Nai_to_Omotta？_-_07-10_[720p_Hi10P_AAC][C74A839D].mkv';
 
 console.log('filename = ' + filename);
 console.log('elements.empty() = ' + elements.empty());
@@ -16,3 +16,4 @@ for (var i = 0; i < elements.size() ; i++) {
 }
 
 console.log('elements.get(2/*AKA AnimeTitle*/) = ' + elements.get(2));
+console.log('elements.get_all(7/*AKA EpisodeNumber*/) = ' + elements.get_all(7))
