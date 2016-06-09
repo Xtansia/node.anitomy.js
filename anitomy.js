@@ -6,11 +6,11 @@ var filename = '[Ecchihiro]_Netoge_no_Yome_wa_Onnanoko_ja_Nai_to_Omotta？_-_07-
 
 console.log('filename = ' + filename);
 console.log('elements.empty() = ' + elements.empty());
-console.log('anitomy.Parse(filename) = ' + anitomy.Parse(filename));
+console.log('anitomy.parse(filename) = ' + anitomy.parse(filename));
 console.log('elements.empty() = ' + elements.empty());
 console.log('elements.size() = ' + elements.size());
 
-for (var i = 0; i < elements.size() ; i++) {
+for (var i = 0; i < elements.size(); i++) {
     console.log('elements[' + i + '] = ');
     console.log(elements[i]);
 }

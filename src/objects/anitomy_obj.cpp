@@ -20,7 +20,7 @@ namespace objects {
 		tpl->InstanceTemplate()->SetInternalFieldCount(1);
 
 		// Prototype
-		Nan::SetPrototypeMethod(tpl, "Parse", Parse);
+		Nan::SetPrototypeMethod(tpl, "parse", Parse);
 		Nan::SetPrototypeMethod(tpl, "elements", GetElements);
 		Nan::SetPrototypeMethod(tpl, "options", GetOptions);
 		Nan::SetPrototypeMethod(tpl, "tokens", GetTokens);
