@@ -24,10 +24,6 @@ namespace objects {
 		Anitomy() {};
 		~Anitomy() {};
 
-		inline anitomy::Elements& GetElements() {
-			return anitomy_.elements();
-		}
-
 		static NAN_METHOD(New);
 		static NAN_METHOD(Parse);
 		static NAN_METHOD(GetElements);

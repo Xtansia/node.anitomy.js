@@ -39,10 +39,10 @@ namespace objects {
 			return;
 		}
 
-		Anitomy* obj = new Anitomy();
-		v8::Local<v8::Value> elements = Elements::New(info.This());
+		Anitomy* wrapped = new Anitomy();
+		v8::Local<v8::Value> elements = Elements::New(wrapped->anitomy_.elements());
 		info.This()->SetHiddenValue(Nan::New("elements_").ToLocalChecked(), elements);
-		obj->Wrap(info.This());
+		wrapped->Wrap(info.This());
 		info.GetReturnValue().Set(info.This());
 	}
 

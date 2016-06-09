@@ -11,6 +11,7 @@
 #define ANITOMYJS_OBJECTS_ELEMENTS_H
 
 #include <nan.h>
+#include <anitomy/element.h>
 
 namespace objects {
 	class Elements : public Nan::ObjectWrap {
@@ -18,11 +19,11 @@ namespace objects {
 		static NAN_MODULE_INIT(Init);
 
 	private:
-		Elements() {};
+		Elements(anitomy::Elements& elements) : elements_(elements) {};
 		~Elements() {};
 
 		static NAN_METHOD(New);
-		static v8::Local<v8::Value> New(v8::Local<v8::Value> anitomy);
+		static v8::Local<v8::Value> New(anitomy::Elements& elements);
 		static NAN_METHOD(IsEmpty);
 		static NAN_METHOD(Size);
 		static NAN_METHOD(At);
@@ -41,6 +42,8 @@ namespace objects {
 			static Nan::Persistent<v8::Function> constructor_;
 			return constructor_;
 		}
+
+		anitomy::Elements& elements_;
 
 		friend class Anitomy;
 	};

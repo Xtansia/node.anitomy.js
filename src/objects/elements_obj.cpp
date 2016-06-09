@@ -11,8 +11,6 @@
 #include "elementpair_obj.h"
 #include "../util.h"
 
-#include <anitomy/element.h>
-
 namespace objects {
 	NAN_MODULE_INIT(Elements::Init) {
 		Nan::HandleScope scope;
@@ -59,30 +57,27 @@ namespace objects {
 		}
 	}
 
-	v8::Local<v8::Value> Elements::New(v8::Local<v8::Value> anitomy) {
+	v8::Local<v8::Value> Elements::New(anitomy::Elements& elements) {
 		Nan::EscapableHandleScope scope;
 
-		Elements *wrapped = new Elements();
+		Elements *wrapped = new Elements(elements);
 
 		v8::Local<v8::Value> ext = Nan::New<v8::External>(wrapped);
 		v8::Local<v8::Object> obj = Nan::New(constructor())->NewInstance(1, &ext);
-		obj->SetHiddenValue(Nan::New("anitomy_").ToLocalChecked(), anitomy);
 
 		return scope.Escape(obj);
 	}
 
 	NAN_METHOD(Elements::IsEmpty) {
-		v8::Local<v8::Object> obj = info.This()->GetHiddenValue(Nan::New("anitomy_").ToLocalChecked()).As<v8::Object>();
-		Anitomy* anitomy = ObjectWrap::Unwrap<Anitomy>(obj);
+		Elements* obj = ObjectWrap::Unwrap<Elements>(info.Holder());
 
-		info.GetReturnValue().Set(anitomy->GetElements().empty());
+		info.GetReturnValue().Set(obj->elements_.empty());
 	}
 
 	NAN_METHOD(Elements::Size) {
-		v8::Local<v8::Object> obj = info.This()->GetHiddenValue(Nan::New("anitomy_").ToLocalChecked()).As<v8::Object>();
-		Anitomy* anitomy = ObjectWrap::Unwrap<Anitomy>(obj);
+		Elements* obj = ObjectWrap::Unwrap<Elements>(info.Holder());
 
-		info.GetReturnValue().Set(static_cast<uint32_t>(anitomy->GetElements().size()));
+		info.GetReturnValue().Set(static_cast<uint32_t>(obj->elements_.size()));
 	}
 
 	NAN_METHOD(Elements::At) {
@@ -95,35 +90,32 @@ namespace objects {
 			return;
 		}
 
-		v8::Local<v8::Object> obj = info.This()->GetHiddenValue(Nan::New("anitomy_").ToLocalChecked()).As<v8::Object>();
-		Anitomy* anitomy = ObjectWrap::Unwrap<Anitomy>(obj);
+		Elements* obj = ObjectWrap::Unwrap<Elements>(info.Holder());
 
 		size_t index = static_cast<size_t>(info[0]->Uint32Value());
 
-		if (index >= anitomy->GetElements().size()) {
+		if (index >= obj->elements_.size()) {
 			Nan::ThrowRangeError("index out of range");
 			return;
 		}
 
-		info.GetReturnValue().Set(ElementPair::New(anitomy->GetElements().at(index)));
+		info.GetReturnValue().Set(ElementPair::New(obj->elements_.at(index)));
 	}
 
 	NAN_INDEX_GETTER(Elements::IndexGetter) {
-		v8::Local<v8::Object> obj = info.This()->GetHiddenValue(Nan::New("anitomy_").ToLocalChecked()).As<v8::Object>();
-		Anitomy* anitomy = ObjectWrap::Unwrap<Anitomy>(obj);
+		Elements* obj = ObjectWrap::Unwrap<Elements>(info.Holder());
 
-		if (index >= anitomy->GetElements().size()) {
+		if (index >= obj->elements_.size()) {
 			Nan::ThrowRangeError("index out of range");
 			return;
 		}
 
-		info.GetReturnValue().Set(ElementPair::New(anitomy->GetElements()[static_cast<size_t>(index)]));
+		info.GetReturnValue().Set(ElementPair::New(obj->elements_[static_cast<size_t>(index)]));
 	}
 
 	NAN_INDEX_ENUMERATOR(Elements::IndexEnumerator) {
-		v8::Local<v8::Object> obj = info.This()->GetHiddenValue(Nan::New("anitomy_").ToLocalChecked()).As<v8::Object>();
-		Anitomy* anitomy = ObjectWrap::Unwrap<Anitomy>(obj);
-		uint32_t size = static_cast<uint32_t>(anitomy->GetElements().size());
+		Elements* obj = ObjectWrap::Unwrap<Elements>(info.Holder());
+		uint32_t size = static_cast<uint32_t>(obj->elements_.size());
 
 		v8::Local<v8::Array> arr = Nan::New<v8::Array>(size);
 		
@@ -151,10 +143,9 @@ namespace objects {
 			return;
 		}
 
-		v8::Local<v8::Object> obj = info.This()->GetHiddenValue(Nan::New("anitomy_").ToLocalChecked()).As<v8::Object>();
-		Anitomy* anitomy = ObjectWrap::Unwrap<Anitomy>(obj);
+		Elements* obj = ObjectWrap::Unwrap<Elements>(info.Holder());
 
-		const std::wstring& value = anitomy->GetElements().get(category);
+		const std::wstring& value = obj->elements_.get(category);
 
 		info.GetReturnValue().Set(Nan::New(WstrToStr(value)).ToLocalChecked());
 	}
@@ -176,10 +167,9 @@ namespace objects {
 			return;
 		}
 
-		v8::Local<v8::Object> obj = info.This()->GetHiddenValue(Nan::New("anitomy_").ToLocalChecked()).As<v8::Object>();
-		Anitomy* anitomy = ObjectWrap::Unwrap<Anitomy>(obj);
+		Elements* obj = ObjectWrap::Unwrap<Elements>(info.Holder());
 
-		std::vector<std::wstring> values = anitomy->GetElements().get_all(category);
+		std::vector<std::wstring> values = obj->elements_.get_all(category);
 		uint32_t size = static_cast<uint32_t>(values.size());
 
 		v8::Local<v8::Array> arr = Nan::New<v8::Array>(size);
