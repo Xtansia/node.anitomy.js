@@ -86,9 +86,6 @@ namespace objects {
 	}
 
 	NAN_METHOD(Elements::At) {
-		v8::Local<v8::Object> obj = info.This()->GetHiddenValue(Nan::New("anitomy_").ToLocalChecked()).As<v8::Object>();
-		Anitomy* anitomy = ObjectWrap::Unwrap<Anitomy>(obj);
-
 		if (info.Length() < 1) {
 			Nan::ThrowError("index must be given");
 			return;
@@ -97,6 +94,9 @@ namespace objects {
 			Nan::ThrowTypeError("index must be an integer");
 			return;
 		}
+
+		v8::Local<v8::Object> obj = info.This()->GetHiddenValue(Nan::New("anitomy_").ToLocalChecked()).As<v8::Object>();
+		Anitomy* anitomy = ObjectWrap::Unwrap<Anitomy>(obj);
 
 		size_t index = static_cast<size_t>(info[0]->Uint32Value());
 
