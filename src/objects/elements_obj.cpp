@@ -29,8 +29,8 @@ namespace objects {
 		Nan::SetPrototypeMethod(tpl, "get_all", GetAll);
 		Nan::SetPrototypeMethod(tpl, "clear", Clear);
 		Nan::SetPrototypeMethod(tpl, "insert", Insert);
-		//Nan::SetPrototypeMethod(tpl, "count", count);
 		Nan::SetPrototypeMethod(tpl, "erase", Erase);
+		Nan::SetPrototypeMethod(tpl, "count", Count);
 		//Nan::SetPrototypeMethod(tpl, "find", find);
 		//Nan::SetPrototypeMethod(tpl, "forEach", forEach);
 
@@ -185,4 +185,10 @@ namespace objects {
 		obj->elements_->erase(category);
 	}
 
+	NAN_METHOD(Elements::Count) {
+		ELEMENT_CATEGORY_ARG(0, category);
+		UNWRAP_OBJ(Elements);
+
+		info.GetReturnValue().Set(static_cast<uint32_t>(obj->elements_->count(category)));
+	}
 }
