@@ -65,8 +65,12 @@ namespace objects {
 		static NAN_MODULE_INIT(Init);
 
 	private:
-		Elements(anitomy::Elements& elements) : elements_(elements) {};
-		~Elements() {};
+		Elements(anitomy::Elements* elements, const bool owned = false) : elements_(elements), owned_(owned) {};
+		~Elements() {
+			if (owned_) {
+				free(elements_);
+			}
+		};
 
 		static NAN_METHOD(New);
 		static v8::Local<v8::Value> New(anitomy::Elements& elements);
@@ -89,7 +93,8 @@ namespace objects {
 			return constructor_;
 		}
 
-		anitomy::Elements& elements_;
+		anitomy::Elements* elements_;
+		const bool owned_;
 
 		friend class Anitomy;
 	};
