@@ -7,7 +7,6 @@
 */
 
 #include "elementpair_obj.h"
-#include "elements_obj.h"
 #include "../util.h"
 
 namespace objects {
@@ -58,12 +57,12 @@ namespace objects {
 	}
 
 	NAN_GETTER(ElementPair::GetCategory) {
-		ElementPair* elementPair = ObjectWrap::Unwrap<ElementPair>(info.Holder());
-		info.GetReturnValue().Set(Nan::New(WstrToStr(GetNameForCategory(elementPair->pair_.first))).ToLocalChecked());
+		ElementPair* obj = ObjectWrap::Unwrap<ElementPair>(info.Holder());
+		info.GetReturnValue().Set(Nan::New(WstrToStr(obj->category_)).ToLocalChecked());
 	}
 
 	NAN_GETTER(ElementPair::GetValue) {
-		ElementPair* elementPair = ObjectWrap::Unwrap<ElementPair>(info.Holder());
-		info.GetReturnValue().Set(Nan::New(WstrToStr(elementPair->pair_.second)).ToLocalChecked());
+		ElementPair* obj = ObjectWrap::Unwrap<ElementPair>(info.Holder());
+		info.GetReturnValue().Set(Nan::New(WstrToStr(obj->value_)).ToLocalChecked());
 	}
 }

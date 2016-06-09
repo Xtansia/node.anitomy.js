@@ -13,6 +13,8 @@
 #include <nan.h>
 #include <anitomy/element.h>
 
+#include "elements_obj.h"
+
 namespace objects {
 	class Elements;
 
@@ -21,7 +23,7 @@ namespace objects {
 		static NAN_MODULE_INIT(Init);
 
 	private:
-		ElementPair(const anitomy::element_pair_t& pair) : pair_(pair) {}
+		ElementPair(const anitomy::element_pair_t& pair) : category_(GetNameForCategory(pair.first)), value_(pair.second) {}
 		~ElementPair() {}
 
 		static NAN_METHOD(New);
@@ -34,7 +36,8 @@ namespace objects {
 			return constructor_;
 		}
 
-		const anitomy::element_pair_t& pair_;
+		const std::wstring category_;
+		const std::wstring value_;
 
 		friend class Elements;
 	};
