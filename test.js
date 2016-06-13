@@ -1,25 +1,41 @@
-var Anitomy = require('./index.js').Anitomy;
+var anitomyjs = require('./index.js');
 
-var anitomy = new Anitomy();
+var anitomy = new anitomyjs.Anitomy();
+var elements = anitomy.elements();
 var filename = '[Ecchihiro]_Netoge_no_Yome_wa_Onnanoko_ja_Nai_to_Omotta？_-_07-10_[720p_Hi10P_AAC][C74A839D].mkv';
 
-console.log('filename = ' + filename);
-console.log('anitomy.elements.empty() = ' + anitomy.elements.empty());
-console.log('anitomy.parse(filename) = ' + anitomy.parse(filename));
-console.log('anitomy.elements.empty() = ' + anitomy.elements.empty());
-console.log('anitomy.elements.size() = ' + anitomy.elements.size());
+console.log('------------------------------------------------------------------------------');
 
-for (var i = 0; i < anitomy.elements.size(); i++) {
-  var pair = anitomy.elements[i];
-  console.log('anitomy.elements[' + i + '] = { category: \'' + pair.category + '\', value: \'' + pair.value + '\' }');
+console.log('filename = ' + filename);
+console.log('anitomy = ' + anitomy);
+console.log('elements = anitomy.elements() = ' + elements);
+
+console.log('------------------------------------------------------------------------------');
+
+console.log('elements.empty() = ' + elements.empty());
+console.log('anitomy.parse(filename) = ' + anitomy.parse(filename));
+console.log('elements.empty() = ' + elements.empty());
+console.log('elements.size() = ' + elements.size());
+
+console.log('------------------------------------------------------------------------------');
+
+for (var i = 0; i < elements.size(); i++) {
+  console.log('elements[' + i + '] = ', elements[i]);
 }
 
-console.log('anitomy.elements.get(\'AnimeTitle\') = ' + anitomy.elements.get('AnimeTitle'));
-console.log('anitomy.elements.get_all(\'EpisodeNumber\') = ' + anitomy.elements.get_all('EpisodeNumber'));
-console.log('anitomy.elements.count(\'EpisodeNumber\') = ' + anitomy.elements.count('EpisodeNumber'));
-console.log('anitomy.elements.empty(\'AnimeTitle\') = ' + anitomy.elements.empty('AnimeTitle'));
-console.log('anitomy.elements.empty(\'AnimeYear\') = ' + anitomy.elements.empty('AnimeYear'));
-console.log('anitomy.elements.clear()'); anitomy.elements.clear();
-console.log('anitomy.elements.empty() = ' + anitomy.elements.empty());
-console.log('anitomy.elements.insert(\'AnimeTitle\', \'Toradora\')'); anitomy.elements.insert('AnimeTitle', 'Toradora');
-console.log('anitomy.elements.get(\'AnimeTitle\') = ' + anitomy.elements.get('AnimeTitle'));
+console.log('------------------------------------------------------------------------------');
+
+console.log('elements.get(\'AnimeTitle\') = ' + elements.get('AnimeTitle'));
+console.log('elements.get_all(\'EpisodeNumber\') = ' + elements.get_all('EpisodeNumber'));
+console.log('elements.count(\'EpisodeNumber\') = ' + elements.count('EpisodeNumber'));
+console.log('elements.empty(\'AnimeTitle\') = ' + elements.empty('AnimeTitle'));
+console.log('elements.empty(\'AnimeYear\') = ' + elements.empty('AnimeYear'));
+
+console.log('------------------------------------------------------------------------------');
+
+console.log('elements.clear()'); elements.clear();
+console.log('elements.empty() = ' + elements.empty());
+console.log('elements.insert(\'AnimeTitle\', \'Toradora\')'); elements.insert('AnimeTitle', 'Toradora');
+console.log('elements.get(\'AnimeTitle\') = ' + elements.get('AnimeTitle'));
+
+console.log('------------------------------------------------------------------------------');

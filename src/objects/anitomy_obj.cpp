@@ -21,9 +21,9 @@ namespace objects {
 
     // Prototype
     Nan::SetPrototypeMethod(tpl, "parse", Parse);
-    Nan::SetAccessor(tpl->InstanceTemplate(), LOCAL_STRING("elements"), GetElements, READ_ONLY_SETTER);
-    Nan::SetAccessor(tpl->InstanceTemplate(), LOCAL_STRING("options"), GetOptions, READ_ONLY_SETTER);
-    Nan::SetAccessor(tpl->InstanceTemplate(), LOCAL_STRING("tokens"), GetTokens, READ_ONLY_SETTER);
+    Nan::SetPrototypeMethod(tpl, "elements", GetElements);
+    Nan::SetPrototypeMethod(tpl, "options", GetOptions);
+    Nan::SetPrototypeMethod(tpl, "tokens", GetTokens);
 
     constructor().Reset(tpl->GetFunction());
     Nan::Set(target, LOCAL_STRING("Anitomy"), tpl->GetFunction());
@@ -53,17 +53,17 @@ namespace objects {
     info.GetReturnValue().Set(obj->anitomy_.Parse(filename));
   }
 
-  NAN_GETTER(Anitomy::GetElements) {
+  NAN_METHOD(Anitomy::GetElements) {
     info.GetReturnValue().Set(info.This()->GetHiddenValue(LOCAL_STRING("elements_")));
   }
 
-  NAN_GETTER(Anitomy::GetOptions) {
+  NAN_METHOD(Anitomy::GetOptions) {
     // TODO: Get options
-    info.GetReturnValue().Set(LOCAL_STRING("options"));
+    info.GetReturnValue().SetNull();
   }
 
-  NAN_GETTER(Anitomy::GetTokens) {
+  NAN_METHOD(Anitomy::GetTokens) {
     // TODO: Get tokens
-    info.GetReturnValue().Set(LOCAL_STRING("tokens"));
+    info.GetReturnValue().SetNull();
   }
 }

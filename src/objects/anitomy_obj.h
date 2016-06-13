@@ -26,9 +26,9 @@ namespace objects {
 
     static NAN_METHOD(New);
     static NAN_METHOD(Parse);
-    static NAN_GETTER(GetElements);
-    static NAN_GETTER(GetOptions);
-    static NAN_GETTER(GetTokens);
+    static NAN_METHOD(GetElements);
+    static NAN_METHOD(GetOptions);
+    static NAN_METHOD(GetTokens);
 
     static inline Nan::Persistent<v8::Function>& constructor() {
       static Nan::Persistent<v8::Function> constructor_;
