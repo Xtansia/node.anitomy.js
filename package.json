@@ -14,13 +14,13 @@
     "email": "xtansia@xtansia.com",
     "url": "https://xtansia.com"
   },
-  "main": "anitomy.js",
+  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/Xtansia/anitomyjs"
   },
   "scripts": {
-    "test": "node anitomy.js"
+    "test": "node test.js"
   },
   "dependencies": {
     "bindings": "^1.2.1",
