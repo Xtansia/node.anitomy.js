@@ -7,14 +7,14 @@
 */
 
 #include <nan.h>
-#include "objects/anitomy_obj.h"
-#include "objects/elements_obj.h"
-#include "objects/elementpair_obj.h"
+#include "anitomy_object.h"
+#include "elements_object.h"
+#include "element_pair_object.h"
 
 NAN_MODULE_INIT(Init) {
-  objects::Anitomy::Init(target);
-  objects::Elements::Init(target);
-  objects::ElementPair::Init(target);
+  AnitomyObject::Init(target);
+  ElementsObject::Init(target);
+  ElementPairObject::Init(target);
 }
 
 NODE_MODULE(anitomy, Init)

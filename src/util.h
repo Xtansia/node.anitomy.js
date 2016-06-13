@@ -18,16 +18,16 @@ std::string WstrToStr(const std::wstring& input);
 
 NAN_SETTER(READ_ONLY_SETTER);
 
-#define UNWRAP_OBJ(Type) \
+#define NODE_UNWRAP_OBJ(Type) \
   Type* obj = ObjectWrap::Unwrap<Type>(info.Holder());
 
-#define LOCAL_STRING(str) \
+#define NODE_LOCAL_STRING(str) \
   Nan::New(str).ToLocalChecked()
 
-#define LOCAL_WSTRING(str) \
+#define NODE_LOCAL_WSTRING(str) \
   Nan::New(WstrToStr(str)).ToLocalChecked()
 
-#define STRING_ARG(i, name) \
+#define NODE_STRING_ARG(i, name) \
   if (info.Length() < i + 1) { \
     Nan::ThrowError(#name " must be given"); \
     return; \
