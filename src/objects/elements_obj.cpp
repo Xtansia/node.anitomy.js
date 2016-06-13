@@ -12,181 +12,173 @@
 #include "../util.h"
 
 namespace objects {
-	NAN_MODULE_INIT(Elements::Init) {
-		Nan::HandleScope scope;
+  NAN_MODULE_INIT(Elements::Init) {
+    Nan::HandleScope scope;
 
-		// Prepare constructor template
-		v8::Local<v8::FunctionTemplate> tpl = Nan::New<v8::FunctionTemplate>(New);
-		tpl->SetClassName(LOCAL_STRING("Elements"));
-		tpl->InstanceTemplate()->SetInternalFieldCount(1);
+    // Prepare constructor template
+    v8::Local<v8::FunctionTemplate> tpl = Nan::New<v8::FunctionTemplate>(New);
+    tpl->SetClassName(LOCAL_STRING("Elements"));
+    tpl->InstanceTemplate()->SetInternalFieldCount(1);
 
-		// Prototype
-		Nan::SetPrototypeMethod(tpl, "empty", IsEmpty);
-		Nan::SetPrototypeMethod(tpl, "size", Size);
-		Nan::SetPrototypeMethod(tpl, "at", At);
-		Nan::SetIndexedPropertyHandler(tpl->InstanceTemplate(), IndexGetter, 0, 0, 0, IndexEnumerator);
-		Nan::SetPrototypeMethod(tpl, "get", Get);
-		Nan::SetPrototypeMethod(tpl, "get_all", GetAll);
-		Nan::SetPrototypeMethod(tpl, "clear", Clear);
-		Nan::SetPrototypeMethod(tpl, "insert", Insert);
-		Nan::SetPrototypeMethod(tpl, "erase", Erase);
-		Nan::SetPrototypeMethod(tpl, "count", Count);
+    // Prototype
+    Nan::SetPrototypeMethod(tpl, "empty", IsEmpty);
+    Nan::SetPrototypeMethod(tpl, "size", Size);
+    Nan::SetPrototypeMethod(tpl, "at", At);
+    Nan::SetIndexedPropertyHandler(tpl->InstanceTemplate(), IndexGetter, 0, 0, 0, IndexEnumerator);
+    Nan::SetPrototypeMethod(tpl, "get", Get);
+    Nan::SetPrototypeMethod(tpl, "get_all", GetAll);
+    Nan::SetPrototypeMethod(tpl, "clear", Clear);
+    Nan::SetPrototypeMethod(tpl, "insert", Insert);
+    Nan::SetPrototypeMethod(tpl, "erase", Erase);
+    Nan::SetPrototypeMethod(tpl, "count", Count);
 
-		constructor().Reset(tpl->GetFunction());
-		Nan::Set(target, LOCAL_STRING("Elements"), tpl->GetFunction());
-	}
+    constructor().Reset(tpl->GetFunction());
+    Nan::Set(target, LOCAL_STRING("Elements"), tpl->GetFunction());
+  }
 
-	NAN_METHOD(Elements::New) {
-		if (!info.IsConstructCall()) {
-			Nan::ThrowError("Cannot call constructor as function, you need to use 'new' keyword");
-			return;
-		}
+  NAN_METHOD(Elements::New) {
+    if (!info.IsConstructCall()) {
+      Nan::ThrowError("Cannot call constructor as function, you need to use 'new' keyword");
+      return;
+    }
 
-		Elements* elements;
+    if (info[0]->IsExternal()) {
+      v8::Local<v8::External> ext = info[0].As<v8::External>();
+      void* ptr = ext->Value();
+      Elements* elements = static_cast<Elements*>(ptr);
+      elements->Wrap(info.This());
+      info.GetReturnValue().Set(info.This());
+      return;
+    }
+    else {
+      Nan::ThrowError("Cannot create Elements directly");
+    }
+  }
 
-		if (info[0]->IsExternal()) {
-			v8::Local<v8::External> ext = info[0].As<v8::External>();
-			void* ptr = ext->Value();
-			elements = static_cast<Elements*>(ptr);
-		}
-		else {
-			if (info.Length() != 0) {
-				Nan::ThrowError("Elements constructor doesn't take any arguments");
-				return;
-			}
+  v8::Local<v8::Value> Elements::New(anitomy::Elements& elements) {
+    Nan::EscapableHandleScope scope;
 
-			elements = new Elements(new anitomy::Elements(), true);
-		}
+    Elements *wrapped = new Elements(elements);
 
-		elements->Wrap(info.This());
-		info.GetReturnValue().Set(info.This());
-		return;
-	}
+    v8::Local<v8::Value> ext = Nan::New<v8::External>(wrapped);
+    v8::Local<v8::Object> obj = Nan::New(constructor())->NewInstance(1, &ext);
 
-	v8::Local<v8::Value> Elements::New(anitomy::Elements& elements) {
-		Nan::EscapableHandleScope scope;
+    return scope.Escape(obj);
+  }
 
-		Elements *wrapped = new Elements(&elements);
+  NAN_METHOD(Elements::IsEmpty) {
+    UNWRAP_OBJ(Elements);
 
-		v8::Local<v8::Value> ext = Nan::New<v8::External>(wrapped);
-		v8::Local<v8::Object> obj = Nan::New(constructor())->NewInstance(1, &ext);
+    if (info.Length() < 1) { // empty()
+      info.GetReturnValue().Set(obj->elements_.empty());
+    }
+    else { // empty(category)
+      ELEMENT_CATEGORY_ARG(0, category);
 
-		return scope.Escape(obj);
-	}
+      info.GetReturnValue().Set(obj->elements_.empty(category));
+    }
+  }
 
-	NAN_METHOD(Elements::IsEmpty) {
-		UNWRAP_OBJ(Elements);
+  NAN_METHOD(Elements::Size) {
+    UNWRAP_OBJ(Elements);
 
-		if (info.Length() < 1) { // empty()
-			info.GetReturnValue().Set(obj->elements_->empty());
-		}
-		else { // empty(category)
-			ELEMENT_CATEGORY_ARG(0, category);
+    info.GetReturnValue().Set(static_cast<uint32_t>(obj->elements_.size()));
+  }
 
-			info.GetReturnValue().Set(obj->elements_->empty(category));
-		}
-	}
+  NAN_METHOD(Elements::At) {
+    if (info.Length() < 1) {
+      Nan::ThrowError("index must be given");
+      return;
+    }
+    if (!info[0]->IsInt32() || !info[0]->IsUint32()) {
+      Nan::ThrowTypeError("index must be an integer");
+      return;
+    }
 
-	NAN_METHOD(Elements::Size) {
-		UNWRAP_OBJ(Elements);
+    UNWRAP_OBJ(Elements);
 
-		info.GetReturnValue().Set(static_cast<uint32_t>(obj->elements_->size()));
-	}
+    size_t index = static_cast<size_t>(info[0]->Uint32Value());
 
-	NAN_METHOD(Elements::At) {
-		if (info.Length() < 1) {
-			Nan::ThrowError("index must be given");
-			return;
-		}
-		if (!info[0]->IsInt32() || !info[0]->IsUint32()) {
-			Nan::ThrowTypeError("index must be an integer");
-			return;
-		}
+    if (index >= obj->elements_.size()) {
+      Nan::ThrowRangeError("index out of range");
+      return;
+    }
 
-		UNWRAP_OBJ(Elements);
+    info.GetReturnValue().Set(ElementPair::New(obj->elements_.at(index)));
+  }
 
-		size_t index = static_cast<size_t>(info[0]->Uint32Value());
+  NAN_INDEX_GETTER(Elements::IndexGetter) {
+    UNWRAP_OBJ(Elements);
 
-		if (index >= obj->elements_->size()) {
-			Nan::ThrowRangeError("index out of range");
-			return;
-		}
+    if (index >= obj->elements_.size()) {
+      Nan::ThrowRangeError("index out of range");
+      return;
+    }
 
-		info.GetReturnValue().Set(ElementPair::New(obj->elements_->at(index)));
-	}
+    info.GetReturnValue().Set(ElementPair::New(obj->elements_[static_cast<size_t>(index)]));
+  }
 
-	NAN_INDEX_GETTER(Elements::IndexGetter) {
-		UNWRAP_OBJ(Elements);
+  NAN_INDEX_ENUMERATOR(Elements::IndexEnumerator) {
+    UNWRAP_OBJ(Elements);
+    uint32_t size = static_cast<uint32_t>(obj->elements_.size());
 
-		if (index >= obj->elements_->size()) {
-			Nan::ThrowRangeError("index out of range");
-			return;
-		}
+    v8::Local<v8::Array> arr = Nan::New<v8::Array>(size);
+    
+    for (uint32_t i = 0; i < size; ++i) {
+      arr->Set(i, Nan::New(i));
+    }
 
-		info.GetReturnValue().Set(ElementPair::New((*obj->elements_)[static_cast<size_t>(index)]));
-	}
+    info.GetReturnValue().Set(arr);
+  }
 
-	NAN_INDEX_ENUMERATOR(Elements::IndexEnumerator) {
-		UNWRAP_OBJ(Elements);
-		uint32_t size = static_cast<uint32_t>(obj->elements_->size());
+  NAN_METHOD(Elements::Get) {
+    ELEMENT_CATEGORY_ARG(0, category);
+    UNWRAP_OBJ(Elements);
 
-		v8::Local<v8::Array> arr = Nan::New<v8::Array>(size);
-		
-		for (uint32_t i = 0; i < size; ++i) {
-			arr->Set(i, Nan::New(i));
-		}
+    info.GetReturnValue().Set(LOCAL_WSTRING(obj->elements_.get(category)));
+  }
 
-		info.GetReturnValue().Set(arr);
-	}
+  NAN_METHOD(Elements::GetAll) {
+    ELEMENT_CATEGORY_ARG(0, category);
+    UNWRAP_OBJ(Elements);
 
-	NAN_METHOD(Elements::Get) {
-		ELEMENT_CATEGORY_ARG(0, category);
-		UNWRAP_OBJ(Elements);
+    std::vector<std::wstring> values = obj->elements_.get_all(category);
+    uint32_t size = static_cast<uint32_t>(values.size());
 
-		info.GetReturnValue().Set(LOCAL_WSTRING(obj->elements_->get(category)));
-	}
+    v8::Local<v8::Array> arr = Nan::New<v8::Array>(size);
 
-	NAN_METHOD(Elements::GetAll) {
-		ELEMENT_CATEGORY_ARG(0, category);
-		UNWRAP_OBJ(Elements);
+    for (uint32_t i = 0; i < size; ++i) {
+      arr->Set(i, LOCAL_WSTRING(values[i]));
+    }
 
-		std::vector<std::wstring> values = obj->elements_->get_all(category);
-		uint32_t size = static_cast<uint32_t>(values.size());
+    info.GetReturnValue().Set(arr);
+  }
 
-		v8::Local<v8::Array> arr = Nan::New<v8::Array>(size);
+  NAN_METHOD(Elements::Clear) {
+    UNWRAP_OBJ(Elements);
 
-		for (uint32_t i = 0; i < size; ++i) {
-			arr->Set(i, LOCAL_WSTRING(values[i]));
-		}
+    obj->elements_.clear();
+  }
 
-		info.GetReturnValue().Set(arr);
-	}
+  NAN_METHOD(Elements::Insert) {
+    ELEMENT_CATEGORY_ARG(0, category);
+    STRING_ARG(1, value);
+    UNWRAP_OBJ(Elements);
 
-	NAN_METHOD(Elements::Clear) {
-		UNWRAP_OBJ(Elements);
+    obj->elements_.insert(category, value);
+  }
 
-		obj->elements_->clear();
-	}
+  NAN_METHOD(Elements::Erase) {
+    ELEMENT_CATEGORY_ARG(0, category);
+    UNWRAP_OBJ(Elements);
 
-	NAN_METHOD(Elements::Insert) {
-		ELEMENT_CATEGORY_ARG(0, category);
-		STRING_ARG(1, value);
-		UNWRAP_OBJ(Elements);
+    obj->elements_.erase(category);
+  }
 
-		obj->elements_->insert(category, value);
-	}
+  NAN_METHOD(Elements::Count) {
+    ELEMENT_CATEGORY_ARG(0, category);
+    UNWRAP_OBJ(Elements);
 
-	NAN_METHOD(Elements::Erase) {
-		ELEMENT_CATEGORY_ARG(0, category);
-		UNWRAP_OBJ(Elements);
-
-		obj->elements_->erase(category);
-	}
-
-	NAN_METHOD(Elements::Count) {
-		ELEMENT_CATEGORY_ARG(0, category);
-		UNWRAP_OBJ(Elements);
-
-		info.GetReturnValue().Set(static_cast<uint32_t>(obj->elements_->count(category)));
-	}
+    info.GetReturnValue().Set(static_cast<uint32_t>(obj->elements_.count(category)));
+  }
 }
