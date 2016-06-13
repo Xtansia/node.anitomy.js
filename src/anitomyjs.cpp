@@ -12,9 +12,9 @@
 #include "objects/elementpair_obj.h"
 
 NAN_MODULE_INIT(Init) {
-	objects::Anitomy::Init(target);
-	objects::Elements::Init(target);
-	objects::ElementPair::Init(target);
+  objects::Anitomy::Init(target);
+  objects::Elements::Init(target);
+  objects::ElementPair::Init(target);
 }
 
 NODE_MODULE(anitomy, Init)

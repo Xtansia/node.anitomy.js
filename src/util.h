@@ -19,23 +19,23 @@ std::string WstrToStr(const std::wstring& input);
 NAN_SETTER(READ_ONLY_SETTER);
 
 #define UNWRAP_OBJ(Type) \
-	Type* obj = ObjectWrap::Unwrap<Type>(info.Holder());
+  Type* obj = ObjectWrap::Unwrap<Type>(info.Holder());
 
 #define LOCAL_STRING(str) \
-	Nan::New(str).ToLocalChecked()
+  Nan::New(str).ToLocalChecked()
 
 #define LOCAL_WSTRING(str) \
-	Nan::New(WstrToStr(str)).ToLocalChecked()
+  Nan::New(WstrToStr(str)).ToLocalChecked()
 
 #define STRING_ARG(i, name) \
-	if (info.Length() < i + 1) { \
-		Nan::ThrowError(#name " must be given"); \
-		return; \
-	} \
-	if (!info[i]->IsString()) { \
-		Nan::ThrowTypeError(#name " must be a string"); \
-		return; \
-	} \
-	std::wstring name = StrToWstr(*Nan::Utf8String(info[i]));
+  if (info.Length() < i + 1) { \
+    Nan::ThrowError(#name " must be given"); \
+    return; \
+  } \
+  if (!info[i]->IsString()) { \
+    Nan::ThrowTypeError(#name " must be a string"); \
+    return; \
+  } \
+  std::wstring name = StrToWstr(*Nan::Utf8String(info[i]));
 
 #endif // !ANITOMYJS_UTIL_H

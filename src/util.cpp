@@ -12,23 +12,23 @@
 
 template<class Facet>
 struct DeletableFacet : Facet {
-	template<class ...Args>
-	DeletableFacet(Args&& ...args) : Facet(std::forward<Args>(args)...) {}
-	~DeletableFacet() {}
+  template<class ...Args>
+  DeletableFacet(Args&& ...args) : Facet(std::forward<Args>(args)...) {}
+  ~DeletableFacet() {}
 };
 
 static std::wstring_convert<DeletableFacet<std::codecvt<wchar_t, char, std::mbstate_t>>, wchar_t> wstrConv;
 
 std::wstring StrToWstr(const std::string& input) {
-	return wstrConv.from_bytes(input);
+  return wstrConv.from_bytes(input);
 }
 
 std::string WstrToStr(const std::wstring& input) {
-	return wstrConv.to_bytes(input);
+  return wstrConv.to_bytes(input);
 }
 
 NAN_SETTER(READ_ONLY_SETTER) {
-	std::string name = *Nan::Utf8String(property);
-	std::string err = name + " is a read-only property";
-	Nan::ThrowError(err.c_str());
+  std::string name = *Nan::Utf8String(property);
+  std::string err = name + " is a read-only property";
+  Nan::ThrowError(err.c_str());
 }

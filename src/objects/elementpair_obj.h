@@ -16,31 +16,31 @@
 #include "elements_obj.h"
 
 namespace objects {
-	class Elements;
+  class Elements;
 
-	class ElementPair : Nan::ObjectWrap {
-	public:
-		static NAN_MODULE_INIT(Init);
+  class ElementPair : Nan::ObjectWrap {
+  public:
+    static NAN_MODULE_INIT(Init);
 
-	private:
-		ElementPair(const anitomy::element_pair_t& pair) : category_(GetNameForCategory(pair.first)), value_(pair.second) {}
-		~ElementPair() {}
+  private:
+    ElementPair(const anitomy::element_pair_t& pair) : category_(GetNameForCategory(pair.first)), value_(pair.second) {}
+    ~ElementPair() {}
 
-		static NAN_METHOD(New);
-		static v8::Local<v8::Value> New(const anitomy::element_pair_t& pair);
-		static NAN_GETTER(GetCategory);
-		static NAN_GETTER(GetValue);
+    static NAN_METHOD(New);
+    static v8::Local<v8::Value> New(const anitomy::element_pair_t& pair);
+    static NAN_GETTER(GetCategory);
+    static NAN_GETTER(GetValue);
 
-		static inline Nan::Persistent<v8::Function>& constructor() {
-			static Nan::Persistent<v8::Function> constructor_;
-			return constructor_;
-		}
+    static inline Nan::Persistent<v8::Function>& constructor() {
+      static Nan::Persistent<v8::Function> constructor_;
+      return constructor_;
+    }
 
-		const std::wstring category_;
-		const std::wstring value_;
+    const std::wstring category_;
+    const std::wstring value_;
 
-		friend class Elements;
-	};
+    friend class Elements;
+  };
 }
 
 #endif // !ANITOMYJS_OBJECTS_ELEMENTPAIR_H

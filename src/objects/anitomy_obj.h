@@ -14,31 +14,31 @@
 #include <anitomy/anitomy.h>
 
 namespace objects {
-	class Elements;
+  class Elements;
 
-	class Anitomy : public Nan::ObjectWrap {
-	public:
-		static NAN_MODULE_INIT(Init);
+  class Anitomy : public Nan::ObjectWrap {
+  public:
+    static NAN_MODULE_INIT(Init);
 
-	private:
-		Anitomy() {};
-		~Anitomy() {};
+  private:
+    Anitomy() {};
+    ~Anitomy() {};
 
-		static NAN_METHOD(New);
-		static NAN_METHOD(Parse);
-		static NAN_GETTER(GetElements);
-		static NAN_GETTER(GetOptions);
-		static NAN_GETTER(GetTokens);
+    static NAN_METHOD(New);
+    static NAN_METHOD(Parse);
+    static NAN_GETTER(GetElements);
+    static NAN_GETTER(GetOptions);
+    static NAN_GETTER(GetTokens);
 
-		static inline Nan::Persistent<v8::Function>& constructor() {
-			static Nan::Persistent<v8::Function> constructor_;
-			return constructor_;
-		}
+    static inline Nan::Persistent<v8::Function>& constructor() {
+      static Nan::Persistent<v8::Function> constructor_;
+      return constructor_;
+    }
 
-		anitomy::Anitomy anitomy_;
+    anitomy::Anitomy anitomy_;
 
-		friend class Elements;
-	};
+    friend class Elements;
+  };
 }
 
 #endif // !ANITOMYJS_OBJECTS_ANITOMY_H
