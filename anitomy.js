@@ -9,17 +9,11 @@ console.log('anitomy.parse(filename) = ' + anitomy.parse(filename));
 console.log('anitomy.elements.empty() = ' + anitomy.elements.empty());
 console.log('anitomy.elements.size() = ' + anitomy.elements.size());
 
-console.log('------------------------------------------');
 for (var i = 0; i < anitomy.elements.size(); i++) {
   var pair = anitomy.elements[i];
   console.log('anitomy.elements[' + i + '] = { category: \'' + pair.category + '\', value: \'' + pair.value + '\' }');
 }
 
-console.log('------------------------------------------');
-console.log('anitomy.elements.forEach(console.log) = ');
-anitomy.elements.forEach(console.log);
-
-console.log('------------------------------------------');
 console.log('anitomy.elements.get(\'AnimeTitle\') = ' + anitomy.elements.get('AnimeTitle'));
 console.log('anitomy.elements.get_all(\'EpisodeNumber\') = ' + anitomy.elements.get_all('EpisodeNumber'));
 console.log('anitomy.elements.count(\'EpisodeNumber\') = ' + anitomy.elements.count('EpisodeNumber'));
@@ -30,7 +24,6 @@ console.log('anitomy.elements.empty() = ' + anitomy.elements.empty());
 console.log('anitomy.elements.insert(\'AnimeTitle\', \'Toradora\')'); anitomy.elements.insert('AnimeTitle', 'Toradora');
 console.log('anitomy.elements.get(\'AnimeTitle\') = ' + anitomy.elements.get('AnimeTitle'));
 
-console.log('------------------------------------------');
 var elems = new anitomyjs.Elements();
 console.log('elems.insert(\'AnimeTitle\', \'Kiznaiver\')'); elems.insert('AnimeTitle', 'Kiznaiver');
 console.log('elems.get(\'AnimeTitle\') = ' + elems.get('AnimeTitle'));

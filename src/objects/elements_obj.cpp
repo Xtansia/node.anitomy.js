@@ -31,7 +31,6 @@ namespace objects {
 		Nan::SetPrototypeMethod(tpl, "insert", Insert);
 		Nan::SetPrototypeMethod(tpl, "erase", Erase);
 		Nan::SetPrototypeMethod(tpl, "count", Count);
-		Nan::SetPrototypeMethod(tpl, "forEach", ForEach);
 
 		constructor().Reset(tpl->GetFunction());
 		Nan::Set(target, LOCAL_STRING("Elements"), tpl->GetFunction());
@@ -189,26 +188,5 @@ namespace objects {
 		UNWRAP_OBJ(Elements);
 
 		info.GetReturnValue().Set(static_cast<uint32_t>(obj->elements_->count(category)));
-	}
-
-	NAN_METHOD(Elements::ForEach) {
-		if (info.Length() < 1) {
-			Nan::ThrowError("callback must be given");
-			return;
-		}
-		if (!info[0]->IsFunction()) {
-			Nan::ThrowError("callback must be a function");
-			return;
-		}
-
-		v8::Isolate* isolate = info.GetIsolate();
-		v8::Local<v8::Function> callback = info[0].As<v8::Function>();
-
-		UNWRAP_OBJ(Elements);
-
-		for (auto it = obj->elements_->begin(); it != obj->elements_->end(); ++it) {
-			v8::Local<v8::Value> argv[1] = { ElementPair::New(*it) };
-			callback->Call(v8::Null(isolate), 1, argv);
-		}
 	}
 }
