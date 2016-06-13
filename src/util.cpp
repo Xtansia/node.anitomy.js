@@ -10,21 +10,14 @@
 #include <codecvt>
 #include "util.h"
 
-template<class Facet>
-struct DeletableFacet : Facet {
-  template<class ...Args>
-  DeletableFacet(Args&& ...args) : Facet(std::forward<Args>(args)...) {}
-  ~DeletableFacet() {}
-};
-
-static std::wstring_convert<DeletableFacet<std::codecvt<wchar_t, char, std::mbstate_t>>, wchar_t> wstrConv;
+static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> utf8To16Conv;
 
 std::wstring StrToWstr(const std::string& input) {
-  return wstrConv.from_bytes(input);
+  return utf8To16Conv.from_bytes(input);
 }
 
 std::string WstrToStr(const std::wstring& input) {
-  return wstrConv.to_bytes(input);
+  return utf8To16Conv.to_bytes(input);
 }
 
 NAN_SETTER(READ_ONLY_SETTER) {
