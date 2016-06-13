@@ -8,6 +8,7 @@
 
 #include "anitomy_object.h"
 #include "elements_object.h"
+#include "options_object.h"
 #include "util.h"
 
 NAN_MODULE_INIT(AnitomyObject::Init) {
@@ -39,8 +40,13 @@ NAN_METHOD(AnitomyObject::New) {
   }
 
   AnitomyObject* wrapped = new AnitomyObject();
+
   v8::Local<v8::Value> elements = ElementsObject::New(wrapped->anitomy_.elements());
+  v8::Local<v8::Value> options = OptionsObject::New(wrapped->anitomy_.options());
+
   info.This()->SetHiddenValue(NODE_LOCAL_STRING("elements_"), elements);
+  info.This()->SetHiddenValue(NODE_LOCAL_STRING("options_"), options);
+
   wrapped->Wrap(info.This());
   info.GetReturnValue().Set(info.This());
 }
@@ -57,8 +63,7 @@ NAN_METHOD(AnitomyObject::GetElements) {
 }
 
 NAN_METHOD(AnitomyObject::GetOptions) {
-  // TODO: Get options
-  info.GetReturnValue().SetNull();
+  info.GetReturnValue().Set(info.This()->GetHiddenValue(NODE_LOCAL_STRING("options_")));
 }
 
 NAN_METHOD(AnitomyObject::GetTokens) {

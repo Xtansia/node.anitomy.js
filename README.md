@@ -23,14 +23,17 @@ console.log(elements.get('AnimeTitle') + " #" + elements.get('EpisodeNumber') + 
   * Constructing Anitomy instances.
   * Parsing filenames, Note: lowercase function name 'parse' rather than 'Parse'.
   * Getting elements collection, same as Anitomy.
-  * Nearly all of the elements collection functions, same as Anitomy, except for a few to do with iterators. Note: get_all returns a JS array.
+  * Nearly all of the elements collection functions, same as Anitomy, except for a few to do with iterators. Note: get_all returns a JS array of strings.
   * Element categories, but are represented as strings, with same names as Anitomy, but without the "anitomy::kElement" prefix, ie. 'AnimeTitle' rather than anitomy::kElementAnimeTitle, 'EpisodeNumber', 'ReleaseGroup' etc.
+  * Getting options object, same as Anitomy.
+  * Getting and setting the options. Note: ignored_strings is a JS array of strings, and cannot be mutated in-place.
 
 Listing:
 ```javascript
 new anitomyjs.Anitomy();
 Anitomy.parse(filename);
 Anitomy.elements();
+Anitomy.options();
 
 Elements.empty();
 Elements.empty(category);
@@ -43,10 +46,16 @@ Elements.clear();
 Elements.insert(category, value);
 Elements.erase(category);
 Elements.count(category);
+
+Options.allowed_delimiters
+Options.ignored_strings
+Options.parse_episode_number
+Options.parse_episode_title
+Options.parse_file_extension
+Options.parse_release_group
 ```
 
 ## To Be Implemented
-  * Anitomy.options()
   * Anitomy.tokens()
 
 ## License

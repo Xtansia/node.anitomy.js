@@ -8,6 +8,7 @@
         'src/anitomy_object.cpp',
         'src/element_pair_object.cpp',
         'src/elements_object.cpp',
+        'src/options_object.cpp',
         'deps/anitomy/anitomy/anitomy.cpp',
         'deps/anitomy/anitomy/element.cpp',
         'deps/anitomy/anitomy/keyword.cpp',
