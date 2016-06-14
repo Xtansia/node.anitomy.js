@@ -1,4 +1,4 @@
-# AnitomyJS
+# node.anitomy.js
 NodeJS binding for [Anitomy](https://github.com/erengy/anitomy), an anime video filename parsing library.
 
 ## Using it
@@ -62,4 +62,4 @@ Options.parse_release_group
   * Proper documentation instead of just function listing
 
 ## License
-*AnitomyJS* is licensed under [Mozilla Public License 2.0](https://www.mozilla.org/en-US/MPL/2.0/FAQ/).
+*node.anitomy.js* is licensed under [Mozilla Public License 2.0](https://www.mozilla.org/en-US/MPL/2.0/FAQ/).
