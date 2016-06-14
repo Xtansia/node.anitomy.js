@@ -1,9 +1,9 @@
 {
   'targets': [
     {
-      'target_name': 'anitomyjs',
+      'target_name': 'anitomy_lib',
       'sources': [
-        'src/anitomyjs.cpp',
+        'src/anitomy_node.cpp',
         'src/util.cpp',
         'src/anitomy_object.cpp',
         'src/element_pair_object.cpp',

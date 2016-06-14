@@ -19,4 +19,4 @@ void Init(v8::Local<v8::Object> exports, v8::Local<v8::Object> module) {
   OptionsObject::Init();
 }
 
-NODE_MODULE(anitomy, Init)
+NODE_MODULE(anitomy_lib, Init)

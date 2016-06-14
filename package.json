@@ -1,5 +1,5 @@
 {
-  "name": "anitomyjs",
+  "name": "anitomy",
   "version": "0.0.0",
   "description": "NodeJS binding for the Anitomy anime video filename parsing library",
   "keywords": [ "anitomy", "anime", "filename", "parsing"],
@@ -9,7 +9,7 @@
   },
   "license": "MPL-2.0",
   "author": "Thomas Farr <xtansia@xtansia.com> (https://xtansia.com)",
-  "main": "index.js",
+  "main": "./anitomy",
   "repository": {
     "type": "git",
     "url": "https://github.com/Xtansia/anitomyjs.git"

@@ -4,10 +4,10 @@ NodeJS binding for [Anitomy](https://github.com/erengy/anitomy), an anime video 
 ## Using it
 ```javascript
 // Require the library.
-var anitomyjs = require('anitomyjs');
+var Anitomy = require('anitomy');
 
 // Construct a new Anitomy instance.
-var anitomy = new anitomyjs();
+var anitomy = new Anitomy();
 
 // Parse a filename
 var success = anitomy.parse('[TaigaSubs]_Toradora!_(2008)_-_01v2_-_Tiger_and_Dragon_[1280x720_H.264_FLAC][1234ABCD].mkv');
@@ -30,7 +30,7 @@ console.log(elements.get('AnimeTitle') + " #" + elements.get('EpisodeNumber') + 
 
 Listing:
 ```javascript
-new anitomyjs();
+new Anitomy();
 Anitomy.parse(filename);
 Anitomy.elements();
 Anitomy.options();
@@ -57,6 +57,9 @@ Options.parse_release_group
 
 ## To Be Implemented
   * Anitomy.tokens()
+
+## TODO
+  * Proper documentation instead of just function listing
 
 ## License
 *AnitomyJS* is licensed under [Mozilla Public License 2.0](https://www.mozilla.org/en-US/MPL/2.0/FAQ/).

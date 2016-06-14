@@ -1,6 +1,6 @@
-var anitomyjs = require('./index.js');
+var Anitomy = require('./anitomy');
 
-var anitomy = new anitomyjs();
+var anitomy = new Anitomy();
 var elements = anitomy.elements();
 var filename = '[Ecchihiro]_Netoge_no_Yome_wa_Onnanoko_ja_Nai_to_Omotta？_-_07-10_[720p_Hi10P_AAC][C74A839D].mkv';
 
