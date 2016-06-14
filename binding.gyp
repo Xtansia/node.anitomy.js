@@ -30,6 +30,7 @@
           ]
         }, {
           'ccflags': [
+            '-std=c++11',
             '-Wall',
             '-Wextra',
             '-Wno-unused-parameter'
