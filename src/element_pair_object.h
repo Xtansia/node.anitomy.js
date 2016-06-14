@@ -14,7 +14,7 @@
 #include <anitomy/element.h>
 #include "element_categories.h"
 
-class ElementPairObject : Nan::ObjectWrap {
+class ElementPairObject : public Nan::ObjectWrap {
 public:
   static void Init();
 
