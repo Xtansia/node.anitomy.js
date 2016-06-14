@@ -7,7 +7,7 @@ NodeJS binding for [Anitomy](https://github.com/erengy/anitomy), an anime video 
 var anitomyjs = require('anitomyjs');
 
 // Construct a new Anitomy instance.
-var anitomy = new anitomyjs.Anitomy();
+var anitomy = new anitomyjs();
 
 // Parse a filename
 var success = anitomy.parse('[TaigaSubs]_Toradora!_(2008)_-_01v2_-_Tiger_and_Dragon_[1280x720_H.264_FLAC][1234ABCD].mkv');
@@ -30,7 +30,7 @@ console.log(elements.get('AnimeTitle') + " #" + elements.get('EpisodeNumber') + 
 
 Listing:
 ```javascript
-new anitomyjs.Anitomy();
+new anitomyjs();
 Anitomy.parse(filename);
 Anitomy.elements();
 Anitomy.options();

@@ -16,7 +16,7 @@
 
 class ElementPairObject : Nan::ObjectWrap {
 public:
-  static NAN_MODULE_INIT(Init);
+  static void Init();
 
 private:
   ElementPairObject(const anitomy::element_pair_t& pair) : category_(GetNameForCategory(pair.first)), value_(pair.second) {}

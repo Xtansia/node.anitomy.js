@@ -9,7 +9,7 @@
 #include "element_pair_object.h"
 #include "util.h"
 
-NAN_MODULE_INIT(ElementPairObject::Init) {
+void ElementPairObject::Init() {
   Nan::HandleScope scope;
 
   // Prepare constructor template
@@ -22,7 +22,6 @@ NAN_MODULE_INIT(ElementPairObject::Init) {
   Nan::SetAccessor(tpl->InstanceTemplate(), NODE_LOCAL_STRING("value"), GetValue, READ_ONLY_SETTER);
 
   constructor().Reset(tpl->GetFunction());
-  Nan::Set(target, NODE_LOCAL_STRING("ElementPair"), tpl->GetFunction());
 }
 
 NAN_METHOD(ElementPairObject::New) {

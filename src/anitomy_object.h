@@ -15,7 +15,7 @@
 
 class AnitomyObject : public Nan::ObjectWrap {
 public:
-  static NAN_MODULE_INIT(Init);
+  static void Init(v8::Local<v8::Object> module);
 
 private:
   AnitomyObject() {};

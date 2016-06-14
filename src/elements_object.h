@@ -16,7 +16,7 @@
 
 class ElementsObject : public Nan::ObjectWrap {
 public:
-  static NAN_MODULE_INIT(Init);
+  static void Init();
 
 private:
   ElementsObject(anitomy::Elements& elements) : elements_(elements) {};

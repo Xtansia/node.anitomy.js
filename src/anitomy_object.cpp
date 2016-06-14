@@ -11,7 +11,7 @@
 #include "options_object.h"
 #include "util.h"
 
-NAN_MODULE_INIT(AnitomyObject::Init) {
+void AnitomyObject::Init(v8::Local<v8::Object> module) {
   Nan::HandleScope scope;
 
   // Prepare constructor template
@@ -26,7 +26,7 @@ NAN_MODULE_INIT(AnitomyObject::Init) {
   Nan::SetPrototypeMethod(tpl, "tokens", GetTokens);
 
   constructor().Reset(tpl->GetFunction());
-  Nan::Set(target, NODE_LOCAL_STRING("Anitomy"), tpl->GetFunction());
+  Nan::Set(module, NODE_LOCAL_STRING("exports"), tpl->GetFunction());
 }
 
 NAN_METHOD(AnitomyObject::New) {

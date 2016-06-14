@@ -11,7 +11,7 @@
 #include "element_pair_object.h"
 #include "util.h"
 
-NAN_MODULE_INIT(ElementsObject::Init) {
+void ElementsObject::Init() {
   Nan::HandleScope scope;
 
   // Prepare constructor template
@@ -32,7 +32,6 @@ NAN_MODULE_INIT(ElementsObject::Init) {
   Nan::SetPrototypeMethod(tpl, "count", Count);
 
   constructor().Reset(tpl->GetFunction());
-  Nan::Set(target, NODE_LOCAL_STRING("Elements"), tpl->GetFunction());
 }
 
 NAN_METHOD(ElementsObject::New) {

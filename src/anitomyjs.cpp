@@ -12,11 +12,11 @@
 #include "element_pair_object.h"
 #include "options_object.h"
 
-NAN_MODULE_INIT(Init) {
-  AnitomyObject::Init(target);
-  ElementsObject::Init(target);
-  ElementPairObject::Init(target);
-  OptionsObject::Init(target);
+void Init(v8::Local<v8::Object> exports, v8::Local<v8::Object> module) {
+  AnitomyObject::Init(module);
+  ElementsObject::Init();
+  ElementPairObject::Init();
+  OptionsObject::Init();
 }
 
 NODE_MODULE(anitomy, Init)

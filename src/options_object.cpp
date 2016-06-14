@@ -8,7 +8,7 @@
 
 #include "options_object.h"
 
-NAN_MODULE_INIT(OptionsObject::Init) {
+void OptionsObject::Init() {
   Nan::HandleScope scope;
 
   // Prepare constructor template
@@ -24,7 +24,6 @@ NAN_MODULE_INIT(OptionsObject::Init) {
   NODE_SET_ACCESSOR("parse_release_group", ParseReleaseGroup);
     
   constructor().Reset(tpl->GetFunction());
-  Nan::Set(target, NODE_LOCAL_STRING("Options"), tpl->GetFunction());
 }
 
 NAN_METHOD(OptionsObject::New) {

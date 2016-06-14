@@ -17,7 +17,7 @@
 
 class OptionsObject : public Nan::ObjectWrap {
 public:
-  static NAN_MODULE_INIT(Init);
+  static void Init();
 
 private:
   OptionsObject(anitomy::Options& options) : options_(options) {};
