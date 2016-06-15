@@ -20,7 +20,7 @@
     "url": "https://github.com/Xtansia/node.anitomy.js.git"
   },
   "scripts": {
-    "test": "node test.js",
+    "test": "node tests/test.js && node tests/test2.js",
     "install": "cmake-js compile"
   },
   "engines": {

@@ -1,4 +1,4 @@
-var Anitomy = require('./anitomy');
+var Anitomy = require('../anitomy');
 
 var anitomy = new Anitomy();
 var elements = anitomy.elements();
