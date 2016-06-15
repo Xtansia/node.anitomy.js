@@ -10,14 +10,14 @@
 #include <codecvt>
 #include "util.h"
 
-static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> utf8To16Conv;
+static std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> utf8Conv;
 
 std::wstring StrToWstr(const std::string& input) {
-  return utf8To16Conv.from_bytes(input);
+  return utf8Conv.from_bytes(input);
 }
 
 std::string WstrToStr(const std::wstring& input) {
-  return utf8To16Conv.to_bytes(input);
+  return utf8Conv.to_bytes(input);
 }
 
 NAN_SETTER(READ_ONLY_SETTER) {
