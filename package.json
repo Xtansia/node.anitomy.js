@@ -23,6 +23,9 @@
     "test": "node test.js",
     "install": "cmake-js compile"
   },
+  "engines": {
+    "node": ">= 0.10.0"
+  },
   "dependencies": {
     "bindings": "^1.2.1",
     "cmake-js": "^3.2.1",
