@@ -119,7 +119,7 @@ NAN_SETTER(OptionsObject::SetParseEpisodeNumber) {
   NODE_UNWRAP_OBJ(OptionsObject);
   NODE_ENSURE_VALUE_BOOLEAN("parse_episode_number", value);
 
-  obj->options_.parse_episode_number = value.As<v8::Boolean>()->BooleanValue();
+  obj->options_.parse_episode_number = Nan::To<bool>(value).FromJust();
 }
 
 NAN_GETTER(OptionsObject::GetParseEpisodeTitle) {
@@ -132,7 +132,7 @@ NAN_SETTER(OptionsObject::SetParseEpisodeTitle) {
   NODE_UNWRAP_OBJ(OptionsObject);
   NODE_ENSURE_VALUE_BOOLEAN("parse_episode_title", value);
 
-  obj->options_.parse_episode_title = value.As<v8::Boolean>()->BooleanValue();
+  obj->options_.parse_episode_title = Nan::To<bool>(value).FromJust();
 }
 
 NAN_GETTER(OptionsObject::GetParseFileExtension) {
@@ -145,7 +145,7 @@ NAN_SETTER(OptionsObject::SetParseFileExtension) {
   NODE_UNWRAP_OBJ(OptionsObject);
   NODE_ENSURE_VALUE_BOOLEAN("parse_file_extension", value);
 
-  obj->options_.parse_file_extension = value.As<v8::Boolean>()->BooleanValue();
+  obj->options_.parse_file_extension = Nan::To<bool>(value).FromJust();
 }
 
 NAN_GETTER(OptionsObject::GetParseReleaseGroup) {
@@ -158,5 +158,5 @@ NAN_SETTER(OptionsObject::SetParseReleaseGroup) {
   NODE_UNWRAP_OBJ(OptionsObject);
   NODE_ENSURE_VALUE_BOOLEAN("parse_release_group", value);
 
-  obj->options_.parse_release_group = value.As<v8::Boolean>()->BooleanValue();
+  obj->options_.parse_release_group = Nan::To<bool>(value).FromJust();
 }

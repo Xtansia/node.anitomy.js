@@ -95,7 +95,7 @@ NAN_METHOD(ElementsObject::At) {
 
   NODE_UNWRAP_OBJ(ElementsObject);
 
-  size_t index = static_cast<size_t>(info[0]->Uint32Value());
+  size_t index = static_cast<size_t>(Nan::To<uint32_t>(info[0]).FromJust());
 
   if (index >= obj->elements_.size()) {
     Nan::ThrowRangeError("index out of range");
