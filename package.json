@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "bindings": "^1.2.1",
+    "boost-lib": "git+https://github.com/Xtansia/boost-lib.git",
     "cmake-js": "^3.2.1",
     "nan": "^2.0.0"
   }

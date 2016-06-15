@@ -6,18 +6,15 @@
 ** file, You can obtain one at https://mozilla.org/MPL/2.0/.
 */
 
-#include <locale>
-#include <codecvt>
+#include <boost/locale/encoding.hpp>
 #include "util.h"
 
-static std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> utf8Conv;
-
 std::wstring StrToWstr(const std::string& input) {
-  return utf8Conv.from_bytes(input);
+  return boost::locale::conv::utf_to_utf<wchar_t>(input);
 }
 
 std::string WstrToStr(const std::wstring& input) {
-  return utf8Conv.to_bytes(input);
+  return boost::locale::conv::utf_to_utf<char>(input);
 }
 
 NAN_SETTER(READ_ONLY_SETTER) {
