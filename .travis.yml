@@ -16,8 +16,7 @@ addons:
     packages:
     - g++-4.9
 env: 
- - CXX=g++-4.9
- - CMAKE_VERSION=3.2.3
+ - CXX=g++-4.9 CMAKE_VERSION=3.2.3
 
 cache:
   directories:
