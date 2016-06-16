@@ -28,7 +28,7 @@ before_install:
   - |
     if [ -z "$(ls -A cmake-$CMAKE_VERSION)"]; then
       CMAKE_URL="http://www.cmake.org/files/v${CMAKE_VERSION:0:3}/cmake-${CMAKE_VERSION}-Linux-x86_64.tar.gz"
-      mkdir cmake-${CMAKE_VERSION} && travis_retry wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C cmake-${CMAKE_VERSION}
+      mkdir -p cmake-${CMAKE_VERSION} && travis_retry wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C cmake-${CMAKE_VERSION}
     fi
     export PATH=${TRAVIS_BUILD_DIR}/cmake-${CMAKE_VERSION}/bin:${PATH}
     cmake --version
