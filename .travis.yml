@@ -1,7 +1,7 @@
-language: node_js
+sudo: false
+dist: precise
 
-env:
-  - CXX=g++-4.9
+language: node_js
 
 node_js:
   - "0.10"
@@ -15,19 +15,21 @@ addons:
     - ubuntu-toolchain-r-test
     packages:
     - g++-4.9
+env: 
+ - CXX=g++-4.9
+ - CMAKE_VERSION=3.2.3
 
-sudo: false
+cache:
+  directories:
+    - cmake-3.2.3
+    - $HOME/.cmake-js
 
 before_install:
   - $CXX --version
-  - DEPS_DIR="${TRAVIS_BUILD_DIR}/deps"
-  - mkdir -p ${DEPS_DIR} && cd ${DEPS_DIR}
-  - |
-    if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
-      CMAKE_URL="http://www.cmake.org/files/v3.3/cmake-3.3.2-Linux-x86_64.tar.gz"
-      mkdir cmake && travis_retry wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C cmake
-      export PATH=${DEPS_DIR}/cmake/bin:${PATH}
-    else
-      brew install cmake
+  -
+    if [ -z "$(ls -A cmake-$CMAKE_VERSION)"]; then
+      CMAKE_URL="http://www.cmake.org/files/v${CMAKE_VERSION:0:3}/cmake-${CMAKE_VERSION}-Linux-x86_64.tar.gz"
+      mkdir cmake-${CMAKE_VERSION} && travis_retry wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C cmake-${CMAKE_VERSION}
     fi
-  - cd ${TRAVIS_BUILD_DIR}
+    export PATH=${TRAVIS_BUILD_DIR}/cmake-${CMAKE_VERSION}/bin:${PATH}
+    cmake --version
