@@ -1,6 +1,9 @@
 # node.anitomy.js
 NodeJS binding for [Anitomy](https://github.com/erengy/anitomy), an anime video filename parsing library.
 
+## Building it
+This addon uses [cmake-js](https://github.com/cmake-js/cmake-js) for building. Building requires CMake >=3.2 and a C++11 compatible compiler. If using GCC it requires atleast GCC-4.9 due to needing \<regex\>.
+
 ## Using it
 ```javascript
 // Require the library.
