@@ -1,5 +1,5 @@
 # node.anitomy.js
-[![License](https://img.shields.io/badge/license-MPL--2.0-blue.svg)](https://github.com/Xtansia/node.anitomy.js/raw/master/LICENSE)
+[![License](https://img.shields.io/badge/license-MPL--2.0-blue.svg)](https://github.com/Xtansia/node.anitomy.js/raw/master/LICENSE)  
 NodeJS binding for the [Anitomy](https://github.com/erengy/anitomy) anime video filename parsing library.
 
 ## Dependencies
