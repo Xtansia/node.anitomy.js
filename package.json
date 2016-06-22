@@ -4,7 +4,7 @@
   "description": "NodeJS binding for the Anitomy anime video filename parsing library",
   "main": "anitomy.js",
   "scripts": {
-    "test": "node test/test.js",
+    "test": "mocha test/test.js",
     "install": "cmake-js compile"
   },
   "repository": {
@@ -29,6 +29,10 @@
     "bindings": "^1.2.1",
     "cmake-js": "^3.2.1",
     "nan": "^2.3.5"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.5.3"
   },
   "engines": {
     "node": ">= 0.10.0"
