@@ -1,0 +1,34 @@
+sudo: false
+dist: precise
+
+language: node_js
+
+node_js:
+  - "0.10"
+  - "0.12"
+  - "4"
+  - "6"
+
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - g++-4.9
+env: 
+ - CXX=g++-4.9 CMAKE_VERSION=3.2.3
+
+cache:
+  directories:
+    - node_modules
+    - cmake-3.2.3
+
+before_install:
+  - $CXX --version
+  - |
+    if [ -z "$(ls -A cmake-$CMAKE_VERSION)"]; then
+      CMAKE_URL="http://www.cmake.org/files/v${CMAKE_VERSION:0:3}/cmake-${CMAKE_VERSION}-Linux-x86_64.tar.gz"
+      mkdir -p cmake-${CMAKE_VERSION} && travis_retry wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C cmake-${CMAKE_VERSION}
+    fi
+    export PATH=${TRAVIS_BUILD_DIR}/cmake-${CMAKE_VERSION}/bin:${PATH}
+    cmake --version
