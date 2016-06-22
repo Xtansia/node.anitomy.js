@@ -10,6 +10,10 @@ file(GLOB ADDON_SOURCE_FILES "src/*.cpp" "src/*.h")
 # Anitomy source files
 file(GLOB ANITOMY_SOURCE_FILES "lib/anitomy/anitomy/*.cpp" "lib/anitomy/anitomy/*.h")
 
+# Source groups for VS
+source_group("addon" FILES ${ADDON_SOURCE_FILES})
+source_group("anitomy" FILES ${ANITOMY_SOURCE_FILES})
+
 # Add the addon library target
 add_library(${PROJECT_NAME} SHARED ${ADDON_SOURCE_FILES} ${ANITOMY_SOURCE_FILES})
 
