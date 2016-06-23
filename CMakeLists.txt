@@ -1,8 +1,13 @@
 cmake_minimum_required(VERSION 3.2)
 project(anitomy_lib)
 
-# Include JS and Anitomy directories
-include_directories(${CMAKE_JS_INC} lib/anitomy)
+# Boost lib dependency
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/node_modules/boost-lib/cmake")
+include(BoostLib)
+require_boost_libs(">= v1.58.0" locale)
+
+# Include JS, Boost and Anitomy directories
+include_directories(${CMAKE_JS_INC} ${Boost_INCLUDE_DIRS} lib/anitomy)
 
 # Addon source files
 file(GLOB ADDON_SOURCE_FILES "src/*.cpp" "src/*.h")
@@ -20,5 +25,5 @@ add_library(${PROJECT_NAME} SHARED ${ADDON_SOURCE_FILES} ${ANITOMY_SOURCE_FILES}
 # Set properties for NodeJS addon library file naming
 set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "" SUFFIX ".node")
 
-# Link against JS libraries
-target_link_libraries(${PROJECT_NAME} ${CMAKE_JS_LIB})
+# Link against JS and Boost libraries
+target_link_libraries(${PROJECT_NAME} ${CMAKE_JS_LIB} ${Boost_LIBRARIES})
