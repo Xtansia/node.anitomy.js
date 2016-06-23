@@ -6,30 +6,14 @@
 ** file, You can obtain one at https://mozilla.org/MPL/2.0/.
 */
 
+#include <nan.h>
 #include <string>
 
-#include <nan.h>
-
-v8::Local<v8::String> LocalString(const std::string& str) {
-  return Nan::New(str).ToLocalChecked();
-}
-
-bool StringArg(Nan::NAN_METHOD_ARGS_TYPE info, int index, const std::string& name, std::string& output) {
-  if (info.Length() < index + 1 || info[index]->IsUndefined()) {
-    Nan::ThrowError(LocalString(name + " must be provided"));
-    return false;
-  }
-  if (!info[index]->IsString()) {
-    Nan::ThrowTypeError(LocalString(name + " must be a string"));
-    return false;
-  }
-  output = *Nan::Utf8String(info[index]);
-  return true;
-}
+#include "./utils.h"
 
 NAN_METHOD(ParseSync) {
   std::string filename;
-  if (!StringArg(info, 0, "filename", filename)) return;
+  if (!StringParam(info, 0, "filename", filename)) return;
 }
 
 NAN_MODULE_INIT(Init) {
