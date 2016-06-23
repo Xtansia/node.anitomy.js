@@ -6,8 +6,10 @@
 ** file, You can obtain one at https://mozilla.org/MPL/2.0/.
 */
 
-const expect = require('chai').expect;
 const anitomy = require('../anitomy');
+const expect = require('chai').expect;
+const fs = require('fs');
+const path = require('path');
 
 function parseSync(filename) {
   return function () {
@@ -31,6 +33,17 @@ describe('Anitomy', function () {
       expect(parseSync({})).to.throw(TypeError, 'filename must be a string');
 
       expect(parseSync('')).to.not.throw(TypeError, 'filename must be a string');
+    });
+
+    it('should preserve Unicode passing from string->wstring->string', function () {
+      const data = fs.readFileSync(path.resolve(__dirname, '../lib/anitomy/test/data.json'), 'utf8');
+      const testData = JSON.parse(data);
+
+      for (var i = 0; i < testData.length; i++) {
+        const anime = testData[i];
+        
+        expect(anitomy.parseSync(anime.file_name)).to.equal(anime.file_name);
+      }
     });
   });
 });

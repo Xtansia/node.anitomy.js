@@ -12,4 +12,6 @@
 NAN_METHOD(ParseSync) {
   std::wstring filename;
   if (!NodeStringParam(info, 0, L"filename", filename)) return;
+
+  info.GetReturnValue().Set(NodeLocalString(filename));
 }
