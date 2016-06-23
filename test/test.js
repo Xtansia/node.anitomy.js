@@ -11,6 +11,35 @@ const expect = require('chai').expect;
 const fs = require('fs');
 const path = require('path');
 
+const bad_file_names = [
+  '[Juuni.Kokki]-(Les.12.Royaumes)-[Ep.24]-[x264+OGG]-[JAP+FR+Sub.FR]-[Chap]-[AzF].mkv',
+  'Code_Geass_R2_TV_[20_of_25]_[ru_jp]_[HDTV]_[Varies_&_Cuba77_&_AnimeReactor_RU].mkv',
+  'Noein_[01_of_24]_[ru_jp]_[bodlerov_&_torrents_ru].mkv',
+  '[Ayu]_Kiddy_Grade_2_-_Pilot_[H264_AC3][650B731B].mkv',
+  '[Keroro].148.[Xvid.mp3].[FE68D5F1].avi',
+  'Macross Frontier - Sayonara no Tsubasa (Central Anime, 720p) [46B35E25].mkv',
+  'Aim_For_The_Top!_Gunbuster-ep1.BD(H264.FLAC.10bit)[KAA][69ECCDCF].mkv',
+  '[Mobile Suit Gundam Seed Destiny HD REMASTER][07][Big5][720p][AVC_AAC][encoded by SEED].mp4',
+  '「K」 Image Blu-ray WHITE & BLACK - Main (BD 1280x720 AVC AAC).mp4',
+  '[[Zero-Raws] Shingeki no Kyojin - 05 (MBS 1280x720 x264 AAC).mp4',
+  'Evangelion Shin Gekijouban Q (BDrip 1920x1080 x264 FLACx2 5.1ch)-ank.mkv',
+  '【MMZYSUB】★【Golden Time】[24（END）][GB][720P_MP4]',
+  '[AoJiaoZero][Mangaka-san to Assistant-san to the Animation] 02 [BIG][X264_AAC][720P].mp4',
+  '[Asenshi] Rozen Maiden 3 - PV [CA57F300].mkv',
+  '__BLUE DROP 10 (1).avi',
+  '37 [Ruberia]_Death_Note_-_37v2_[FINAL]_[XviD][6FA7D273].avi',
+  '[UTW]_Accel_World_-_EX01_[BD][h264-720p_AAC][3E56EE18].mkv',
+  'EvoBot.[Watakushi]_Akuma_no_Riddle_-_01v2_[720p][69A307A2].mkv',
+  '01 - Land of Visible Pain.mkv',
+  'The iDOLM@STER 765 Pro to Iu Monogatari.mkv',
+  '[SpoonSubs]_Hidamari_Sketch_x365_-_04.1_(DVD)[B6CE8458].mkv',
+  'Ep. 01 - The Boy in the Iceberg',
+  'The.Animatrix.08.A.Detective.Story.720p.BluRay.DTS.x264-ESiR.mkv',
+  'Neko no Ongaeshi - [HQR.remux-DualAudio][NTV.1280x692.h264](0CDC2145).mkv',
+  '[ReDone] Memories Off 3.5 - 04 (DVD 10-bit).mkv',
+  'Byousoku 5 Centimeter [Blu-Ray][1920x1080 H.264][2.0ch AAC][SOFTSUBS]'
+];
+
 function parseSync(filename) {
   return function () {
     return anitomy.parseSync(filename);
@@ -35,14 +64,21 @@ describe('Anitomy', function () {
       expect(parseSync('')).to.not.throw(TypeError, 'filename must be a string');
     });
 
-    it('should preserve Unicode passing from string->wstring->string', function () {
+    it('should correctly parse some basic info from filenames', function () {
       const data = fs.readFileSync(path.resolve(__dirname, '../lib/anitomy/test/data.json'), 'utf8');
       const testData = JSON.parse(data);
 
       for (var i = 0; i < testData.length; i++) {
         const anime = testData[i];
-        
-        expect(anitomy.parseSync(anime.file_name)).to.equal(anime.file_name);
+
+        if (bad_file_names.indexOf(anime.file_name) === -1) {
+          const elems = anitomy.parseSync(anime.file_name);
+
+          expect(elems.AnimeTitle).to.eql(anime.anime_title);
+          expect(elems.EpisodeNumber).to.eql(anime.episode_number);
+          expect(elems.FileChecksum).to.eql(anime.file_checksum);
+          expect(elems.ReleaseGroup).to.eql(anime.release_group);
+        }
       }
     });
   });

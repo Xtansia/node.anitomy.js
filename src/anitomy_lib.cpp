@@ -8,9 +8,11 @@
 
 #include <nan.h>
 
+#include "anitomy_elements.h"
 #include "anitomy_sync.h"
 
 NAN_MODULE_INIT(Init) {
+  AnitomyElements::Init();
   Nan::Export(target, "parseSync", ParseSync);
 }
 
