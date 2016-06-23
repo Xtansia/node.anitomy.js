@@ -17,9 +17,10 @@ class AnitomyElements : public Nan::ObjectWrap {
 public:
   static void Init();
   static v8::Local<v8::Object> New(const anitomy::Elements& elements);
+  static v8::Local<v8::Object> New(const anitomy::element_container_t& elements);
 
 private:
-  AnitomyElements(const anitomy::Elements& elements) : elements_(elements.begin(), elements.end()) {};
+  AnitomyElements(const anitomy::element_container_t& elements) : elements_(elements) {};
   ~AnitomyElements() {};
 
   static NAN_METHOD(New);

@@ -14,7 +14,9 @@
 #include <string>
 
 v8::Local<v8::String> NodeLocalString(const std::wstring& str);
+
 bool NodeStringParam(Nan::NAN_METHOD_ARGS_TYPE info, int index, const std::wstring& name, std::wstring& out);
+bool NodeCallbackParam(Nan::NAN_METHOD_ARGS_TYPE info, int index, const std::wstring& name, Nan::Callback*& out);
 
 std::string WstrToStr(const std::wstring& input);
 std::wstring StrToWstr(const std::string& input);

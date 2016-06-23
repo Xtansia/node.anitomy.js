@@ -42,6 +42,10 @@ NAN_METHOD(AnitomyElements::New) {
 }
 
 v8::Local<v8::Object> AnitomyElements::New(const anitomy::Elements& elements) {
+  return New(anitomy::element_container_t(elements.begin(), elements.end()));
+}
+
+v8::Local<v8::Object> AnitomyElements::New(const anitomy::element_container_t& elements) {
   Nan::EscapableHandleScope scope;
   
   AnitomyElements* wrapped = new AnitomyElements(elements);

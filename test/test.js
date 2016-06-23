@@ -7,6 +7,7 @@
 */
 
 const anitomy = require('../anitomy');
+const async = require('async');
 const expect = require('chai').expect;
 const fs = require('fs');
 const path = require('path');
@@ -46,12 +47,73 @@ function parseSync(filename) {
   }
 }
 
+function parseAsync(filename, callback) {
+  return function () {
+    return anitomy.parse(filename, callback);
+  }
+}
+
 describe('Anitomy', function () {
+  describe('#parse(filename, callback)', function () {
+    it('should throw Error when filename is not provided', function () {
+      expect(parseAsync()).to.throw('filename must be provided');
+
+      expect(parseAsync('')).to.not.throw('filename must be provided');
+    });
+
+    it('should throw TypeError when filename is provided but isn\'t a string', function () {
+      expect(parseAsync(null)).to.throw(TypeError, 'filename must be a string');
+      expect(parseAsync(10)).to.throw(TypeError, 'filename must be a string');
+      expect(parseAsync(false)).to.throw(TypeError, 'filename must be a string');
+      expect(parseAsync([])).to.throw(TypeError, 'filename must be a string');
+      expect(parseAsync({})).to.throw(TypeError, 'filename must be a string');
+
+      expect(parseAsync('')).to.not.throw(TypeError, 'filename must be a string');
+    });
+
+    it('should throw Error when callback is not provided', function () {
+      expect(parseAsync('')).to.throw('callback must be provided');
+
+      expect(parseAsync('', function(){})).to.not.throw('callback must be provided');
+    });
+
+    it('should throw TypeError when callback is provided but isn\'t a function', function () {
+      expect(parseAsync('', null)).to.throw(TypeError, 'callback must be a function');
+      expect(parseAsync('', 10)).to.throw(TypeError, 'callback must be a function');
+      expect(parseAsync('', false)).to.throw(TypeError, 'callback must be a function');
+      expect(parseAsync('', [])).to.throw(TypeError, 'callback must be a function');
+      expect(parseAsync('', {})).to.throw(TypeError, 'callback must be a function');
+
+      expect(parseAsync('', function(){})).to.not.throw(TypeError, 'callback must be a function');
+    });
+
+    it('should correctly parse some basic info from filenames', function (done) {
+      const data = fs.readFileSync(path.resolve(__dirname, '../lib/anitomy/test/data.json'), 'utf8');
+      const testData = JSON.parse(data);
+
+      async.each(testData, function (anime, cb) {
+        if (bad_file_names.indexOf(anime.file_name) !== -1) return cb();
+
+        anitomy.parse(anime.file_name, function (elems) {
+          try {
+            expect(elems.AnimeTitle).to.eql(anime.anime_title);
+            expect(elems.EpisodeNumber).to.eql(anime.episode_number);
+            expect(elems.FileChecksum).to.eql(anime.file_checksum);
+            expect(elems.ReleaseGroup).to.eql(anime.release_group);
+            return cb();
+          } catch (err) {
+            return cb(err);
+          }
+        });
+      }, done);
+    });
+  });
+
   describe('#parseSync(filename)', function () {
     it('should throw Error when filename is not provided', function () {
-      expect(parseSync()).to.throw(Error, 'filename must be provided');
+      expect(parseSync()).to.throw('filename must be provided');
 
-      expect(parseSync('')).to.not.throw(Error, 'filename must be provided');
+      expect(parseSync('')).to.not.throw();
     });
 
     it('should throw TypeError when filename is provided but isn\'t a string', function () {
@@ -61,7 +123,7 @@ describe('Anitomy', function () {
       expect(parseSync([])).to.throw(TypeError, 'filename must be a string');
       expect(parseSync({})).to.throw(TypeError, 'filename must be a string');
 
-      expect(parseSync('')).to.not.throw(TypeError, 'filename must be a string');
+      expect(parseSync('')).to.not.throw();
     });
 
     it('should correctly parse some basic info from filenames', function () {
