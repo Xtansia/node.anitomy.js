@@ -12,8 +12,7 @@
 
 #include <nan.h>
 
-v8::Local<v8::String> LocalString(const std::string& str);
-bool StringParam(Nan::NAN_METHOD_ARGS_TYPE info, int index, const std::string& name, std::string& out);
-
+v8::Local<v8::String> NodeLocalString(const std::string& str);
+bool NodeStringParam(Nan::NAN_METHOD_ARGS_TYPE info, int index, const std::string& name, std::string& out);
 
 #endif // !ANITOMY_LIB_UTILS_H

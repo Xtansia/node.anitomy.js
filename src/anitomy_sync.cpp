@@ -11,5 +11,5 @@
 
 NAN_METHOD(ParseSync) {
   std::string filename;
-  if (!StringParam(info, 0, "filename", filename)) return;
+  if (!NodeStringParam(info, 0, "filename", filename)) return;
 }

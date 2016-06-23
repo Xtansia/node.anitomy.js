@@ -8,17 +8,17 @@
 
 #include "utils.h"
 
-v8::Local<v8::String> LocalString(const std::string& str) {
+v8::Local<v8::String> NodeLocalString(const std::string& str) {
   return Nan::New(str).ToLocalChecked();
 }
 
-bool StringParam(Nan::NAN_METHOD_ARGS_TYPE info, int index, const std::string& name, std::string& out) {
+bool NodeStringParam(Nan::NAN_METHOD_ARGS_TYPE info, int index, const std::string& name, std::string& out) {
   if (info.Length() < index + 1 || info[index]->IsUndefined()) {
-    Nan::ThrowError(LocalString(name + " must be provided"));
+    Nan::ThrowError(NodeLocalString(name + " must be provided"));
     return false;
   }
   if (!info[index]->IsString()) {
-    Nan::ThrowTypeError(LocalString(name + " must be a string"));
+    Nan::ThrowTypeError(NodeLocalString(name + " must be a string"));
     return false;
   }
   out = *Nan::Utf8String(info[index]);
