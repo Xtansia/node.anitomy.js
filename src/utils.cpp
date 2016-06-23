@@ -6,7 +6,7 @@
 ** file, You can obtain one at https://mozilla.org/MPL/2.0/.
 */
 
-#include "./utils.h"
+#include "utils.h"
 
 v8::Local<v8::String> LocalString(const std::string& str) {
   return Nan::New(str).ToLocalChecked();

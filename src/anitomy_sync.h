@@ -6,12 +6,12 @@
 ** file, You can obtain one at https://mozilla.org/MPL/2.0/.
 */
 
+#pragma once
+#ifndef ANITOMY_LIB_ANITOMY_SYNC_H
+#define ANITOMY_LIB_ANITOMY_SYNC_H
+
 #include <nan.h>
 
-#include "anitomy_sync.h"
+NAN_METHOD(ParseSync);
 
-NAN_MODULE_INIT(Init) {
-  Nan::Export(target, "parseSync", ParseSync);
-}
-
-NODE_MODULE(anitomy_lib, Init);
+#endif // !ANITOMY_LIB_ANITOMY_SYNC_H
