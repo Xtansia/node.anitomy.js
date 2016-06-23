@@ -1,6 +1,6 @@
 # node.anitomy.js
 [![License](https://img.shields.io/badge/license-MPL--2.0-blue.svg)](https://github.com/Xtansia/node.anitomy.js/raw/master/LICENSE)  
-NodeJS binding for the [Anitomy](https://github.com/erengy/anitomy) anime video filename parsing library.
+*node.anitomy.js* is a Node.js binding for [Anitomy](https://github.com/erengy/anitomy) a C++ library for parsing anime video filenames.
 
 ## Dependencies
 * Node.JS >= 0.10.0
