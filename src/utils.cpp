@@ -8,19 +8,29 @@
 
 #include "utils.h"
 
-v8::Local<v8::String> NodeLocalString(const std::string& str) {
-  return Nan::New(str).ToLocalChecked();
+#include <boost/locale.hpp>
+
+v8::Local<v8::String> NodeLocalString(const std::wstring& str) {
+  return Nan::New(WstrToStr(str)).ToLocalChecked();
 }
 
-bool NodeStringParam(Nan::NAN_METHOD_ARGS_TYPE info, int index, const std::string& name, std::string& out) {
+bool NodeStringParam(Nan::NAN_METHOD_ARGS_TYPE info, int index, const std::wstring& name, std::wstring& out) {
   if (info.Length() < index + 1 || info[index]->IsUndefined()) {
-    Nan::ThrowError(NodeLocalString(name + " must be provided"));
+    Nan::ThrowError(NodeLocalString(name + L" must be provided"));
     return false;
   }
   if (!info[index]->IsString()) {
-    Nan::ThrowTypeError(NodeLocalString(name + " must be a string"));
+    Nan::ThrowTypeError(NodeLocalString(name + L" must be a string"));
     return false;
   }
-  out = *Nan::Utf8String(info[index]);
+  out = StrToWstr(*Nan::Utf8String(info[index]));
   return true;
+}
+
+std::string WstrToStr(const std::wstring& input) {
+  return boost::locale::conv::utf_to_utf<char>(input);
+}
+
+std::wstring StrToWstr(const std::string& input) {
+  return boost::locale::conv::utf_to_utf<wchar_t>(input);
 }

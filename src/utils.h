@@ -11,8 +11,12 @@
 #define ANITOMY_LIB_UTILS_H
 
 #include <nan.h>
+#include <string>
 
-v8::Local<v8::String> NodeLocalString(const std::string& str);
-bool NodeStringParam(Nan::NAN_METHOD_ARGS_TYPE info, int index, const std::string& name, std::string& out);
+v8::Local<v8::String> NodeLocalString(const std::wstring& str);
+bool NodeStringParam(Nan::NAN_METHOD_ARGS_TYPE info, int index, const std::wstring& name, std::wstring& out);
+
+std::string WstrToStr(const std::wstring& input);
+std::wstring StrToWstr(const std::string& input);
 
 #endif // !ANITOMY_LIB_UTILS_H

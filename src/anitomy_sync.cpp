@@ -10,6 +10,6 @@
 #include "utils.h"
 
 NAN_METHOD(ParseSync) {
-  std::string filename;
-  if (!NodeStringParam(info, 0, "filename", filename)) return;
+  std::wstring filename;
+  if (!NodeStringParam(info, 0, L"filename", filename)) return;
 }
