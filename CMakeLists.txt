@@ -2,7 +2,12 @@ cmake_minimum_required(VERSION 3.2)
 project(anitomy_lib)
 
 # Boost lib dependency
-set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/node_modules/boost-lib/cmake")
+set(NODE_MODULES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/node_modules")
+if(NOT EXISTS "${NODE_MODULES_DIR}" OR NOT IS_DIRECTORY "${NODE_MODULES_DIR}")
+  set(NODE_MODULES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../node_modules")
+endif()
+
+set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${NODE_MODULES_DIR}/boost-lib/cmake")
 include(BoostLib)
 require_boost_libs(">= v1.58.0" locale)
 
