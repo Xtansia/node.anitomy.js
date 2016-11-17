@@ -1,39 +1,92 @@
-sudo: false
-dist: precise
+sudo: required
+dist: trusty
+language: cpp
 
-language: node_js
+compiler:
+  - gcc
 
-node_js:
-  - "0.10"
-  - "0.12"
-  - "4"
-  - "6"
+os:
+  - linux
+#  - osx
+
+env:
+  matrix:
+    # node
+#    - RUNTIME="node" RVERSION="0.10" ARCH="x64"
+#    - RUNTIME="node" RVERSION="0.10" ARCH="ia32"
+#    - RUNTIME="node" RVERSION="0.12" ARCH="x64"
+#    - RUNTIME="node" RVERSION="0.12" ARCH="ia32"
+#    - RUNTIME="node" RVERSION="4" ARCH="x64"
+#    - RUNTIME="node" RVERSION="4" ARCH="ia32"
+    - RUNTIME="node" RVERSION="6" ARCH="x64"
+#    - RUNTIME="node" RVERSION="6" ARCH="ia32"
+
+    # electron
+#    - RUNTIME="electron" RVERSION="0.37.8" ARCH="x64"
+#    - RUNTIME="electron" RVERSION="0.37.8" ARCH="ia32"
+#    - RUNTIME="electron" RVERSION="1.2.3" ARCH="x64"
+#    - RUNTIME="electron" RVERSION="1.2.3" ARCH="ia32"
+
+#matrix:
+#  exclude:
+#    - os: osx
+#      env: RUNTIME="node" RVERSION="4.5.0" ARCH="ia32"
+#    - os: osx
+#      env: RUNTIME="node" RVERSION="5.12.0" ARCH="ia32"
+#    - os: osx
+#      env: RUNTIME="node" RVERSION="6.5.0" ARCH="ia32"
+#    - os: osx
+#      env: RUNTIME="electron" RVERSION="0.37.8" ARCH="ia32"
+#    - os: osx
+#      env: RUNTIME="electron" RVERSION="1.2.3" ARCH="ia32"
 
 addons:
   apt:
     sources:
-    - ubuntu-toolchain-r-test
+      #- ubuntu-toolchain-r-test
+      - george-edison55-precise-backports
     packages:
-    - g++-4.9
-  artifacts: true
-env: 
- - CXX=g++-4.9 CMAKE_VERSION=3.2.3
+      - gcc-multilib
+      - g++-multilib
+      #- gcc-4.8-multilib
+      #- g++-4.8-multilib
+      - cmake
+      - cmake-data
 
-cache:
-  directories:
-    - node_modules
-    - cmake-3.2.3
+install:
+  # install node (use v6 if building for electron)
+  - export DEFAULT_NODE_VERSION="6"
+  - export NODE_VERSION=$RVERSION
+  - rm -rf ~/.nvm/ && git clone --depth 1 https://github.com/creationix/nvm.git ~/.nvm && source ~/.nvm/nvm.sh
+  - if [[ "$RUNTIME" == "electron" ]]; then export NODE_VERSION=$DEFAULT_NODE_VERSION; fi
+  - nvm install $NODE_VERSION
+  - nvm use $NODE_VERSION
+  - npm install npm -g
 
-before_install:
+  # update path
+  - PATH=$PATH:`pwd`/node_modules/.bin
+
+  # download node for x86
+  - BASE_URL=$(node -p "'https://nodejs.org/dist/' + process.version")
+  - X86_FILE=$(node -p "'node-' + process.version + '-' + process.platform + '-x86'")
+  - if [[ "$ARCH" == "ia32" ]]; then wget $BASE_URL/$X86_FILE.tar.gz; tar -xf $X86_FILE.tar.gz; export PATH=$X86_FILE/bin:$PATH; npm install npm -g; fi
+
+  # print some info
+  - uname -a
+  - npm --version
+  - node --version
+  - node -p 'process.platform + "@" + process.arch'
   - $CXX --version
-  - |
-    if [ -z "$(ls -A cmake-$CMAKE_VERSION)" ]; then
-      CMAKE_URL="http://www.cmake.org/files/v${CMAKE_VERSION:0:3}/cmake-${CMAKE_VERSION}-Linux-x86_64.tar.gz"
-      mkdir -p cmake-${CMAKE_VERSION} && travis_retry wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C cmake-${CMAKE_VERSION}
-    fi
-    export PATH=${TRAVIS_BUILD_DIR}/cmake-${CMAKE_VERSION}/bin:${PATH}
-    cmake --version
 
-after_failure:
-  - cat build/boost-1.61.0/boost_system_jam-build-err.log
-  - cat build/boost-1.61.0/boost_system_jam-build-out.log
+  # install recent cmake for osx
+  - if [[ "$TRAVIS_OS_NAME" == "osx"   ]]; then wget --no-check-certificate http://cmake.org/files/v3.4/cmake-3.4.3-Darwin-x86_64.tar.gz  ;fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx"   ]]; then tar -xzf cmake-3.4.3-Darwin-x86_64.tar.gz                                                 ;fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx"   ]]; then export PATH=$PWD/cmake-3.4.3-Darwin-x86_64/CMake.app/Contents/bin:$PATH                   ;fi
+
+  # cleanup npm progress
+  - npm config set progress false
+  - npm config set spin false
+
+script:
+  # build
+  - npm install
