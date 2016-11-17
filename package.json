@@ -27,14 +27,15 @@
   "homepage": "https://github.com/Xtansia/node.anitomy.js#readme",
   "dependencies": {
     "bindings": "^1.2.1",
-    "boost-lib": "^0.11.1",
-    "cmake-js": "^3.2.1",
-    "nan": "^2.3.5"
+    "boost-lib": "^0.11.3",
+    "cmake-js": "^3.3.1",
+    "mocha": "^3.1.2",
+    "nan": "^2.4.0"
   },
   "devDependencies": {
-    "async": "^2.0.0-rc.6",
+    "async": "^2.1.2",
     "chai": "^3.5.0",
-    "mocha": "^2.5.3"
+    "mocha": "*"
   },
   "engines": {
     "node": ">= 0.10.0"
