@@ -7,7 +7,7 @@ compiler:
 
 os:
   - linux
-#  - osx
+  - osx
 
 env:
   matrix:
