@@ -12,33 +12,10 @@ os:
 env:
   matrix:
     # node
-    - RUNTIME="node" RVERSION="0.10" ARCH="x64"
-    - RUNTIME="node" RVERSION="0.10" ARCH="ia32"
-    - RUNTIME="node" RVERSION="0.12" ARCH="x64"
-    - RUNTIME="node" RVERSION="0.12" ARCH="ia32"
-    - RUNTIME="node" RVERSION="4" ARCH="x64"
-    - RUNTIME="node" RVERSION="4" ARCH="ia32"
-    - RUNTIME="node" RVERSION="6" ARCH="x64"
-    - RUNTIME="node" RVERSION="6" ARCH="ia32"
-
-    # electron
-    - RUNTIME="electron" RVERSION="0.37.8" ARCH="x64"
-    - RUNTIME="electron" RVERSION="0.37.8" ARCH="ia32"
-    - RUNTIME="electron" RVERSION="1.2.3" ARCH="x64"
-    - RUNTIME="electron" RVERSION="1.2.3" ARCH="ia32"
-
-matrix:
-  exclude:
-    - os: osx
-      env: RUNTIME="node" RVERSION="4.5.0" ARCH="ia32"
-    - os: osx
-      env: RUNTIME="node" RVERSION="5.12.0" ARCH="ia32"
-    - os: osx
-      env: RUNTIME="node" RVERSION="6.5.0" ARCH="ia32"
-    - os: osx
-      env: RUNTIME="electron" RVERSION="0.37.8" ARCH="ia32"
-    - os: osx
-      env: RUNTIME="electron" RVERSION="1.2.3" ARCH="ia32"
+    - RUNTIME="node" RVERSION="0.10"
+    - RUNTIME="node" RVERSION="0.12"
+    - RUNTIME="node" RVERSION="4"
+    - RUNTIME="node" RVERSION="6"
 
 addons:
   apt:
@@ -53,25 +30,21 @@ addons:
 
 before_install:
   # set CXX to g++-4.9 on linux
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export CC=gcc-4.9 ;fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export CXX=g++-4.9 ;fi
+  - | 
+    if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then 
+      export CC=gcc-4.9
+      export CXX=g++-4.9
+    fi
 
-  # install node (use v6 if building for electron)
-  - export DEFAULT_NODE_VERSION="6"
+  # install node
   - export NODE_VERSION=$RVERSION
   - rm -rf ~/.nvm/ && git clone --depth 1 https://github.com/creationix/nvm.git ~/.nvm && source ~/.nvm/nvm.sh
-  - if [[ "$RUNTIME" == "electron" ]]; then export NODE_VERSION=$DEFAULT_NODE_VERSION; fi
   - nvm install $NODE_VERSION
   - nvm use $NODE_VERSION
   - npm install npm -g
 
   # update path
   - PATH=$PATH:`pwd`/node_modules/.bin
-
-  # download node for x86
-  - BASE_URL=$(node -p "'https://nodejs.org/dist/' + process.version")
-  - X86_FILE=$(node -p "'node-' + process.version + '-' + process.platform + '-x86'")
-  - if [[ "$ARCH" == "ia32" ]]; then wget $BASE_URL/$X86_FILE.tar.gz; tar -xf $X86_FILE.tar.gz; export PATH=$X86_FILE/bin:$PATH; npm install npm -g; fi
 
   # print some info
   - uname -a
@@ -81,9 +54,12 @@ before_install:
   - $CXX --version
 
   # install recent cmake for osx
-  - if [[ "$TRAVIS_OS_NAME" == "osx"   ]]; then wget --no-check-certificate http://cmake.org/files/v3.4/cmake-3.4.3-Darwin-x86_64.tar.gz  ;fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx"   ]]; then tar -xzf cmake-3.4.3-Darwin-x86_64.tar.gz                                                 ;fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx"   ]]; then export PATH=$PWD/cmake-3.4.3-Darwin-x86_64/CMake.app/Contents/bin:$PATH                   ;fi
+  - |
+    if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then 
+      travis_retry wget --no-check-certificate http://cmake.org/files/v3.4/cmake-3.4.3-Darwin-x86_64.tar.gz
+      tar -xzf cmake-3.4.3-Darwin-x86_64.tar.gz
+      export PATH=$PWD/cmake-3.4.3-Darwin-x86_64/CMake.app/Contents/bin:$PATH
+    fi
 
   # cleanup npm progress
   - npm config set progress false
