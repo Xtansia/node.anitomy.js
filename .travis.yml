@@ -33,3 +33,7 @@ before_install:
     fi
     export PATH=${TRAVIS_BUILD_DIR}/cmake-${CMAKE_VERSION}/bin:${PATH}
     cmake --version
+
+after_failure:
+  - cat build/boost-1.61.0/boost_system_jam-build-err.log
+  - cat build/boost-1.61.0/boost_system_jam-build-out.log
