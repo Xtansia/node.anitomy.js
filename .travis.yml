@@ -12,33 +12,33 @@ os:
 env:
   matrix:
     # node
-#    - RUNTIME="node" RVERSION="0.10" ARCH="x64"
-#    - RUNTIME="node" RVERSION="0.10" ARCH="ia32"
-#    - RUNTIME="node" RVERSION="0.12" ARCH="x64"
-#    - RUNTIME="node" RVERSION="0.12" ARCH="ia32"
-#    - RUNTIME="node" RVERSION="4" ARCH="x64"
-#    - RUNTIME="node" RVERSION="4" ARCH="ia32"
+    - RUNTIME="node" RVERSION="0.10" ARCH="x64"
+    - RUNTIME="node" RVERSION="0.10" ARCH="ia32"
+    - RUNTIME="node" RVERSION="0.12" ARCH="x64"
+    - RUNTIME="node" RVERSION="0.12" ARCH="ia32"
+    - RUNTIME="node" RVERSION="4" ARCH="x64"
+    - RUNTIME="node" RVERSION="4" ARCH="ia32"
     - RUNTIME="node" RVERSION="6" ARCH="x64"
-#    - RUNTIME="node" RVERSION="6" ARCH="ia32"
+    - RUNTIME="node" RVERSION="6" ARCH="ia32"
 
     # electron
-#    - RUNTIME="electron" RVERSION="0.37.8" ARCH="x64"
-#    - RUNTIME="electron" RVERSION="0.37.8" ARCH="ia32"
-#    - RUNTIME="electron" RVERSION="1.2.3" ARCH="x64"
-#    - RUNTIME="electron" RVERSION="1.2.3" ARCH="ia32"
+    - RUNTIME="electron" RVERSION="0.37.8" ARCH="x64"
+    - RUNTIME="electron" RVERSION="0.37.8" ARCH="ia32"
+    - RUNTIME="electron" RVERSION="1.2.3" ARCH="x64"
+    - RUNTIME="electron" RVERSION="1.2.3" ARCH="ia32"
 
-#matrix:
-#  exclude:
-#    - os: osx
-#      env: RUNTIME="node" RVERSION="4.5.0" ARCH="ia32"
-#    - os: osx
-#      env: RUNTIME="node" RVERSION="5.12.0" ARCH="ia32"
-#    - os: osx
-#      env: RUNTIME="node" RVERSION="6.5.0" ARCH="ia32"
-#    - os: osx
-#      env: RUNTIME="electron" RVERSION="0.37.8" ARCH="ia32"
-#    - os: osx
-#      env: RUNTIME="electron" RVERSION="1.2.3" ARCH="ia32"
+matrix:
+  exclude:
+    - os: osx
+      env: RUNTIME="node" RVERSION="4.5.0" ARCH="ia32"
+    - os: osx
+      env: RUNTIME="node" RVERSION="5.12.0" ARCH="ia32"
+    - os: osx
+      env: RUNTIME="node" RVERSION="6.5.0" ARCH="ia32"
+    - os: osx
+      env: RUNTIME="electron" RVERSION="0.37.8" ARCH="ia32"
+    - os: osx
+      env: RUNTIME="electron" RVERSION="1.2.3" ARCH="ia32"
 
 addons:
   apt:
