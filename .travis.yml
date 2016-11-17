@@ -52,6 +52,10 @@ addons:
       - cmake-data
 
 before_install:
+  # set CXX to g++-4.9 on linux
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export CC=gcc-4.9 ;fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export CXX=g++-4.9 ;fi
+
   # install node (use v6 if building for electron)
   - export DEFAULT_NODE_VERSION="6"
   - export NODE_VERSION=$RVERSION
