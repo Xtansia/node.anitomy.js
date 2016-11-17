@@ -9,7 +9,7 @@ endif()
 
 set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${NODE_MODULES_DIR}/boost-lib/cmake")
 include(BoostLib)
-require_boost_libs(">= v1.58.0" locale)
+require_boost_libs("= v1.61.0" locale)
 
 # Include JS, Boost and Anitomy directories
 include_directories(${CMAKE_JS_INC} ${Boost_INCLUDE_DIRS} lib/anitomy)
