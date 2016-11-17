@@ -53,7 +53,7 @@ addons:
       - cmake
       - cmake-data
 
-install:
+before_install:
   # install node (use v6 if building for electron)
   - export DEFAULT_NODE_VERSION="6"
   - export NODE_VERSION=$RVERSION
@@ -87,8 +87,10 @@ install:
   - npm config set progress false
   - npm config set spin false
 
-script:
+install:
   # build
   - npm install
+
+script:
   # test
   - npm test
