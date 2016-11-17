@@ -11,6 +11,10 @@ platform: x64
 cache:
   - node_modules
 
+skip_commits:
+  files:
+    - .travis.yml
+
 install:
   - git submodule update --init --recursive
   - ps: Install-Product node $env:nodejs_version
