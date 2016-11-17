@@ -43,13 +43,11 @@ env:
 addons:
   apt:
     sources:
-      #- ubuntu-toolchain-r-test
+      - ubuntu-toolchain-r-test
       - george-edison55-precise-backports
     packages:
-      - gcc-multilib
-      - g++-multilib
-      #- gcc-4.8-multilib
-      #- g++-4.8-multilib
+      - gcc-4.9-multilib
+      - g++-4.9-multilib
       - cmake
       - cmake-data
 
