@@ -90,3 +90,5 @@ install:
 script:
   # build
   - npm install
+  # test
+  - npm test
