@@ -25,6 +25,7 @@ private:
   ~AnitomyElements() {}
 
   static NAN_METHOD(New);
+  static NAN_METHOD(Empty);
   static NAN_GETTER(ElementCategoryGetter);
 
   anitomy::element_iterator_t Find(anitomy::ElementCategory category);

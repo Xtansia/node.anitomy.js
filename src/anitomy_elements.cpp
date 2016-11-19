@@ -18,6 +18,8 @@ void AnitomyElements::Init() {
   tpl->SetClassName(Nan::New("AnitomyElements").ToLocalChecked());
   tpl->InstanceTemplate()->SetInternalFieldCount(1);
 
+  Nan::SetPrototypeMethod(tpl, "empty", Empty);
+
   for (const auto &it : ElementCategoryNames) {
     Nan::SetAccessor(tpl->InstanceTemplate(), NodeLocalString(it.first),
                      ElementCategoryGetter);
@@ -58,6 +60,11 @@ v8::Local<v8::Object> AnitomyElements::New(const anitomy::element_container_t
   v8::Local<v8::Object> obj = Nan::New(constructor())->NewInstance(1, argv);
 
   return scope.Escape(obj);
+}
+
+NAN_METHOD(AnitomyElements::Empty) {
+  AnitomyElements *obj = ObjectWrap::Unwrap<AnitomyElements>(info.Holder());
+  info.GetReturnValue().Set(obj->elements_.empty());
 }
 
 anitomy::element_iterator_t AnitomyElements::Find(anitomy::ElementCategory

@@ -44,13 +44,13 @@ const bad_file_names = [
 function parseSync(filename) {
   return function () {
     return anitomy.parseSync(filename);
-  }
+  };
 }
 
 function parseAsync(filename, callback) {
   return function () {
     return anitomy.parse(filename, callback);
-  }
+  };
 }
 
 describe('Anitomy', function () {
@@ -107,6 +107,19 @@ describe('Anitomy', function () {
         });
       }, done);
     });
+
+    it('should return an empty AnitomyElements when filename is empty', function (done) {
+      async.each(['', '[Hello]_World_-_01.mkv'], function (title, cb) {
+        anitomy.parse(title, function (elems) {
+          try {
+            expect(elems.empty()).to.eql(title == '');
+            return cb();
+          } catch (err) {
+            return cb(err);
+          }
+        });
+      }, done);
+    });
   });
 
   describe('#parseSync(filename)', function () {
@@ -142,6 +155,12 @@ describe('Anitomy', function () {
           expect(elems.ReleaseGroup).to.eql(anime.release_group);
         }
       }
+    });
+
+    it('should return an empty AnitomyElements when filename is empty', function () {
+      ['', '[Hello]_World_-_01.mkv'].forEach(function (title) {
+        expect(anitomy.parseSync(title).empty()).to.eql(title == '');
+      });
     });
   });
 });
