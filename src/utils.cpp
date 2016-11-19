@@ -10,8 +10,26 @@
 
 #include <boost/locale.hpp>
 
+std::string WstrToStr(const std::wstring &input) {
+  return boost::locale::conv::utf_to_utf<char>(input);
+}
+
+std::wstring StrToWstr(const std::string &input) {
+  return boost::locale::conv::utf_to_utf<wchar_t>(input);
+}
+
 v8::Local<v8::String> NodeLocalString(const std::wstring &str) {
   return Nan::New(WstrToStr(str)).ToLocalChecked();
+}
+
+std::wstring NodeToWstr(v8::Local<v8::Value> value) {
+  Nan::Utf8String utf8String(value);
+
+  if (utf8String.length() > 0) {
+    return StrToWstr(*utf8String);
+  } else {
+    return L"";
+  }
 }
 
 bool NodeStringParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
@@ -46,20 +64,76 @@ bool NodeCallbackParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
   return true;
 }
 
-std::wstring NodeToWstr(v8::Local<v8::Value> value) {
-  Nan::Utf8String utf8String(value);
-
-  if (utf8String.length() > 0) {
-    return StrToWstr(*utf8String);
-  } else {
-    return L"";
+bool NodeAnitomyOptionsParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
+                             const std::wstring &name, anitomy::Options &out) {
+  if (info.Length() < index + 1 || info[index]->IsUndefined()) {
+    Nan::ThrowError(NodeLocalString(name + L" must be provided"));
+    return false;
   }
-}
 
-std::string WstrToStr(const std::wstring &input) {
-  return boost::locale::conv::utf_to_utf<char>(input);
-}
+  if (!info[index]->IsObject()) {
+    Nan::ThrowTypeError(NodeLocalString(name + L" must be an object"));
+    return false;
+  }
 
-std::wstring StrToWstr(const std::string &input) {
-  return boost::locale::conv::utf_to_utf<wchar_t>(input);
+  auto opts = Nan::To<v8::Object>(info[index]).ToLocalChecked();
+
+  IF_OBJ_HAS(opts, L"allowedDelimiters") {
+    auto allowedDelimiters = Nan::Get(opts,
+                                      NodeLocalString(L"allowedDelimiters")).ToLocalChecked();
+
+    if (allowedDelimiters->IsString()) {
+      out.allowed_delimiters = NodeToWstr(allowedDelimiters);
+    } else {
+      Nan::ThrowTypeError(NodeLocalString(name +
+                                          L".allowedDelimiters must be a string"));
+      return false;
+    }
+  }
+
+  IF_OBJ_HAS(opts, L"ignoredStrings") {
+    auto ignoredStrings = Nan::Get(opts,
+                                   NodeLocalString(L"ignoredStrings")).ToLocalChecked();
+
+    if (ignoredStrings->IsArray()) {
+      auto ignoredStringsArray = ignoredStrings.As<v8::Array>();
+      v8::Local<v8::Value> elem;
+
+      for (uint32_t i = 0; i < ignoredStringsArray->Length(); ++i) {
+        elem = Nan::Get(ignoredStringsArray, i).ToLocalChecked();
+
+        if (elem->IsString()) {
+          out.ignored_strings.push_back(NodeToWstr(elem));
+        } else {
+          Nan::ThrowTypeError(NodeLocalString(name +
+                                              L".ignoredStrings must be an array of strings"));
+          return false;
+        }
+      }
+    } else {
+      Nan::ThrowTypeError(NodeLocalString(name +
+                                          L".ignoredStrings must be an array of strings"));
+      return false;
+    }
+  }
+
+#define GET_BOOLEAN_OPTION(jsName, anitomyName)                               \
+  IF_OBJ_HAS(opts, WIDE_STRINGIFY(jsName)) {                                  \
+    auto jsName = Nan::Get(opts, NodeLocalString(WIDE_STRINGIFY(jsName)))     \
+                        .ToLocalChecked();                                    \
+    if (jsName->IsBoolean()) {                                                \
+      out.anitomyName = Nan::To<bool>(jsName).FromJust();                     \
+    } else {                                                                  \
+      Nan::ThrowTypeError(NodeLocalString(name                                \
+                       + L"." WIDE_STRINGIFY(jsName) L" must be a boolean")); \
+      return false;                                                           \
+    }                                                                         \
+  }
+
+  GET_BOOLEAN_OPTION(parseEpisodeNumber, parse_episode_number);
+  GET_BOOLEAN_OPTION(parseEpisodeTitle, parse_episode_title);
+  GET_BOOLEAN_OPTION(parseFileExtension, parse_file_extension);
+  GET_BOOLEAN_OPTION(parseReleaseGroup, parse_release_group);
+
+  return true;
 }

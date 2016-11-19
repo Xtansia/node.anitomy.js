@@ -11,12 +11,14 @@
 #include "anitomy_elements.h"
 #include "utils.h"
 
-ParseWorker::ParseWorker(Nan::Callback *callback, const std::wstring &filename)
-  : Nan::AsyncWorker(callback), filename_(filename) {
+ParseWorker::ParseWorker(Nan::Callback *callback, const std::wstring &filename,
+                         const anitomy::Options &options)
+  : Nan::AsyncWorker(callback), filename_(filename), options_(options) {
 }
 
 void ParseWorker::Execute() {
   anitomy::Anitomy anitomy;
+  anitomy.options() = options_;
   anitomy.Parse(filename_);
   elements_ = anitomy::element_container_t(anitomy.elements().begin(),
               anitomy.elements().end());
@@ -34,12 +36,24 @@ void ParseWorker::HandleOKCallback() {
 
 NAN_METHOD(ParseAsync) {
   std::wstring filename;
+  anitomy::Options options;
   Nan::Callback *callback = nullptr;
 
-  if (!NodeStringParam(info, 0, L"filename", filename)
-      || !NodeCallbackParam(info, 1, L"callback", callback)) {
+  int i = 0;
+
+  if (!NodeStringParam(info, i++, L"filename", filename)) {
     return;
   }
 
-  Nan::AsyncQueueWorker(new ParseWorker(callback, filename));
+  if (info.Length() > 2) {
+    if (!NodeAnitomyOptionsParam(info, i++, L"options", options)) {
+      return;
+    }
+  }
+
+  if (!NodeCallbackParam(info, i, L"callback", callback)) {
+    return;
+  }
+
+  Nan::AsyncQueueWorker(new ParseWorker(callback, filename, options));
 }

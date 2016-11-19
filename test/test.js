@@ -6,6 +6,8 @@
 ** file, You can obtain one at https://mozilla.org/MPL/2.0/.
 */
 
+// TODO: Implement testing of option handling
+
 const anitomy = require('../anitomy');
 const async = require('async');
 const expect = require('chai').expect;

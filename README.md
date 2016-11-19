@@ -30,19 +30,33 @@ console.log(elems.AnimeTitle + ' #' + elems.EpisodeNumber + ' by ' + elems.Relea
 ```
 
 ## API
-### parse(filename, callback)
-Parses the filename asynchronously, calling the callback with an instance of AnitomyElements as the first parameter. 
+### parse(filename[, options], callback)
+Parses the filename asynchronously, using the given [options](#parse-options) if provided, 
+calling the callback with an instance of AnitomyElements as the first parameter. 
 ```javascript
 anitomy.parse('[TaigaSubs]_Toradora!_(2008)_-_01v2_-_Tiger_and_Dragon_[1280x720_H.264_FLAC][1234ABCD].mkv', function (elems) {
   console.log(elems.AnimeTitle + ' #' + elems.EpisodeNumber + ' by ' + elems.ReleaseGroup);
 });
 ```
 
-### parseSync(filename)
-Parses the filename asynchronously, returning an instance of AnitomyElements.
+### parseSync(filename[, options])
+Parses the filename synchronously, using the given [options](#parse-options) if provided, returning an instance of AnitomyElements.
 ```javascript
 const elems = anitomy.parseSync('[TaigaSubs]_Toradora!_(2008)_-_01v2_-_Tiger_and_Dragon_[1280x720_H.264_FLAC][1234ABCD].mkv');
 console.log(elems.AnimeTitle + ' #' + elems.EpisodeNumber + ' by ' + elems.ReleaseGroup);
+```
+
+### Parse Options
+Options are given in the form of an object, with any or all of the following properties set, if unset they default to these values (Anitomy's defaults):
+```javascript
+{
+  allowedDelimiters: ' _.&+,|',
+  ignoredStrings: [],
+  parseEpisodeNumber: true,
+  parseEpisodeTitle: true,
+  parseFileExtension: true,
+  parseReleaseGroup: true
+}
 ```
 
 ### AnitomyElements
@@ -73,7 +87,6 @@ elems.empty()
 ```
 
 ## To Be Implemented
-  * Options handling
   * Methods on AnitomyElements much like those on anitomy::Elements
 
 ## License
