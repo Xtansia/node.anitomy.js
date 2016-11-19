@@ -20,11 +20,6 @@ void AnitomyElements::Init() {
 
   Nan::SetPrototypeMethod(tpl, "empty", Empty);
 
-  for (const auto &it : ElementCategoryNames) {
-    Nan::SetAccessor(tpl->InstanceTemplate(), NodeLocalString(it.first),
-                     ElementCategoryGetter);
-  }
-
   constructor().Reset(tpl->GetFunction());
 }
 
@@ -42,6 +37,14 @@ NAN_METHOD(AnitomyElements::New) {
   v8::Local<v8::External> ext = info[0].As<v8::External>();
   AnitomyElements *elements = static_cast<AnitomyElements *>(ext->Value());
   elements->Wrap(info.This());
+
+  for (const auto &it : ElementCategoryNames) {
+    if (elements->Count(it.second) > 0) {
+      Nan::SetAccessor(info.This(), NodeLocalString(it.first),
+                       ElementCategoryGetter);
+    }
+  }
+
   info.GetReturnValue().Set(info.This());
 }
 
@@ -64,15 +67,7 @@ v8::Local<v8::Object> AnitomyElements::New(const anitomy::element_container_t
 
 NAN_METHOD(AnitomyElements::Empty) {
   AnitomyElements *obj = ObjectWrap::Unwrap<AnitomyElements>(info.Holder());
-  info.GetReturnValue().Set(obj->elements_.empty());
-}
-
-anitomy::element_iterator_t AnitomyElements::Find(anitomy::ElementCategory
-    category) {
-  return std::find_if(elements_.begin(), elements_.end(),
-  [category](const anitomy::element_pair_t &pair) {
-    return pair.first == category;
-  });
+  info.GetReturnValue().Set(obj->Empty());
 }
 
 NAN_GETTER(AnitomyElements::ElementCategoryGetter) {
@@ -84,21 +79,12 @@ NAN_GETTER(AnitomyElements::ElementCategoryGetter) {
   }
 
   anitomy::ElementCategory category = elemCatIt->second;
-
   AnitomyElements *obj = ObjectWrap::Unwrap<AnitomyElements>(info.Holder());
-  std::vector<std::wstring> values;
-
-  for (const auto &elem : obj->elements_) {
-    if (elem.first == category) {
-      values.push_back(elem.second);
-    }
-  }
+  std::vector<std::wstring> &values = obj->elements_[category];
 
   if (values.size() == 0) {
     return;
-  }
-
-  if (values.size() == 1) {
+  } else if (values.size() == 1) {
     info.GetReturnValue().Set(NodeLocalString(values[0]));
     return;
   }
@@ -111,4 +97,24 @@ NAN_GETTER(AnitomyElements::ElementCategoryGetter) {
   }
 
   info.GetReturnValue().Set(arr);
+}
+
+AnitomyElements::AnitomyElements(const anitomy::element_container_t &elements) {
+  for (const auto &it : elements) {
+    elements_[it.first].push_back(it.second);
+  }
+}
+
+std::size_t AnitomyElements::Count(anitomy::ElementCategory category) {
+  return elements_[category].size();
+}
+
+bool AnitomyElements::Empty() {
+  for (uint32_t i = 0; i < ELEMENT_CATEGORY_COUNT; ++i) {
+    if (Count(anitomy::ElementCategory(i)) > 0) {
+      return false;
+    }
+  }
+
+  return true;
 }

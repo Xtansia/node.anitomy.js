@@ -13,6 +13,8 @@
 #include <anitomy/anitomy.h>
 #include <nan.h>
 
+#define ELEMENT_CATEGORY_COUNT anitomy::ElementCategory::kElementIterateLast + 1
+
 class AnitomyElements : public Nan::ObjectWrap {
 public:
   static void Init();
@@ -20,23 +22,22 @@ public:
   static v8::Local<v8::Object> New(const anitomy::element_container_t &elements);
 
 private:
-  AnitomyElements(const anitomy::element_container_t &elements) : elements_
-    (elements) {}
-  ~AnitomyElements() {}
+  static inline Nan::Persistent<v8::Function> &constructor() {
+    static Nan::Persistent<v8::Function> constructor_;
+    return constructor_;
+  }
 
   static NAN_METHOD(New);
   static NAN_METHOD(Empty);
   static NAN_GETTER(ElementCategoryGetter);
 
-  anitomy::element_iterator_t Find(anitomy::ElementCategory category);
+  AnitomyElements(const anitomy::element_container_t &elements);
+  ~AnitomyElements() {}
 
-  anitomy::element_container_t elements_;
+  std::size_t Count(anitomy::ElementCategory category);
+  bool Empty();
 
-  static inline Nan::Persistent<v8::Function> &constructor() {
-    static Nan::Persistent<v8::Function> constructor_;
-    return constructor_;
-  }
+  std::vector<std::wstring> elements_[ELEMENT_CATEGORY_COUNT];
 };
 
 #endif // !ANITOMY_LIB_ANITOMY_ELEMENTS_H
-

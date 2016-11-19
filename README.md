@@ -49,32 +49,18 @@ console.log(elems.AnimeTitle + ' #' + elems.EpisodeNumber + ' by ' + elems.Relea
 This object represents the parsed elements of the filename. With a property for each ElementCategory, the properties are immutable. In cases where there are multiple elements in a category the property's value will be an array.
 ```javascript
 AnitomyElements {
-  VolumePrefix: undefined,
-  VolumeNumber: undefined,
-  VideoTerm: 'H.264',
-  VideoResolution: '1280x720',
-  Unknown: undefined,
-  Subtitles: undefined,
-  Source: undefined,
-  ReleaseVersion: '2',
-  ReleaseInformation: undefined,
-  ReleaseGroup: 'TaigaSubs',
-  Other: undefined,
-  Language: undefined,
-  FileName: '[TaigaSubs]_Toradora!_(2008)_-_01v2_-_Tiger_and_Dragon_[1280x720_H.264_FLAC][1234ABCD]',
-  FileExtension: 'mkv',
-  FileChecksum: '1234ABCD',
-  EpisodeTitle: undefined,
-  EpisodePrefix: undefined,
-  EpisodeNumberAlt: undefined,
-  EpisodeNumber: '01',
-  DeviceCompatibility: undefined,
-  AudioTerm: 'FLAC',
-  AnimeYear: '2008',
-  AnimeType: undefined,
   AnimeTitle: 'Toradora!',
-  AnimeSeasonPrefix: undefined,
-  AnimeSeason: undefined }
+  AnimeYear: '2008',
+  AudioTerm: 'FLAC',
+  EpisodeNumber: '01',
+  EpisodeTitle: 'Tiger and Dragon',
+  FileChecksum: '1234ABCD',
+  FileExtension: 'mkv',
+  FileName: '[TaigaSubs]_Toradora!_(2008)_-_01v2_-_Tiger_and_Dragon_[1280x720_H.264_FLAC][1234ABCD]',
+  ReleaseGroup: 'TaigaSubs',
+  ReleaseVersion: '2',
+  VideoResolution: '1280x720',
+  VideoTerm: 'H.264' }
 ```
 
 ## To Be Implemented
