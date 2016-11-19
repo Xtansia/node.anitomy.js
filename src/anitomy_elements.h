@@ -16,12 +16,13 @@
 class AnitomyElements : public Nan::ObjectWrap {
 public:
   static void Init();
-  static v8::Local<v8::Object> New(const anitomy::Elements& elements);
-  static v8::Local<v8::Object> New(const anitomy::element_container_t& elements);
+  static v8::Local<v8::Object> New(const anitomy::Elements &elements);
+  static v8::Local<v8::Object> New(const anitomy::element_container_t &elements);
 
 private:
-  AnitomyElements(const anitomy::element_container_t& elements) : elements_(elements) {};
-  ~AnitomyElements() {};
+  AnitomyElements(const anitomy::element_container_t &elements) : elements_
+    (elements) {}
+  ~AnitomyElements() {}
 
   static NAN_METHOD(New);
   static NAN_GETTER(ElementCategoryGetter);
@@ -30,13 +31,11 @@ private:
 
   anitomy::element_container_t elements_;
 
-  static inline Nan::Persistent<v8::Function>& constructor() {
+  static inline Nan::Persistent<v8::Function> &constructor() {
     static Nan::Persistent<v8::Function> constructor_;
     return constructor_;
   }
 };
 
 #endif // !ANITOMY_LIB_ANITOMY_ELEMENTS_H
-
-
 

@@ -11,14 +11,15 @@
 #include "anitomy_elements.h"
 #include "utils.h"
 
-ParseWorker::ParseWorker(Nan::Callback* callback, const std::wstring& filename) 
+ParseWorker::ParseWorker(Nan::Callback *callback, const std::wstring &filename)
   : Nan::AsyncWorker(callback), filename_(filename) {
 }
 
 void ParseWorker::Execute() {
   anitomy::Anitomy anitomy;
   anitomy.Parse(filename_);
-  elements_ = anitomy::element_container_t(anitomy.elements().begin(), anitomy.elements().end());
+  elements_ = anitomy::element_container_t(anitomy.elements().begin(),
+              anitomy.elements().end());
 }
 
 void ParseWorker::HandleOKCallback() {
@@ -33,9 +34,10 @@ void ParseWorker::HandleOKCallback() {
 
 NAN_METHOD(ParseAsync) {
   std::wstring filename;
-  Nan::Callback* callback;
+  Nan::Callback *callback = nullptr;
 
-  if (!NodeStringParam(info, 0, L"filename", filename) || !NodeCallbackParam(info, 1, L"callback", callback)) {
+  if (!NodeStringParam(info, 0, L"filename", filename)
+      || !NodeCallbackParam(info, 1, L"callback", callback)) {
     return;
   }
 

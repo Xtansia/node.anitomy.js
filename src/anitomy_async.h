@@ -15,7 +15,7 @@
 
 class ParseWorker : public Nan::AsyncWorker {
 public:
-  ParseWorker(Nan::Callback* callback, const std::wstring& filename);
+  ParseWorker(Nan::Callback *callback, const std::wstring &filename);
   ~ParseWorker() {}
 
   void Execute();

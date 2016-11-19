@@ -15,7 +15,10 @@
 
 NAN_METHOD(ParseSync) {
   std::wstring filename;
-  if (!NodeStringParam(info, 0, L"filename", filename)) return;
+
+  if (!NodeStringParam(info, 0, L"filename", filename)) {
+    return;
+  }
 
   anitomy::Anitomy anitomy;
   anitomy.Parse(filename);
