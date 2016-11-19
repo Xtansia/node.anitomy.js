@@ -26,7 +26,7 @@ bool NodeStringParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
     return false;
   }
 
-  out = StrToWstr(*Nan::Utf8String(info[index]));
+  out = NodeToWstr(info[index]);
   return true;
 }
 
@@ -44,6 +44,16 @@ bool NodeCallbackParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
 
   out = new Nan::Callback(info[index].As<v8::Function>());
   return true;
+}
+
+std::wstring NodeToWstr(v8::Local<v8::Value> value) {
+  Nan::Utf8String utf8String(value);
+
+  if (utf8String.length() > 0) {
+    return StrToWstr(*utf8String);
+  } else {
+    return L"";
+  }
 }
 
 std::string WstrToStr(const std::wstring &input) {

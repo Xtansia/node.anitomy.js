@@ -19,6 +19,7 @@ bool NodeStringParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
                      const std::wstring &name, std::wstring &out);
 bool NodeCallbackParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
                        const std::wstring &name, Nan::Callback *&out);
+std::wstring NodeToWstr(v8::Local<v8::Value> value);
 
 std::string WstrToStr(const std::wstring &input);
 std::wstring StrToWstr(const std::string &input);

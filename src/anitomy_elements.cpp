@@ -71,8 +71,7 @@ NAN_METHOD(AnitomyElements::Empty) {
 }
 
 NAN_GETTER(AnitomyElements::ElementCategoryGetter) {
-  auto elemCatIt = ElementCategoryNames.find(StrToWstr(*Nan::Utf8String(
-                     property)));
+  auto elemCatIt = ElementCategoryNames.find(NodeToWstr(property));
 
   if (elemCatIt == ElementCategoryNames.end()) {
     return;
