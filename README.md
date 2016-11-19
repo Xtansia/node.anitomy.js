@@ -63,6 +63,15 @@ AnitomyElements {
   VideoTerm: 'H.264' }
 ```
 
+#### AnitomyElements#empty()
+Returns true if the AnitomyElements has no category-value pairs. such as:
+```javascript
+var elems = anitomy.parseSync('')
+// -> AnitomyElements {}
+elems.empty()
+// -> true
+```
+
 ## To Be Implemented
   * Options handling
   * Methods on AnitomyElements much like those on anitomy::Elements
