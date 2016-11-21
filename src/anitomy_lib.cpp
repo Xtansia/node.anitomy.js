@@ -18,4 +18,4 @@ NAN_MODULE_INIT(Init) {
   Nan::Export(target, "parseSync", ParseSync);
 }
 
-NODE_MODULE(anitomy_lib, Init);
+NODE_MODULE(anitomy_lib, Init)

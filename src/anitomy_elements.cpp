@@ -20,7 +20,7 @@ void AnitomyElements::Init() {
 
   Nan::SetPrototypeMethod(tpl, "empty", Empty);
 
-  constructor().Reset(tpl->GetFunction());
+  constructor().Reset(Nan::GetFunction(tpl).ToLocalChecked());
 }
 
 NAN_METHOD(AnitomyElements::New) {
@@ -61,9 +61,10 @@ v8::Local<v8::Object> AnitomyElements::New(const anitomy::element_container_t
   v8::Local<v8::Value> argv[] = {
     Nan::New<v8::External>(wrapped)
   };
-  v8::Local<v8::Object> obj = Nan::New(constructor())->NewInstance(1, argv);
 
-  return scope.Escape(obj);
+  v8::Local<v8::Function> cons = Nan::New(constructor());
+
+  return scope.Escape(Nan::NewInstance(cons, 1, argv).ToLocalChecked());
 }
 
 NAN_METHOD(AnitomyElements::Empty) {
