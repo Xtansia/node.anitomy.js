@@ -30,7 +30,9 @@ NAN_METHOD(ParseSync) {
   anitomy.options() = options;
   anitomy.Parse(filename);
 
-  v8::Local<v8::Object> elements = AnitomyElements::New(anitomy.elements());
+  anitomy::element_container_t elements(anitomy.elements().begin(), anitomy.elements().end());
 
-  info.GetReturnValue().Set(elements);
+  v8::Local<v8::Object> obj = AnitomyElements::New(elements);
+
+  info.GetReturnValue().Set(obj);
 }

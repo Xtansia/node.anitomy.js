@@ -36,11 +36,12 @@ NAN_METHOD(AnitomyElements::New) {
   }
 
   v8::Local<v8::External> ext = info[0].As<v8::External>();
-  AnitomyElements *elements = static_cast<AnitomyElements *>(ext->Value());
-  elements->Wrap(info.This());
+  anitomy::element_container_t *elements = static_cast<anitomy::element_container_t *>(ext->Value());
+  AnitomyElements *obj = new AnitomyElements(elements);
+  obj->Wrap(info.This());
 
   for (const auto &it : ElementCategoryNames) {
-    if (elements->Count(it.second) > 0) {
+    if (obj->Count(it.second) > 0) {
       Nan::SetAccessor(info.This(), NodeLocalString(it.first),
                        ElementCategoryGetter);
     }
@@ -49,17 +50,12 @@ NAN_METHOD(AnitomyElements::New) {
   info.GetReturnValue().Set(info.This());
 }
 
-v8::Local<v8::Object> AnitomyElements::New(const anitomy::Elements &elements) {
-  return New(anitomy::element_container_t(elements.begin(), elements.end()));
-}
-
-v8::Local<v8::Object> AnitomyElements::New(const anitomy::element_container_t
+v8::Local<v8::Object> AnitomyElements::New(anitomy::element_container_t
     &elements) {
   Nan::EscapableHandleScope scope;
 
-  AnitomyElements *wrapped = new AnitomyElements(elements);
   v8::Local<v8::Value> argv[] = {
-    Nan::New<v8::External>(wrapped)
+    Nan::New<v8::External>(&elements)
   };
 
   v8::Local<v8::Function> cons = Nan::New(constructor());
@@ -100,8 +96,8 @@ NAN_GETTER(AnitomyElements::ElementCategoryGetter) {
   info.GetReturnValue().Set(arr);
 }
 
-AnitomyElements::AnitomyElements(const anitomy::element_container_t &elements) {
-  for (const auto &it : elements) {
+AnitomyElements::AnitomyElements(anitomy::element_container_t *elements) {
+  for (const auto &it : *elements) {
     elements_[it.first].push_back(it.second);
   }
 }
