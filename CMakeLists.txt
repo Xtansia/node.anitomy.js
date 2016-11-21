@@ -88,8 +88,11 @@ set(ANITOMY_SOURCE_FILES
 source_group("addon" FILES ${ADDON_SOURCE_FILES})
 source_group("anitomy" FILES ${ANITOMY_SOURCE_FILES})
 
+# Add anitomy library target
+add_library(anitomy SHARED ${ANITOMY_SOURCE_FILES})
+
 # Add the addon library target
-add_library(${PROJECT_NAME} SHARED ${ADDON_SOURCE_FILES} ${ANITOMY_SOURCE_FILES})
+add_library(${PROJECT_NAME} SHARED ${ADDON_SOURCE_FILES})
 
 # Set properties for NodeJS addon library file naming
 set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "" SUFFIX ".node")
@@ -98,8 +101,9 @@ set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "" SUFFIX ".node")
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_JS_INC})
 target_include_directories(${PROJECT_NAME} PRIVATE lib/anitomy)
 
-# Link against JS libraries
+# Link against JS and Anitomy libraries
 target_link_libraries(${PROJECT_NAME} PRIVATE ${CMAKE_JS_LIB})
+target_link_libraries(${PROJECT_NAME} PRIVATE anitomy)
 
 if(NODE_ANITOMY_USE_BOOST) 
   # Include and link against Boost
