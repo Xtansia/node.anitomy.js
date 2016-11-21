@@ -13,7 +13,8 @@
 #include <anitomy/anitomy.h>
 #include <nan.h>
 
-#define ELEMENT_CATEGORY_COUNT anitomy::ElementCategory::kElementIterateLast + 1
+static constexpr uint32_t ELEMENT_CATEGORY_COUNT =
+  static_cast<uint32_t>(anitomy::ElementCategory::kElementIterateLast) + 1;
 
 class AnitomyElements : public Nan::ObjectWrap {
 public:
