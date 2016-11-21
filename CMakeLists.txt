@@ -28,9 +28,19 @@ endif()
 
 if(NODE_ANITOMY_USE_BOOST)
   set(NODE_MODULES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/node_modules")
-  if(NOT EXISTS "${NODE_MODULES_DIR}")
-    set(NODE_MODULES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../node_modules")
+  
+  if(NOT IS_DIRECTORY "${NODE_MODULES_DIR}")
+    get_filename_component(PARENT_DIR "${CMAKE_CURRENT_SOURCE_DIR}" DIRECTORY)
+    get_filename_component(PARENT_DIR_NAME "${PARENT_DIR}" NAME)
+    if(PARENT_DIR_NAME STREQUAL "node_modules")
+      set(NODE_MODULES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/..")
+    endif()
   endif()
+  
+  if(NOT EXISTS "${NODE_MODULES_DIR}/boost-lib/cmake/BoostLib.cmake")
+    message(FATAL_ERROR "Couldn't find boost-lib cmake file")
+  endif()
+
   set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${NODE_MODULES_DIR}/boost-lib/cmake")
   
   include(BoostLib) 
