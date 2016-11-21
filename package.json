@@ -33,8 +33,10 @@
     "nan": "^2.4.0"
   },
   "devDependencies": {
+    "JSONStream": "^1.2.1",
     "async": "^2.1.2",
     "chai": "^3.5.0",
+    "event-stream": "^3.3.4",
     "mocha": "^3.1.2"
   },
   "engines": {

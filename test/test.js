@@ -10,8 +10,10 @@
 
 const anitomy = require('../anitomy');
 const async = require('async');
+const es = require('event-stream');
 const expect = require('chai').expect;
 const fs = require('fs');
+const JSONStream = require('JSONStream');
 const path = require('path');
 
 const bad_file_names = [
@@ -55,6 +57,13 @@ function parseAsync(filename, callback) {
   };
 }
 
+function streamTestData() {
+  const filename = path.join(__dirname, '../lib/anitomy/test/data.json');
+  const stream = fs.createReadStream(filename, {encoding: 'utf8'});
+  const parser = JSONStream.parse('*');
+  return stream.pipe(parser);
+}
+
 describe('Anitomy', function () {
   describe('#parse(filename, callback)', function () {
     it('should throw Error when filename is not provided', function () {
@@ -90,24 +99,21 @@ describe('Anitomy', function () {
     });
 
     it('should correctly parse some basic info from filenames', function (done) {
-      const data = fs.readFileSync(path.resolve(__dirname, '../lib/anitomy/test/data.json'), 'utf8');
-      const testData = JSON.parse(data);
-
-      async.each(testData, function (anime, cb) {
-        if (bad_file_names.indexOf(anime.file_name) !== -1) return cb();
-
-        anitomy.parse(anime.file_name, function (elems) {
-          try {
-            expect(elems.AnimeTitle).to.eql(anime.anime_title);
-            expect(elems.EpisodeNumber).to.eql(anime.episode_number);
-            expect(elems.FileChecksum).to.eql(anime.file_checksum);
-            expect(elems.ReleaseGroup).to.eql(anime.release_group);
+      streamTestData().pipe(es.map(function (data, cb) {
+        if (bad_file_names.indexOf(data.file_name) !== -1) return cb();
+  
+        anitomy.parse(data.file_name, function (elems) {
+          try { 
+            expect(elems.AnimeTitle).to.eql(data.anime_title);
+            expect(elems.EpisodeNumber).to.eql(data.episode_number);
+            expect(elems.FileChecksum).to.eql(data.file_checksum);
+            expect(elems.ReleaseGroup).to.eql(data.release_group);
             return cb();
           } catch (err) {
             return cb(err);
           }
         });
-      }, done);
+      })).on('error', done).on('end', done);
     });
 
     it('should return an empty AnitomyElements when filename is empty', function (done) {
@@ -141,22 +147,21 @@ describe('Anitomy', function () {
       expect(parseSync('')).to.not.throw();
     });
 
-    it('should correctly parse some basic info from filenames', function () {
-      const data = fs.readFileSync(path.resolve(__dirname, '../lib/anitomy/test/data.json'), 'utf8');
-      const testData = JSON.parse(data);
-
-      for (var i = 0; i < testData.length; i++) {
-        const anime = testData[i];
-
-        if (bad_file_names.indexOf(anime.file_name) === -1) {
-          const elems = anitomy.parseSync(anime.file_name);
-
-          expect(elems.AnimeTitle).to.eql(anime.anime_title);
-          expect(elems.EpisodeNumber).to.eql(anime.episode_number);
-          expect(elems.FileChecksum).to.eql(anime.file_checksum);
-          expect(elems.ReleaseGroup).to.eql(anime.release_group);
+    it('should correctly parse some basic info from filenames', function (done) {
+      streamTestData().pipe(es.map(function (data, cb) {
+        if (bad_file_names.indexOf(data.file_name) !== -1) return cb();
+  
+        const elems = anitomy.parseSync(data.file_name);
+        try { 
+          expect(elems.AnimeTitle).to.eql(data.anime_title);
+          expect(elems.EpisodeNumber).to.eql(data.episode_number);
+          expect(elems.FileChecksum).to.eql(data.file_checksum);
+          expect(elems.ReleaseGroup).to.eql(data.release_group);
+          return cb();
+        } catch (err) {
+          return cb(err);
         }
-      }
+      })).on('error', done).on('end', done);
     });
 
     it('should return an empty AnitomyElements when filename is empty', function () {
