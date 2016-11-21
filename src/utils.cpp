@@ -8,7 +8,7 @@
 
 #include "utils.h"
 
-#include <boost/locale.hpp>
+#include <boost/locale/encoding_utf.hpp>
 
 std::string WstrToStr(const std::wstring &input) {
   return boost::locale::conv::utf_to_utf<char>(input);
