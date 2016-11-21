@@ -1,13 +1,18 @@
 cmake_minimum_required(VERSION 3.2)
 project(anitomy_lib)
 
-# Include JS and Anitomy directories
-include_directories(${CMAKE_JS_INC} lib/anitomy)
 
-if(USE_BOOST_LOCALE_UTF_CONV)
-  find_library(Boost "1.58.0" REQUIRED COMPONENTS locale)
-  add_definitions(-DUSE_BOOST_LOCALE_UTF_CONV)
-  include_directories(${Boost_INCLUDE_DIRS})
+if(NODE_ANITOMY_USE_BOOST)
+  set(NODE_MODULES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/node_modules")
+  if(NOT EXISTS "${NODE_MODULES_DIR}")
+    set(NODE_MODULES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../node_modules")
+  endif()
+  set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${NODE_MODULES_DIR}/boost-lib/cmake")
+  
+  include(BoostLib) 
+  require_boost_libs(">= v1.58.0" locale) 
+  
+  add_definitions(-DNODE_ANITOMY_USE_BOOST)
 endif()
 
 # Addon source files
@@ -55,9 +60,15 @@ add_library(${PROJECT_NAME} SHARED ${ADDON_SOURCE_FILES} ${ANITOMY_SOURCE_FILES}
 # Set properties for NodeJS addon library file naming
 set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "" SUFFIX ".node")
 
-# Link against JS libraries
-target_link_libraries(${PROJECT_NAME} ${CMAKE_JS_LIB})
+# Include JS and Anitomy directories
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_JS_INC})
+target_include_directories(${PROJECT_NAME} PRIVATE lib/anitomy)
 
-if(USE_BOOST_LOCALE_UTF_CONV)
-  target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES})
+# Link against JS libraries
+target_link_libraries(${PROJECT_NAME} PRIVATE ${CMAKE_JS_LIB})
+
+if(NODE_ANITOMY_USE_BOOST) 
+  # Include and link against Boost
+  target_include_directories(${PROJECT_NAME} PRIVATE ${Boost_INCLUDE_DIRS})
+  target_link_libraries(${PROJECT_NAME} PRIVATE ${Boost_LIBRARIES})
 endif()

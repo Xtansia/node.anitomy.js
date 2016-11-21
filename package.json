@@ -5,7 +5,7 @@
   "main": "anitomy.js",
   "scripts": {
     "test": "mocha test/test.js",
-    "install": "cmake-js --CDUSE_BOOST_LOCALE_UTF_CONV=YES compile"
+    "install": "cmake-js compile"
   },
   "repository": {
     "type": "git",
