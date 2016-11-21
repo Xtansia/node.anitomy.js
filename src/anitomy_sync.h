@@ -10,7 +10,10 @@
 #ifndef ANITOMY_LIB_ANITOMY_SYNC_H
 #define ANITOMY_LIB_ANITOMY_SYNC_H
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 #include <nan.h>
+#pragma GCC diagnostic pop
 
 NAN_METHOD(ParseSync);
 

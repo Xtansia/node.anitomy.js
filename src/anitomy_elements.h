@@ -10,8 +10,12 @@
 #ifndef ANITOMY_LIB_ANITOMY_ELEMENTS_H
 #define ANITOMY_LIB_ANITOMY_ELEMENTS_H
 
-#include <anitomy/anitomy.h>
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 #include <nan.h>
+#pragma GCC diagnostic pop
+
+#include <anitomy/anitomy.h>
 
 static constexpr uint32_t ELEMENT_CATEGORY_COUNT =
   static_cast<uint32_t>(anitomy::ElementCategory::kElementIterateLast) + 1;

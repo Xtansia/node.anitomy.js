@@ -10,8 +10,12 @@
 #ifndef ANITOMY_LIB_ANITOMY_ASYNC_H
 #define ANITOMY_LIB_ANITOMY_ASYNC_H
 
-#include <anitomy/anitomy.h>
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 #include <nan.h>
+#pragma GCC diagnostic pop
+
+#include <anitomy/anitomy.h>
 
 class ParseWorker : public Nan::AsyncWorker {
 public:

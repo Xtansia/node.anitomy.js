@@ -10,8 +10,12 @@
 #ifndef ANITOMY_LIB_UTILS_H
 #define ANITOMY_LIB_UTILS_H
 
-#include <anitomy/options.h>
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 #include <nan.h>
+#pragma GCC diagnostic pop
+
+#include <anitomy/options.h>
 #include <string>
 
 #define CONCAT_INTERNAL(X, Y) X##Y
