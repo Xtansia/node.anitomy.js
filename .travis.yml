@@ -23,17 +23,17 @@ addons:
       - ubuntu-toolchain-r-test
       - george-edison55-precise-backports
     packages:
-      - gcc-4.9-multilib
-      - g++-4.9-multilib
+      - gcc-5
+      - g++-5
       - cmake
       - cmake-data
 
 before_install:
-  # set CXX to g++-4.9 on linux
+  # set CXX to g++-5 on linux
   - | 
     if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then 
-      export CC=gcc-4.9
-      export CXX=g++-4.9
+      export CC=gcc-5
+      export CXX=g++-5
     fi
 
   # install node
