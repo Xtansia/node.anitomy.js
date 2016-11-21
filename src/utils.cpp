@@ -100,20 +100,23 @@ bool NodeAnitomyOptionsParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
 
   IF_OBJ_HAS(opts, L"allowedDelimiters") {
     auto allowedDelimiters = Nan::Get(opts,
-                                      NodeLocalString(L"allowedDelimiters")).ToLocalChecked();
+                                      NodeLocalString(L"allowedDelimiters"))
+                             .ToLocalChecked();
 
     if (allowedDelimiters->IsString()) {
       out.allowed_delimiters = NodeToWstr(allowedDelimiters);
     } else {
       Nan::ThrowTypeError(NodeLocalString(name +
-                                          L".allowedDelimiters must be a string"));
+                                          L".allowedDelimiters must be"
+                                          L" a string"));
       return false;
     }
   }
 
   IF_OBJ_HAS(opts, L"ignoredStrings") {
     auto ignoredStrings = Nan::Get(opts,
-                                   NodeLocalString(L"ignoredStrings")).ToLocalChecked();
+                                   NodeLocalString(L"ignoredStrings"))
+                          .ToLocalChecked();
 
     if (ignoredStrings->IsArray()) {
       auto ignoredStringsArray = ignoredStrings.As<v8::Array>();
@@ -126,13 +129,15 @@ bool NodeAnitomyOptionsParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
           out.ignored_strings.push_back(NodeToWstr(elem));
         } else {
           Nan::ThrowTypeError(NodeLocalString(name +
-                                              L".ignoredStrings must be an array of strings"));
+                                              L".ignoredStrings must be an"
+                                              L" array of strings"));
           return false;
         }
       }
     } else {
       Nan::ThrowTypeError(NodeLocalString(name +
-                                          L".ignoredStrings must be an array of strings"));
+                                          L".ignoredStrings must be an array"
+                                          L" of strings"));
       return false;
     }
   }
@@ -140,12 +145,13 @@ bool NodeAnitomyOptionsParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
 #define GET_BOOLEAN_OPTION(jsName, anitomyName)                               \
   IF_OBJ_HAS(opts, WIDE_STRINGIFY(jsName)) {                                  \
     auto jsName = Nan::Get(opts, NodeLocalString(WIDE_STRINGIFY(jsName)))     \
-                        .ToLocalChecked();                                    \
+                  .ToLocalChecked();                                          \
     if (jsName->IsBoolean()) {                                                \
       out.anitomyName = Nan::To<bool>(jsName).FromJust();                     \
     } else {                                                                  \
       Nan::ThrowTypeError(NodeLocalString(name                                \
-                       + L"." WIDE_STRINGIFY(jsName) L" must be a boolean")); \
+                                          + L"." WIDE_STRINGIFY(jsName)       \
+                                          L" must be a boolean"));          \
       return false;                                                           \
     }                                                                         \
   }

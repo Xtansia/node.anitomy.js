@@ -25,7 +25,8 @@ void AnitomyElements::Init() {
 
 NAN_METHOD(AnitomyElements::New) {
   if (!info.IsConstructCall()) {
-    Nan::ThrowError("Cannot call constructor as function, you need to use 'new' keyword");
+    Nan::ThrowError(
+      "Cannot call constructor as function, you need to use 'new' keyword");
     return;
   }
 

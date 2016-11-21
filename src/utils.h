@@ -19,7 +19,8 @@
 #define STRINGIFY_INTERNAL(X) #X
 #define STRINGIFY(X) STRINGIFY_INTERNAL(X)
 #define WIDE_STRINGIFY(X) CONCAT(L, STRINGIFY(X))
-#define IF_OBJ_HAS(obj, key) if (Nan::Has(obj, NodeLocalString(key)).FromMaybe(false))
+#define IF_OBJ_HAS(obj, key) \
+  if (Nan::Has(obj, NodeLocalString(key)).FromMaybe(false))
 
 std::string WstrToStr(const std::wstring &input);
 std::wstring StrToWstr(const std::string &input);
