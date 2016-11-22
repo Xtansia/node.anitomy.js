@@ -29,7 +29,6 @@
     "bindings": "^1.2.1",
     "boost-lib": "^0.11.3",
     "cmake-js": "^3.3.1",
-    "mocha": "^3.1.2",
     "nan": "^2.4.0"
   },
   "devDependencies": {
