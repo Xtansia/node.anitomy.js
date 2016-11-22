@@ -10,11 +10,7 @@
 #ifndef ANITOMY_LIB_UTILS_H
 #define ANITOMY_LIB_UTILS_H
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#include <nan.h>
-#pragma GCC diagnostic pop
-
+#include "nan_nowarn.h"
 #include <anitomy/options.h>
 #include <string>
 

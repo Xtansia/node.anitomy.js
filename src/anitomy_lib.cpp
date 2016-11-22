@@ -6,11 +6,7 @@
 ** file, You can obtain one at https://mozilla.org/MPL/2.0/.
 */
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#include <nan.h>
-#pragma GCC diagnostic pop
-
+#include "nan_nowarn.h"
 #include "anitomy_async.h"
 #include "anitomy_elements.h"
 #include "anitomy_sync.h"
