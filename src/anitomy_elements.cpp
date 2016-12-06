@@ -14,7 +14,7 @@
 void AnitomyElements::Init() {
   Nan::HandleScope scope;
 
-  v8::Local<v8::FunctionTemplate> tpl = Nan::New<v8::FunctionTemplate>(New);
+  auto tpl = Nan::New<v8::FunctionTemplate>(New);
   tpl->SetClassName(Nan::New("AnitomyElements").ToLocalChecked());
   tpl->InstanceTemplate()->SetInternalFieldCount(1);
 
@@ -35,9 +35,9 @@ NAN_METHOD(AnitomyElements::New) {
     return;
   }
 
-  v8::Local<v8::External> ext = info[0].As<v8::External>();
-  anitomy::element_container_t *elements = static_cast<anitomy::element_container_t *>(ext->Value());
-  AnitomyElements *obj = new AnitomyElements(elements);
+  auto ext = info[0].As<v8::External>();
+  auto *elements = static_cast<anitomy::element_container_t *>(ext->Value());
+  auto *obj = new AnitomyElements(elements);
   obj->Wrap(info.This());
 
   for (const auto &it : ElementCategoryNames) {
@@ -58,13 +58,13 @@ v8::Local<v8::Object> AnitomyElements::New(anitomy::element_container_t
     Nan::New<v8::External>(&elements)
   };
 
-  v8::Local<v8::Function> cons = Nan::New(constructor());
+  auto cons = Nan::New(constructor());
 
   return scope.Escape(Nan::NewInstance(cons, 1, argv).ToLocalChecked());
 }
 
 NAN_METHOD(AnitomyElements::Empty) {
-  AnitomyElements *obj = ObjectWrap::Unwrap<AnitomyElements>(info.Holder());
+  auto *obj = Unwrap<AnitomyElements>(info.Holder());
   info.GetReturnValue().Set(obj->Empty());
 }
 
@@ -75,9 +75,9 @@ NAN_GETTER(AnitomyElements::ElementCategoryGetter) {
     return;
   }
 
-  anitomy::ElementCategory category = elemCatIt->second;
-  AnitomyElements *obj = ObjectWrap::Unwrap<AnitomyElements>(info.Holder());
-  std::vector<std::wstring> &values = obj->elements_[category];
+  auto category = elemCatIt->second;
+  auto *obj = Unwrap<AnitomyElements>(info.Holder());
+  auto &values = obj->elements_[category];
 
   if (values.size() == 0) {
     return;
@@ -86,7 +86,7 @@ NAN_GETTER(AnitomyElements::ElementCategoryGetter) {
     return;
   }
 
-  v8::Local<v8::Array> arr = Nan::New<v8::Array>();
+  auto arr = Nan::New<v8::Array>();
   uint32_t i = 0;
 
   for (const auto &val : values) {
@@ -102,11 +102,11 @@ AnitomyElements::AnitomyElements(anitomy::element_container_t *elements) {
   }
 }
 
-std::size_t AnitomyElements::Count(anitomy::ElementCategory category) {
+std::size_t AnitomyElements::Count(anitomy::ElementCategory category) const {
   return elements_[category].size();
 }
 
-bool AnitomyElements::Empty() {
+bool AnitomyElements::Empty() const {
   for (uint32_t i = 0; i < ELEMENT_CATEGORY_COUNT; ++i) {
     if (Count(anitomy::ElementCategory(i)) > 0) {
       return false;

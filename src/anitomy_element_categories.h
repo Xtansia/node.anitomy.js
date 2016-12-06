@@ -43,7 +43,7 @@ const std::map<std::wstring, anitomy::ElementCategory> ElementCategoryNames{
   { L"Unknown",             anitomy::kElementUnknown }
 };
 
-inline const std::wstring GetNameForCategory(anitomy::ElementCategory
+inline std::wstring GetNameForCategory(anitomy::ElementCategory
     category) {
   auto it = std::find_if(ElementCategoryNames.begin(),
                          ElementCategoryNames.end(),

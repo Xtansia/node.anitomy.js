@@ -31,11 +31,11 @@ private:
   static NAN_METHOD(Empty);
   static NAN_GETTER(ElementCategoryGetter);
 
-  AnitomyElements(anitomy::element_container_t *elements);
+  explicit AnitomyElements(anitomy::element_container_t *elements);
   ~AnitomyElements() {}
 
-  std::size_t Count(anitomy::ElementCategory category);
-  bool Empty();
+  std::size_t Count(anitomy::ElementCategory category) const;
+  bool Empty() const;
 
   std::vector<std::wstring> elements_[ELEMENT_CATEGORY_COUNT];
 };

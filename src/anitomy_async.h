@@ -19,8 +19,8 @@ public:
               const anitomy::Options &options);
   ~ParseWorker() {}
 
-  void Execute();
-  void HandleOKCallback();
+  void Execute() override;
+  void HandleOKCallback() override;
 
 private:
   const std::vector<std::wstring> filenames_;
