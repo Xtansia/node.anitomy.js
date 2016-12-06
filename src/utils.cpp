@@ -9,33 +9,32 @@
 #include "utils.h"
 
 #ifdef NODE_ANITOMY_USE_BOOST
-  #include <boost/locale/encoding_utf.hpp>
+# include <boost/locale/encoding_utf.hpp>
 #else
-  #include <codecvt>
-  #include <locale>
+# include <codecvt>
+# include <locale>
 #endif
 
-#include <string>
-
 #ifndef NODE_ANITOMY_USE_BOOST
-  static std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t>
-  wstringConverter;
+typedef std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> wstr_conv;
 #endif
 
 std::string WstrToStr(const std::wstring &input) {
-  #ifdef NODE_ANITOMY_USE_BOOST
+#ifdef NODE_ANITOMY_USE_BOOST
   return boost::locale::conv::utf_to_utf<char>(input);
-  #else
-  return wstringConverter.to_bytes(input);
-  #endif
+#else
+  static wstr_conv conv;
+  return conv.to_bytes(input);
+#endif
 }
 
 std::wstring StrToWstr(const std::string &input) {
-  #ifdef NODE_ANITOMY_USE_BOOST
+#ifdef NODE_ANITOMY_USE_BOOST
   return boost::locale::conv::utf_to_utf<wchar_t>(input);
-  #else
-  return wstringConverter.from_bytes(input);
-  #endif
+#else
+  static wstr_conv conv;
+  return conv.from_bytes(input);
+#endif
 }
 
 v8::Local<v8::String> NodeLocalString(const std::wstring &str) {
