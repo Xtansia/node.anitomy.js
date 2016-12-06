@@ -39,17 +39,23 @@ console.log(elems.AnimeTitle + ' #' + elems.EpisodeNumber + ' by ' + elems.Relea
 ```
 
 ## API
-### parse(filename[, options], callback)
-Parses the filename asynchronously, using the given [options](#parse-options) if provided, 
-calling the callback with an instance of AnitomyElements as the first parameter. 
+### parse(filenames[, options], callback)
+Parses the filenames asynchronously, using the given [options](#parse-options) if provided,
+calling the callback with the resulting AnitomyElements as the first parameter.
+`filenames` can be either a string, or an array of strings.
+If it is a string, then the callback will be passed an instance of AnitomyElements,
+if it is an array of strings, then the callback will be passed an array of AnitomyElements.
 ```javascript
 anitomy.parse('[TaigaSubs]_Toradora!_(2008)_-_01v2_-_Tiger_and_Dragon_[1280x720_H.264_FLAC][1234ABCD].mkv', function (elems) {
   console.log(elems.AnimeTitle + ' #' + elems.EpisodeNumber + ' by ' + elems.ReleaseGroup);
 });
 ```
 
-### parseSync(filename[, options])
-Parses the filename synchronously, using the given [options](#parse-options) if provided, returning an instance of AnitomyElements.
+### parseSync(filenames[, options])
+Parses the filenames synchronously, using the given [options](#parse-options) if provided, returning the resulting AnitomyElements.
+`filenames` can be either a string, or an array of strings.
+If it is a string, an instance of AnitomyElements will be returned,
+if it is an array of strings, then an array of AnitomyElements will be returned.
 ```javascript
 const elems = anitomy.parseSync('[TaigaSubs]_Toradora!_(2008)_-_01v2_-_Tiger_and_Dragon_[1280x720_H.264_FLAC][1234ABCD].mkv');
 console.log(elems.AnimeTitle + ' #' + elems.EpisodeNumber + ' by ' + elems.ReleaseGroup);
