@@ -59,6 +59,7 @@ set(ADDON_SOURCE_FILES
     src/anitomy_lib.cpp
     src/anitomy_sync.cpp
     src/anitomy_sync.h
+    src/nan_nowarn.h
     src/utils.cpp
     src/utils.h
     )
