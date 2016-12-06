@@ -6,7 +6,7 @@
 ** file, You can obtain one at https://mozilla.org/MPL/2.0/.
 */
 
-// TODO: Implement testing of option handling
+// TODO: Implement testing of option handling, and filename arrays
 
 const anitomy = require('../anitomy');
 const async = require('async');
@@ -67,19 +67,19 @@ function streamTestData() {
 describe('Anitomy', function () {
   describe('#parse(filename, callback)', function () {
     it('should throw Error when filename is not provided', function () {
-      expect(parseAsync()).to.throw('filename must be provided');
+      expect(parseAsync()).to.throw('filenames must be provided');
 
-      expect(parseAsync('')).to.not.throw('filename must be provided');
+      expect(parseAsync('')).to.not.throw('filenames must be provided');
     });
 
     it('should throw TypeError when filename is provided but isn\'t a string', function () {
-      expect(parseAsync(null)).to.throw(TypeError, 'filename must be a string');
-      expect(parseAsync(10)).to.throw(TypeError, 'filename must be a string');
-      expect(parseAsync(false)).to.throw(TypeError, 'filename must be a string');
-      expect(parseAsync([])).to.throw(TypeError, 'filename must be a string');
-      expect(parseAsync({})).to.throw(TypeError, 'filename must be a string');
+      expect(parseAsync(null)).to.throw(TypeError, 'filenames must be a string or an array of strings');
+      expect(parseAsync(10)).to.throw(TypeError, 'filenames must be a string or an array of strings');
+      expect(parseAsync(false)).to.throw(TypeError, 'filenames must be a string or an array of strings');
+      expect(parseAsync({})).to.throw(TypeError, 'filenames must be a string or an array of strings');
 
-      expect(parseAsync('')).to.not.throw(TypeError, 'filename must be a string');
+      expect(parseAsync([''])).to.not.throw(TypeError, 'filenames must be a string or an array of strings');
+      expect(parseAsync('')).to.not.throw(TypeError, 'filenames must be a string or an array of strings');
     });
 
     it('should throw Error when callback is not provided', function () {
@@ -101,9 +101,9 @@ describe('Anitomy', function () {
     it('should correctly parse some basic info from filenames', function (done) {
       streamTestData().pipe(es.map(function (data, cb) {
         if (bad_file_names.indexOf(data.file_name) !== -1) return cb();
-  
+
         anitomy.parse(data.file_name, function (elems) {
-          try { 
+          try {
             expect(elems.AnimeTitle).to.eql(data.anime_title);
             expect(elems.EpisodeNumber).to.eql(data.episode_number);
             expect(elems.FileChecksum).to.eql(data.file_checksum);
@@ -132,27 +132,27 @@ describe('Anitomy', function () {
 
   describe('#parseSync(filename)', function () {
     it('should throw Error when filename is not provided', function () {
-      expect(parseSync()).to.throw('filename must be provided');
+      expect(parseSync()).to.throw('filenames must be provided');
 
       expect(parseSync('')).to.not.throw();
     });
 
     it('should throw TypeError when filename is provided but isn\'t a string', function () {
-      expect(parseSync(null)).to.throw(TypeError, 'filename must be a string');
-      expect(parseSync(10)).to.throw(TypeError, 'filename must be a string');
-      expect(parseSync(false)).to.throw(TypeError, 'filename must be a string');
-      expect(parseSync([])).to.throw(TypeError, 'filename must be a string');
-      expect(parseSync({})).to.throw(TypeError, 'filename must be a string');
+      expect(parseSync(null)).to.throw(TypeError, 'filenames must be a string or an array of strings');
+      expect(parseSync(10)).to.throw(TypeError, 'filenames must be a string or an array of strings');
+      expect(parseSync(false)).to.throw(TypeError, 'filenames must be a string or an array of strings');
+      expect(parseSync({})).to.throw(TypeError, 'filenames must be a string or an array of strings');
 
+      expect(parseSync([''])).to.not.throw();
       expect(parseSync('')).to.not.throw();
     });
 
     it('should correctly parse some basic info from filenames', function (done) {
       streamTestData().pipe(es.map(function (data, cb) {
         if (bad_file_names.indexOf(data.file_name) !== -1) return cb();
-  
+
         const elems = anitomy.parseSync(data.file_name);
-        try { 
+        try {
           expect(elems.AnimeTitle).to.eql(data.anime_title);
           expect(elems.EpisodeNumber).to.eql(data.episode_number);
           expect(elems.FileChecksum).to.eql(data.file_checksum);
