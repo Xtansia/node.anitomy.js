@@ -12,12 +12,13 @@
 #include "utils.h"
 
 #include <anitomy/anitomy.h>
+#include <iterator>
 
 NAN_METHOD(ParseSync) {
-  std::wstring filename;
+  std::vector<std::wstring> filenames;
   anitomy::Options options;
 
-  if (!NodeStringParam(info, 0, L"filename", filename)) {
+  if (!NodeStringOrArrayParam(info, 0, L"filenames", filenames) || filenames.empty()) {
     return;
   }
 
@@ -28,11 +29,24 @@ NAN_METHOD(ParseSync) {
 
   anitomy::Anitomy anitomy;
   anitomy.options() = options;
-  anitomy.Parse(filename);
+  anitomy::element_container_t elements;
 
-  anitomy::element_container_t elements(anitomy.elements().begin(), anitomy.elements().end());
+  if (filenames.size() == 1) {
+    anitomy.Parse(filenames[0]);
+    std::copy(anitomy.elements().begin(), anitomy.elements().end(), std::back_inserter(elements));
+    info.GetReturnValue().Set(AnitomyElements::New(elements));
+    return;
+  }
 
-  v8::Local<v8::Object> obj = AnitomyElements::New(elements);
+  auto elementsArray = Nan::New<v8::Array>();
+  uint32_t i = 0;
 
-  info.GetReturnValue().Set(obj);
+  for (const auto &filename : filenames) {
+    elements.clear();
+    anitomy.Parse(filename);
+    std::copy(anitomy.elements().begin(), anitomy.elements().end(), std::back_inserter(elements));
+    Nan::Set(elementsArray, i++, AnitomyElements::New(elements));
+  }
+
+  info.GetReturnValue().Set(elementsArray);
 }

@@ -28,8 +28,10 @@ std::wstring StrToWstr(const std::string &input);
 v8::Local<v8::String> NodeLocalString(const std::wstring &str);
 std::wstring NodeToWstr(v8::Local<v8::Value> value);
 
-bool NodeStringParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
-                     const std::wstring &name, std::wstring &out);
+bool NodeEnsureParamProvided(Nan::NAN_METHOD_ARGS_TYPE info, int index,
+                           const std::wstring &name);
+bool NodeStringOrArrayParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
+                            const std::wstring &name, std::vector<std::wstring> &out);
 bool NodeCallbackParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
                        const std::wstring &name, Nan::Callback *&out);
 bool NodeAnitomyOptionsParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,

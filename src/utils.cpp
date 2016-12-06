@@ -52,28 +52,49 @@ std::wstring NodeToWstr(v8::Local<v8::Value> value) {
   }
 }
 
-bool NodeStringParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
-                     const std::wstring &name, std::wstring &out) {
-  if (info.Length() < index + 1 || info[index]->IsUndefined()) {
+bool NodeEnsureParamProvided(Nan::NAN_METHOD_ARGS_TYPE info, int index,
+                           const std::wstring &name) {
+  if (info.Length() <= index || info[index]->IsUndefined()) {
     Nan::ThrowError(NodeLocalString(name + L" must be provided"));
     return false;
   }
+  return true;
+}
 
-  if (!info[index]->IsString()) {
-    Nan::ThrowTypeError(NodeLocalString(name + L" must be a string"));
+bool NodeStringOrArrayParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
+                            const std::wstring &name, std::vector<std::wstring> &out) {
+  if (!NodeEnsureParamProvided(info, index, name))
+    return false;
+
+  if (info[index]->IsString()) {
+    out.push_back(NodeToWstr(info[index]));
+    return true;
+  } else if (!info[index]->IsArray()) {
+    Nan::ThrowTypeError(NodeLocalString(name + L" must be a string or an array of strings"));
     return false;
   }
 
-  out = NodeToWstr(info[index]);
+  auto stringArray = info[index].As<v8::Array>();
+  v8::Local<v8::Value> elem;
+
+  for (uint32_t i = 0; i < stringArray->Length(); ++i) {
+    elem = Nan::Get(stringArray, i).ToLocalChecked();
+
+    if (elem->IsString()) {
+      out.push_back(NodeToWstr(elem));
+    } else {
+      Nan::ThrowTypeError(NodeLocalString(name + L" must be a string or an array of strings"));
+      return false;
+    }
+  }
+
   return true;
 }
 
 bool NodeCallbackParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
                        const std::wstring &name, Nan::Callback *&out) {
-  if (info.Length() < index + 1 || info[index]->IsUndefined()) {
-    Nan::ThrowError(NodeLocalString(name + L" must be provided"));
+  if (!NodeEnsureParamProvided(info, index, name))
     return false;
-  }
 
   if (!info[index]->IsFunction()) {
     Nan::ThrowTypeError(NodeLocalString(name + L" must be a function"));
@@ -86,10 +107,8 @@ bool NodeCallbackParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
 
 bool NodeAnitomyOptionsParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
                              const std::wstring &name, anitomy::Options &out) {
-  if (info.Length() < index + 1 || info[index]->IsUndefined()) {
-    Nan::ThrowError(NodeLocalString(name + L" must be provided"));
+  if (!NodeEnsureParamProvided(info, index, name))
     return false;
-  }
 
   if (!info[index]->IsObject()) {
     Nan::ThrowTypeError(NodeLocalString(name + L" must be an object"));

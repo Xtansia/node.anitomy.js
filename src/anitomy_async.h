@@ -15,7 +15,7 @@
 
 class ParseWorker : public Nan::AsyncWorker {
 public:
-  ParseWorker(Nan::Callback *callback, const std::wstring &filename,
+  ParseWorker(Nan::Callback *callback, const std::vector<std::wstring> &filenames,
               const anitomy::Options &options);
   ~ParseWorker() {}
 
@@ -23,9 +23,9 @@ public:
   void HandleOKCallback();
 
 private:
-  const std::wstring filename_;
+  const std::vector<std::wstring> filenames_;
   const anitomy::Options options_;
-  anitomy::element_container_t elements_;
+  std::vector<anitomy::element_container_t> elements_;
 };
 
 NAN_METHOD(ParseAsync);
