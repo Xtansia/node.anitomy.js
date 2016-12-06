@@ -9,14 +9,14 @@
 #include "utils.h"
 
 #ifdef NODE_ANITOMY_USE_BOOST
-# include <boost/locale/encoding_utf.hpp>
+  #include <boost/locale/encoding_utf.hpp>
 #else
-# include <codecvt>
-# include <locale>
+  #include <codecvt>
+  #include <locale>
 #endif
 
 #ifndef NODE_ANITOMY_USE_BOOST
-typedef std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> wstr_conv;
+  typedef std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> wstr_conv;
 #endif
 
 std::string WstrToStr(const std::wstring &input) {
@@ -52,24 +52,27 @@ std::wstring NodeToWstr(v8::Local<v8::Value> value) {
 }
 
 bool NodeEnsureParamProvided(Nan::NAN_METHOD_ARGS_TYPE info, int index,
-                           const std::wstring &name) {
+                             const std::wstring &name) {
   if (info.Length() <= index || info[index]->IsUndefined()) {
     Nan::ThrowError(NodeLocalString(name + L" must be provided"));
     return false;
   }
+
   return true;
 }
 
 bool NodeStringOrArrayParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
                             const std::wstring &name, std::vector<std::wstring> &out) {
-  if (!NodeEnsureParamProvided(info, index, name))
+  if (!NodeEnsureParamProvided(info, index, name)) {
     return false;
+  }
 
   if (info[index]->IsString()) {
     out.push_back(NodeToWstr(info[index]));
     return true;
   } else if (!info[index]->IsArray()) {
-    Nan::ThrowTypeError(NodeLocalString(name + L" must be a string or an array of strings"));
+    Nan::ThrowTypeError(NodeLocalString(name +
+                                        L" must be a string or an array of strings"));
     return false;
   }
 
@@ -82,7 +85,8 @@ bool NodeStringOrArrayParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
     if (elem->IsString()) {
       out.push_back(NodeToWstr(elem));
     } else {
-      Nan::ThrowTypeError(NodeLocalString(name + L" must be a string or an array of strings"));
+      Nan::ThrowTypeError(NodeLocalString(name +
+                                          L" must be a string or an array of strings"));
       return false;
     }
   }
@@ -92,8 +96,9 @@ bool NodeStringOrArrayParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
 
 bool NodeCallbackParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
                        const std::wstring &name, Nan::Callback *&out) {
-  if (!NodeEnsureParamProvided(info, index, name))
+  if (!NodeEnsureParamProvided(info, index, name)) {
     return false;
+  }
 
   if (!info[index]->IsFunction()) {
     Nan::ThrowTypeError(NodeLocalString(name + L" must be a function"));
@@ -106,8 +111,9 @@ bool NodeCallbackParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
 
 bool NodeAnitomyOptionsParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
                              const std::wstring &name, anitomy::Options &out) {
-  if (!NodeEnsureParamProvided(info, index, name))
+  if (!NodeEnsureParamProvided(info, index, name)) {
     return false;
+  }
 
   if (!info[index]->IsObject()) {
     Nan::ThrowTypeError(NodeLocalString(name + L" must be an object"));

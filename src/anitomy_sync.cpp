@@ -16,24 +16,26 @@
 
 NAN_METHOD(ParseSync) {
   std::vector<std::wstring> filenames;
-	anitomy::Options options;
+  anitomy::Options options;
 
-	if (!NodeStringOrArrayParam(info, 0, L"filenames", filenames) || filenames.empty()) {
-		return;
-	}
+  if (!NodeStringOrArrayParam(info, 0, L"filenames", filenames)
+      || filenames.empty()) {
+    return;
+  }
 
-	if (info.Length() > 1
-		&& !NodeAnitomyOptionsParam(info, 1, L"options", options)) {
-		return;
-	}
+  if (info.Length() > 1
+      && !NodeAnitomyOptionsParam(info, 1, L"options", options)) {
+    return;
+  }
 
-	anitomy::Anitomy anitomy;
-	anitomy.options() = options;
+  anitomy::Anitomy anitomy;
+  anitomy.options() = options;
   anitomy::element_container_t elements;
 
   if (filenames.size() == 1) {
     anitomy.Parse(filenames[0]);
-    std::copy(anitomy.elements().begin(), anitomy.elements().end(), std::back_inserter(elements));
+    std::copy(anitomy.elements().begin(), anitomy.elements().end(),
+              std::back_inserter(elements));
     info.GetReturnValue().Set(AnitomyElements::New(elements));
     return;
   }
@@ -44,7 +46,8 @@ NAN_METHOD(ParseSync) {
   for (const auto &filename : filenames) {
     elements.clear();
     anitomy.Parse(filename);
-    std::copy(anitomy.elements().begin(), anitomy.elements().end(), std::back_inserter(elements));
+    std::copy(anitomy.elements().begin(), anitomy.elements().end(),
+              std::back_inserter(elements));
     Nan::Set(elementsArray, i++, AnitomyElements::New(elements));
   }
 

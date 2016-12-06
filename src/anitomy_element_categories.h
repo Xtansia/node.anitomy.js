@@ -44,7 +44,7 @@ const std::map<std::wstring, anitomy::ElementCategory> ElementCategoryNames{
 };
 
 inline std::wstring GetNameForCategory(anitomy::ElementCategory
-    category) {
+                                       category) {
   auto it = std::find_if(ElementCategoryNames.begin(),
                          ElementCategoryNames.end(),
   [category](const std::pair<std::wstring, anitomy::ElementCategory> &pair) {

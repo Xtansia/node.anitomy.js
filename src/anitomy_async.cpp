@@ -12,8 +12,10 @@
 #include "utils.h"
 #include <iterator>
 
-ParseWorker::ParseWorker(Nan::Callback *callback, const std::vector<std::wstring> &filenames,
-                         const anitomy::Options &options) : Nan::AsyncWorker(callback), filenames_(filenames), options_(options) {}
+ParseWorker::ParseWorker(Nan::Callback *callback,
+                         const std::vector<std::wstring> &filenames,
+                         const anitomy::Options &options)
+  : Nan::AsyncWorker(callback), filenames_(filenames), options_(options) {}
 
 void ParseWorker::Execute() {
   anitomy::Anitomy anitomy;
@@ -23,7 +25,8 @@ void ParseWorker::Execute() {
   for (const auto &filename : filenames_) {
     elements.clear();
     anitomy.Parse(filename);
-    std::copy(anitomy.elements().begin(), anitomy.elements().end(), std::back_inserter(elements));
+    std::copy(anitomy.elements().begin(), anitomy.elements().end(),
+              std::back_inserter(elements));
     elements_.push_back(elements);
   }
 }
@@ -55,7 +58,8 @@ NAN_METHOD(ParseAsync) {
 
   auto i = 0;
 
-  if (!NodeStringOrArrayParam(info, i++, L"filenames", filenames) || filenames.empty()) {
+  if (!NodeStringOrArrayParam(info, i++, L"filenames", filenames)
+      || filenames.empty()) {
     return;
   }
 

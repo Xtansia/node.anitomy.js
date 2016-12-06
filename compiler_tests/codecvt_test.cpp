@@ -10,16 +10,18 @@
 #include <codecvt>
 #include <iostream>
 #include <locale>
-#include <string>
 
-static std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> wstringConverter;
+typedef std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> wstr_conv;
+
 
 std::string WstrToStr(const std::wstring &input) {
-  return wstringConverter.to_bytes(input);
+  static wstr_conv conv;
+  return conv.to_bytes(input);
 }
 
 std::wstring StrToWstr(const std::string &input) {
-  return wstringConverter.from_bytes(input);
+  static wstr_conv conv;
+  return conv.from_bytes(input);
 }
 
 int main(void) {
