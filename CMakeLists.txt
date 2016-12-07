@@ -51,15 +51,13 @@ endif()
 
 # Addon source files
 set(ADDON_SOURCE_FILES
-    src/anitomy_async.cpp
-    src/anitomy_async.h
     src/anitomy_element_categories.h
     src/anitomy_elements.cpp
     src/anitomy_elements.h
     src/anitomy_lib.cpp
-    src/anitomy_sync.cpp
-    src/anitomy_sync.h
     src/nan_nowarn.h
+    src/parse_worker.cpp
+    src/parse_worker.h
     src/utils.cpp
     src/utils.h
     )

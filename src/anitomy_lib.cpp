@@ -7,9 +7,78 @@
 */
 
 #include "nan_nowarn.h"
-#include "anitomy_async.h"
+#include "parse_worker.h"
 #include "anitomy_elements.h"
-#include "anitomy_sync.h"
+#include "utils.h"
+
+#include <anitomy/anitomy.h>
+#include <iterator>
+
+NAN_METHOD(ParseAsync) {
+  std::vector<std::wstring> filenames;
+  anitomy::Options options;
+  Nan::Callback *callback = nullptr;
+
+  auto i = 0;
+
+  if (!NodeStringOrArrayParam(info, i++, L"filenames", filenames)
+      || filenames.empty()) {
+    return;
+  }
+
+  if (info.Length() > 2) {
+    if (!NodeAnitomyOptionsParam(info, i++, L"options", options)) {
+      return;
+    }
+  }
+
+  if (!NodeCallbackParam(info, i, L"callback", callback)) {
+    return;
+  }
+
+  Nan::AsyncQueueWorker(new ParseWorker(callback, filenames, options));
+}
+
+NAN_METHOD(ParseSync) {
+  std::vector<std::wstring> filenames;
+  anitomy::Options options;
+
+  if (!NodeStringOrArrayParam(info, 0, L"filenames", filenames)
+      || filenames.empty()) {
+    return;
+  }
+
+  if (info.Length() > 1
+      && !NodeAnitomyOptionsParam(info, 1, L"options", options)) {
+    return;
+  }
+
+  anitomy::Anitomy anitomy;
+  anitomy.options() = options;
+  anitomy::element_container_t elements;
+
+  if (filenames.size() == 1) {
+    anitomy.Parse(filenames[0]);
+    std::copy(anitomy.elements().begin(), anitomy.elements().end(),
+              std::back_inserter(elements));
+    info.GetReturnValue().Set(AnitomyElements::New(elements));
+    return;
+  }
+
+  auto elementsArray = Nan::New<v8::Array>();
+  uint32_t i = 0;
+
+  for (const auto &filename : filenames) {
+    elements.clear();
+    anitomy.Parse(filename);
+    std::copy(anitomy.elements().begin(), anitomy.elements().end(),
+              std::back_inserter(elements));
+    Nan::Set(elementsArray, i++, AnitomyElements::New(elements));
+  }
+
+  info.GetReturnValue().Set(elementsArray);
+}
+
 
 NAN_MODULE_INIT(Init) {
   AnitomyElements::Init();

@@ -6,16 +6,11 @@
 ** file, You can obtain one at https://mozilla.org/MPL/2.0/.
 */
 
-#include "anitomy_async.h"
+#include "parse_worker.h"
 
 #include "anitomy_elements.h"
 #include "utils.h"
 #include <iterator>
-
-ParseWorker::ParseWorker(Nan::Callback *callback,
-                         const std::vector<std::wstring> &filenames,
-                         const anitomy::Options &options)
-  : Nan::AsyncWorker(callback), filenames_(filenames), options_(options) {}
 
 void ParseWorker::Execute() {
   anitomy::Anitomy anitomy;
@@ -49,29 +44,4 @@ void ParseWorker::HandleOKCallback() {
   }
 
   callback->Call(1, argv);
-}
-
-NAN_METHOD(ParseAsync) {
-  std::vector<std::wstring> filenames;
-  anitomy::Options options;
-  Nan::Callback *callback = nullptr;
-
-  auto i = 0;
-
-  if (!NodeStringOrArrayParam(info, i++, L"filenames", filenames)
-      || filenames.empty()) {
-    return;
-  }
-
-  if (info.Length() > 2) {
-    if (!NodeAnitomyOptionsParam(info, i++, L"options", options)) {
-      return;
-    }
-  }
-
-  if (!NodeCallbackParam(info, i, L"callback", callback)) {
-    return;
-  }
-
-  Nan::AsyncQueueWorker(new ParseWorker(callback, filenames, options));
 }
