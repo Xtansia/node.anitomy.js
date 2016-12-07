@@ -180,10 +180,12 @@ bool NodeAnitomyOptionsParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
     }                                                                         \
   }
 
-  GET_BOOLEAN_OPTION(parseEpisodeNumber, parse_episode_number);
-  GET_BOOLEAN_OPTION(parseEpisodeTitle, parse_episode_title);
-  GET_BOOLEAN_OPTION(parseFileExtension, parse_file_extension);
-  GET_BOOLEAN_OPTION(parseReleaseGroup, parse_release_group);
+  GET_BOOLEAN_OPTION(parseEpisodeNumber, parse_episode_number)
+  GET_BOOLEAN_OPTION(parseEpisodeTitle, parse_episode_title)
+  GET_BOOLEAN_OPTION(parseFileExtension, parse_file_extension)
+  GET_BOOLEAN_OPTION(parseReleaseGroup, parse_release_group)
+
+#undef GET_BOOLEAN_OPTION
 
   return true;
 }
