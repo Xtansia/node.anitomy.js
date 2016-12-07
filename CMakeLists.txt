@@ -51,8 +51,8 @@ endif()
 
 # Addon source files
 set(ADDON_SOURCE_FILES
-    src/anitomy_element_categories.h
     src/anitomy_lib.cpp
+    src/element_categories.h
     src/elements_object.cpp
     src/elements_object.h
     src/nan_nowarn.h

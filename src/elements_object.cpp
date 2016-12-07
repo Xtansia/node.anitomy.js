@@ -8,7 +8,7 @@
 
 #include "elements_object.h"
 
-#include "anitomy_element_categories.h"
+#include "element_categories.h"
 #include "utils.h"
 
 void ElementsObject::Init() {
@@ -40,7 +40,7 @@ NAN_METHOD(ElementsObject::New) {
   auto *obj = new ElementsObject(elements);
   obj->Wrap(info.This());
 
-  for (const auto &it : ElementCategoryNames) {
+  for (const auto &it : NameToElementCategory) {
     if (obj->Count(it.second) > 0) {
       Nan::SetAccessor(info.This(), NodeLocalString(it.first),
                        ElementCategoryGetter);
@@ -69,9 +69,9 @@ NAN_METHOD(ElementsObject::Empty) {
 }
 
 NAN_GETTER(ElementsObject::ElementCategoryGetter) {
-  auto elemCatIt = ElementCategoryNames.find(NodeToWstr(property));
+  auto elemCatIt = NameToElementCategory.find(NodeToWstr(property));
 
-  if (elemCatIt == ElementCategoryNames.end()) {
+  if (elemCatIt == NameToElementCategory.end()) {
     return;
   }
 
