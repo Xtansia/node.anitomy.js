@@ -52,9 +52,9 @@ endif()
 # Addon source files
 set(ADDON_SOURCE_FILES
     src/anitomy_element_categories.h
-    src/anitomy_elements.cpp
-    src/anitomy_elements.h
     src/anitomy_lib.cpp
+    src/elements_object.cpp
+    src/elements_object.h
     src/nan_nowarn.h
     src/parse_worker.cpp
     src/parse_worker.h

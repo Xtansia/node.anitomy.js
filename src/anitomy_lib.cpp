@@ -8,7 +8,7 @@
 
 #include "nan_nowarn.h"
 #include "parse_worker.h"
-#include "anitomy_elements.h"
+#include "elements_object.h"
 #include "utils.h"
 
 #include <anitomy/anitomy.h>
@@ -61,7 +61,7 @@ NAN_METHOD(ParseSync) {
     anitomy.Parse(filenames[0]);
     std::copy(anitomy.elements().begin(), anitomy.elements().end(),
               std::back_inserter(elements));
-    info.GetReturnValue().Set(AnitomyElements::New(elements));
+    info.GetReturnValue().Set(ElementsObject::New(elements));
     return;
   }
 
@@ -73,7 +73,7 @@ NAN_METHOD(ParseSync) {
     anitomy.Parse(filename);
     std::copy(anitomy.elements().begin(), anitomy.elements().end(),
               std::back_inserter(elements));
-    Nan::Set(elementsArray, i++, AnitomyElements::New(elements));
+    Nan::Set(elementsArray, i++, ElementsObject::New(elements));
   }
 
   info.GetReturnValue().Set(elementsArray);
@@ -81,7 +81,7 @@ NAN_METHOD(ParseSync) {
 
 
 NAN_MODULE_INIT(Init) {
-  AnitomyElements::Init();
+  ElementsObject::Init();
   Nan::Export(target, "parse", ParseAsync);
   Nan::Export(target, "parseSync", ParseSync);
 }

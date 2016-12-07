@@ -6,16 +6,16 @@
 ** file, You can obtain one at https://mozilla.org/MPL/2.0/.
 */
 
-#include "anitomy_elements.h"
+#include "elements_object.h"
 
 #include "anitomy_element_categories.h"
 #include "utils.h"
 
-void AnitomyElements::Init() {
+void ElementsObject::Init() {
   Nan::HandleScope scope;
 
   auto tpl = Nan::New<v8::FunctionTemplate>(New);
-  tpl->SetClassName(Nan::New("AnitomyElements").ToLocalChecked());
+  tpl->SetClassName(NodeLocalString(L"AnitomyElements"));
   tpl->InstanceTemplate()->SetInternalFieldCount(1);
 
   Nan::SetPrototypeMethod(tpl, "empty", Empty);
@@ -23,7 +23,7 @@ void AnitomyElements::Init() {
   constructor().Reset(Nan::GetFunction(tpl).ToLocalChecked());
 }
 
-NAN_METHOD(AnitomyElements::New) {
+NAN_METHOD(ElementsObject::New) {
   if (!info.IsConstructCall()) {
     Nan::ThrowError(
       "Cannot call constructor as function, you need to use 'new' keyword");
@@ -37,7 +37,7 @@ NAN_METHOD(AnitomyElements::New) {
 
   auto ext = info[0].As<v8::External>();
   auto *elements = static_cast<anitomy::element_container_t *>(ext->Value());
-  auto *obj = new AnitomyElements(elements);
+  auto *obj = new ElementsObject(elements);
   obj->Wrap(info.This());
 
   for (const auto &it : ElementCategoryNames) {
@@ -50,7 +50,7 @@ NAN_METHOD(AnitomyElements::New) {
   info.GetReturnValue().Set(info.This());
 }
 
-v8::Local<v8::Object> AnitomyElements::New(anitomy::element_container_t
+v8::Local<v8::Object> ElementsObject::New(anitomy::element_container_t
     &elements) {
   Nan::EscapableHandleScope scope;
 
@@ -63,12 +63,12 @@ v8::Local<v8::Object> AnitomyElements::New(anitomy::element_container_t
   return scope.Escape(Nan::NewInstance(cons, 1, argv).ToLocalChecked());
 }
 
-NAN_METHOD(AnitomyElements::Empty) {
-  auto *obj = Unwrap<AnitomyElements>(info.Holder());
+NAN_METHOD(ElementsObject::Empty) {
+  auto *obj = Unwrap<ElementsObject>(info.Holder());
   info.GetReturnValue().Set(obj->Empty());
 }
 
-NAN_GETTER(AnitomyElements::ElementCategoryGetter) {
+NAN_GETTER(ElementsObject::ElementCategoryGetter) {
   auto elemCatIt = ElementCategoryNames.find(NodeToWstr(property));
 
   if (elemCatIt == ElementCategoryNames.end()) {
@@ -76,7 +76,7 @@ NAN_GETTER(AnitomyElements::ElementCategoryGetter) {
   }
 
   auto category = elemCatIt->second;
-  auto *obj = Unwrap<AnitomyElements>(info.Holder());
+  auto *obj = Unwrap<ElementsObject>(info.Holder());
   auto &values = obj->elements_[category];
 
   if (values.size() == 0) {
@@ -96,17 +96,17 @@ NAN_GETTER(AnitomyElements::ElementCategoryGetter) {
   info.GetReturnValue().Set(arr);
 }
 
-AnitomyElements::AnitomyElements(anitomy::element_container_t *elements) {
+ElementsObject::ElementsObject(anitomy::element_container_t *elements) {
   for (const auto &it : *elements) {
     elements_[it.first].push_back(it.second);
   }
 }
 
-std::size_t AnitomyElements::Count(anitomy::ElementCategory category) const {
+std::size_t ElementsObject::Count(anitomy::ElementCategory category) const {
   return elements_[category].size();
 }
 
-bool AnitomyElements::Empty() const {
+bool ElementsObject::Empty() const {
   for (uint32_t i = 0; i < ELEMENT_CATEGORY_COUNT; ++i) {
     if (Count(anitomy::ElementCategory(i)) > 0) {
       return false;

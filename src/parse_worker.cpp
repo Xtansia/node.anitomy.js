@@ -8,7 +8,7 @@
 
 #include "parse_worker.h"
 
-#include "anitomy_elements.h"
+#include "elements_object.h"
 #include "utils.h"
 #include <iterator>
 
@@ -32,12 +32,12 @@ void ParseWorker::HandleOKCallback() {
   v8::Local<v8::Value> argv[1];
 
   if (elements_.size() == 1) {
-    argv[0] = AnitomyElements::New(elements_[0]);
+    argv[0] = ElementsObject::New(elements_[0]);
   } else {
     auto elementsArray = Nan::New<v8::Array>();
 
     for (uint32_t i = 0; i < elements_.size(); ++i) {
-      Nan::Set(elementsArray, i, AnitomyElements::New(elements_[i]));
+      Nan::Set(elementsArray, i, ElementsObject::New(elements_[i]));
     }
 
     argv[0] = elementsArray;
