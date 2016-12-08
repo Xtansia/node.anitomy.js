@@ -36,7 +36,7 @@ bool GetOptionsFromObject(v8::Local<v8::Object> obj, anitomy::Options &out) {
 NAN_METHOD(ParseAsync) {
   std::vector<std::wstring> filenames;
   anitomy::Options options;
-  Nan::Callback *callback = nullptr;
+  v8::Local<v8::Function> callback;
 
   auto i = 0;
 
@@ -54,11 +54,12 @@ NAN_METHOD(ParseAsync) {
     }
   }
 
-  if (!NodeCallbackParam(info, i, L"callback", callback)) {
+  if (!NodeFunctionParam(info, i, L"callback", callback)) {
     return;
   }
 
-  Nan::AsyncQueueWorker(new ParseWorker(callback, filenames, options));
+  Nan::AsyncQueueWorker(new ParseWorker(new Nan::Callback(callback), filenames,
+                                        options));
 }
 
 NAN_METHOD(ParseSync) {

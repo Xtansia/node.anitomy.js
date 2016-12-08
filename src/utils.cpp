@@ -90,8 +90,8 @@ bool NodeStringOrArrayParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
   return true;
 }
 
-bool NodeCallbackParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
-                       const std::wstring &name, Nan::Callback *&out) {
+bool NodeFunctionParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
+                       const std::wstring &name, v8::Local<v8::Function> &out) {
   if (!NodeEnsureParamProvided(info, index, name)) {
     return false;
   }
@@ -101,7 +101,7 @@ bool NodeCallbackParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
     return false;
   }
 
-  out = new Nan::Callback(info[index].As<v8::Function>());
+  out = info[index].As<v8::Function>();
   return true;
 }
 

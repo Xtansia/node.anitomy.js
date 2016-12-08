@@ -33,8 +33,8 @@ bool NodeEnsureParamProvided(Nan::NAN_METHOD_ARGS_TYPE info, int index,
                              const std::wstring &name);
 bool NodeStringOrArrayParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
                             const std::wstring &name, std::vector<std::wstring> &out);
-bool NodeCallbackParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
-                       const std::wstring &name, Nan::Callback *&out);
+bool NodeFunctionParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
+                       const std::wstring &name, v8::Local<v8::Function> &out);
 bool NodeObjectParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
                      const std::wstring &name, v8::Local<v8::Object> &out);
 
