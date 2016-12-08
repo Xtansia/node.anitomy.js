@@ -40,16 +40,13 @@
   ENUM(VideoResolution) \
   ENUM(VideoTerm) \
   ENUM(VolumeNumber) \
-  ENUM(VolumePrefix) \
-  ENUM(Unknown)
+  ENUM(VolumePrefix)
 
 const std::vector<anitomy::ElementCategory> ElementCategories {
 #define ENUM(name) anitomy::kElement##name,
   ELEMENT_CATEGORIES
 #undef ENUM
 };
-
-constexpr auto NoSuchElementCategory = anitomy::ElementCategory(-1);
 
 inline anitomy::ElementCategory GetElementCategory(const std::wstring &name) {
   static const std::map<std::wstring, anitomy::ElementCategory> nameToCategory {
@@ -61,7 +58,7 @@ inline anitomy::ElementCategory GetElementCategory(const std::wstring &name) {
   auto it = nameToCategory.find(name);
 
   if (it == nameToCategory.end()) {
-    return NoSuchElementCategory;
+    return anitomy::kElementUnknown;
   }
 
   return it->second;
@@ -77,7 +74,7 @@ inline std::wstring GetName(anitomy::ElementCategory category) {
   auto it = categoryToName.find(category);
 
   if (it == categoryToName.end()) {
-    return L"";
+    return L"Unknown";
   }
 
   return it->second;

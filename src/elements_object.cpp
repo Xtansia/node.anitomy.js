@@ -86,7 +86,7 @@ NAN_METHOD(ElementsObject::Size) {
 NAN_GETTER(ElementsObject::ElementCategoryGetter) {
   auto category = GetElementCategory(NodeToWstr(property));
 
-  if (category == NoSuchElementCategory) {
+  if (category == anitomy::kElementUnknown) {
     return;
   }
 
