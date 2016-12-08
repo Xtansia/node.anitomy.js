@@ -26,7 +26,10 @@
 std::string WstrToStr(const std::wstring &input);
 std::wstring StrToWstr(const std::string &input);
 
-v8::Local<v8::String> NodeLocalString(const std::wstring &str);
+inline v8::Local<v8::String> NodeLocalString(const std::wstring &str) {
+  return Nan::New(WstrToStr(str)).ToLocalChecked();
+}
+
 std::wstring NodeToWstr(v8::Local<v8::Value> value);
 
 bool NodeEnsureParamProvided(Nan::NAN_METHOD_ARGS_TYPE info, int index,

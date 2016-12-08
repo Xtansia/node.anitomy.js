@@ -37,10 +37,6 @@ std::wstring StrToWstr(const std::string &input) {
 #endif
 }
 
-v8::Local<v8::String> NodeLocalString(const std::wstring &str) {
-  return Nan::New(WstrToStr(str)).ToLocalChecked();
-}
-
 std::wstring NodeToWstr(v8::Local<v8::Value> value) {
   Nan::Utf8String utf8String(value);
 
