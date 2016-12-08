@@ -9,7 +9,6 @@
 #include "elements_object.h"
 
 #include "element_categories.h"
-#include "utils.h"
 
 void ElementsObject::Init() {
   Nan::HandleScope scope;
@@ -109,21 +108,4 @@ NAN_GETTER(ElementsObject::ElementCategoryGetter) {
   }
 
   info.GetReturnValue().Set(arr);
-}
-
-size_t ElementsObject::Count(anitomy::ElementCategory category) const {
-  return elements_.count(category);
-}
-
-bool ElementsObject::Empty() const {
-  return elements_.empty();
-}
-
-size_t ElementsObject::Size() const {
-  return elements_.size();
-}
-
-std::vector<std::wstring> ElementsObject::GetAll(anitomy::ElementCategory
-    category) const {
-  return MultiMapGetAll(elements_, category);
 }

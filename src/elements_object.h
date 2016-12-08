@@ -7,10 +7,11 @@
 */
 
 #pragma once
-#ifndef ANITOMY_LIB_ANITOMY_ELEMENTS_H
-#define ANITOMY_LIB_ANITOMY_ELEMENTS_H
+#ifndef ANITOMY_LIB_ELEMENTS_OBJECT_H
+#define ANITOMY_LIB_ELEMENTS_OBJECT_H
 
 #include "nan_nowarn.h"
+#include "utils.h"
 #include <anitomy/anitomy.h>
 #include <map>
 
@@ -34,12 +35,24 @@ private:
   explicit ElementsObject(anitomy::Elements *elements);
   ~ElementsObject() {}
 
-  std::size_t Count(anitomy::ElementCategory category) const;
-  bool Empty() const;
-  std::size_t Size() const;
-  std::vector<std::wstring> GetAll(anitomy::ElementCategory category) const;
+  inline size_t Count(anitomy::ElementCategory category) const {
+    return elements_.count(category);
+  }
+
+  inline bool Empty() const {
+    return elements_.empty();
+  }
+
+  inline size_t Size() const {
+    return elements_.size();
+  }
+
+  inline std::vector<std::wstring> GetAll(anitomy::ElementCategory category)
+  const {
+    return MultiMapGetAll(elements_, category);
+  }
 
   std::multimap<anitomy::ElementCategory, std::wstring> elements_;
 };
 
-#endif // !ANITOMY_LIB_ANITOMY_ELEMENTS_H
+#endif // !ANITOMY_LIB_ELEMENTS_OBJECT_H
