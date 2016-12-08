@@ -15,46 +15,74 @@
 #include <map>
 #include <anitomy/element.h>
 
-#define MAP_ELEMENT_CATEGORIES \
-  MAP_ENUM(AnimeSeason) \
-  MAP_ENUM(AnimeSeasonPrefix) \
-  MAP_ENUM(AnimeTitle) \
-  MAP_ENUM(AnimeType) \
-  MAP_ENUM(AnimeYear) \
-  MAP_ENUM(AudioTerm) \
-  MAP_ENUM(DeviceCompatibility) \
-  MAP_ENUM(EpisodeNumber) \
-  MAP_ENUM(EpisodeNumberAlt) \
-  MAP_ENUM(EpisodePrefix) \
-  MAP_ENUM(EpisodeTitle) \
-  MAP_ENUM(FileChecksum) \
-  MAP_ENUM(FileExtension) \
-  MAP_ENUM(FileName) \
-  MAP_ENUM(Language) \
-  MAP_ENUM(Other) \
-  MAP_ENUM(ReleaseGroup) \
-  MAP_ENUM(ReleaseInformation) \
-  MAP_ENUM(ReleaseVersion) \
-  MAP_ENUM(Source) \
-  MAP_ENUM(Subtitles) \
-  MAP_ENUM(VideoResolution) \
-  MAP_ENUM(VideoTerm) \
-  MAP_ENUM(VolumeNumber) \
-  MAP_ENUM(VolumePrefix) \
-  MAP_ENUM(Unknown)
+#define ELEMENT_CATEGORIES \
+  ENUM(AnimeSeason) \
+  ENUM(AnimeSeasonPrefix) \
+  ENUM(AnimeTitle) \
+  ENUM(AnimeType) \
+  ENUM(AnimeYear) \
+  ENUM(AudioTerm) \
+  ENUM(DeviceCompatibility) \
+  ENUM(EpisodeNumber) \
+  ENUM(EpisodeNumberAlt) \
+  ENUM(EpisodePrefix) \
+  ENUM(EpisodeTitle) \
+  ENUM(FileChecksum) \
+  ENUM(FileExtension) \
+  ENUM(FileName) \
+  ENUM(Language) \
+  ENUM(Other) \
+  ENUM(ReleaseGroup) \
+  ENUM(ReleaseInformation) \
+  ENUM(ReleaseVersion) \
+  ENUM(Source) \
+  ENUM(Subtitles) \
+  ENUM(VideoResolution) \
+  ENUM(VideoTerm) \
+  ENUM(VolumeNumber) \
+  ENUM(VolumePrefix) \
+  ENUM(Unknown)
 
-const std::map<anitomy::ElementCategory, std::wstring> ElementCategoryToName {
-#define MAP_ENUM(name) { anitomy::kElement##name, WIDE_STRINGIFY(name) },
-  MAP_ELEMENT_CATEGORIES
-#undef MAP_ENUM
+const std::vector<anitomy::ElementCategory> ElementCategories {
+#define ENUM(name) anitomy::kElement##name,
+  ELEMENT_CATEGORIES
+#undef ENUM
 };
 
-const std::map<std::wstring, anitomy::ElementCategory> NameToElementCategory {
-#define MAP_ENUM(name) { WIDE_STRINGIFY(name), anitomy::kElement##name },
-  MAP_ELEMENT_CATEGORIES
-#undef MAP_ENUM
-};
+constexpr auto NoSuchElementCategory = anitomy::ElementCategory(-1);
 
-#undef MAP_ELEMENT_CATEGORIES
+inline anitomy::ElementCategory GetElementCategory(const std::wstring &name) {
+  static const std::map<std::wstring, anitomy::ElementCategory> nameToCategory {
+#define ENUM(name) { WIDE_STRINGIFY(name), anitomy::kElement##name },
+    ELEMENT_CATEGORIES
+#undef ENUM
+  };
+
+  auto it = nameToCategory.find(name);
+
+  if (it == nameToCategory.end()) {
+    return NoSuchElementCategory;
+  }
+
+  return it->second;
+}
+
+inline std::wstring GetName(anitomy::ElementCategory category) {
+  static const std::map<anitomy::ElementCategory, std::wstring> categoryToName {
+#define ENUM(name) { anitomy::kElement##name, WIDE_STRINGIFY(name) },
+    ELEMENT_CATEGORIES
+#undef ENUM
+  };
+
+  auto it = categoryToName.find(category);
+
+  if (it == categoryToName.end()) {
+    return L"";
+  }
+
+  return it->second;
+}
+
+#undef ELEMENT_CATEGORIES
 
 #endif // !ANITOMY_LIB_ELEMENT_CATEGORIES_H

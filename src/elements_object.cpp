@@ -41,9 +41,9 @@ NAN_METHOD(ElementsObject::New) {
   auto *obj = new ElementsObject(elements);
   obj->Wrap(info.This());
 
-  for (const auto &it : NameToElementCategory) {
-    if (obj->Count(it.second) > 0) {
-      Nan::SetAccessor(info.This(), NodeLocalString(it.first),
+  for (const auto &category : ElementCategories) {
+    if (!obj->Empty(category)) {
+      Nan::SetAccessor(info.This(), NodeLocalString(GetName(category)),
                        ElementCategoryGetter);
     }
   }
@@ -85,13 +85,12 @@ NAN_METHOD(ElementsObject::Size) {
 }
 
 NAN_GETTER(ElementsObject::ElementCategoryGetter) {
-  auto elemCatIt = NameToElementCategory.find(NodeToWstr(property));
+  auto category = GetElementCategory(NodeToWstr(property));
 
-  if (elemCatIt == NameToElementCategory.end()) {
+  if (category == NoSuchElementCategory) {
     return;
   }
 
-  auto category = elemCatIt->second;
   auto *obj = Unwrap<ElementsObject>(info.Holder());
   auto values = obj->GetAll(category);
 

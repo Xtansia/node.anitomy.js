@@ -14,9 +14,6 @@
 #include <anitomy/anitomy.h>
 #include <map>
 
-static constexpr uint32_t ELEMENT_CATEGORY_COUNT =
-  static_cast<uint32_t>(anitomy::ElementCategory::kElementIterateLast) + 1;
-
 class ElementsObject : public Nan::ObjectWrap {
 public:
   static void Init();
