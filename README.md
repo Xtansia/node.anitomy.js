@@ -183,8 +183,9 @@ properties set, if unset they default to these values (Anitomy's defaults):
 
 ### AnitomyElements
 This object represents the parsed elements of the filename. With a property for
-each ElementCategory, the properties are immutable. In cases where there are
-multiple elements in a category the property's value will be an array.
+each [ElementCategory](#element-categories) that it has a value for, the 
+properties are immutable. In cases where there are multiple elements in a 
+category the property's value will be an array.
 ```javascript
 AnitomyElements {
   AnimeTitle: 'Toradora!',
@@ -201,19 +202,14 @@ AnitomyElements {
   VideoTerm: 'H.264' }
 ```
 
-#### AnitomyElements#empty()
+#### AnitomyElements#empty([category])
 Returns true if the AnitomyElements has no category-value pairs.
+* `category` is optional, if provided must be a string representing an
+  [ElementCategory](#element-categories), return value will then be true if the AnitomyElements has no
+  values for that category.
 ```javascript
-var elems = anitomy.parseSync('')
-// -> AnitomyElements {}
-elems.empty()
-// -> true
-```
-
-#### AnitomyElements#size()
-Returns the number of category-value pairs this AnitomyElements has.
-```javascript
-var elems = anitomy.parseSync('[TaigaSubs]_Toradora!_(2008)_-_01v2_-_Tiger_and_Dragon_[1280x720_H.264_FLAC][1234ABCD].mkv')
+const filename = '[TaigaSubs]_Toradora!_(2008)_-_01v2_-_Tiger_and_Dragon_[1280x720_H.264_FLAC][1234ABCD].mkv';
+const elems = anitomy.parseSync(filename);
 /* -> AnitomyElements {
   AnimeTitle: 'Toradora!',
   AnimeYear: '2008',
@@ -227,8 +223,65 @@ var elems = anitomy.parseSync('[TaigaSubs]_Toradora!_(2008)_-_01v2_-_Tiger_and_D
   ReleaseVersion: '2',
   VideoResolution: '1280x720',
   VideoTerm: 'H.264' } */
-elems.size()
+const isEmpty = elems.empty();
+// -> false
+const hasNoVolumeNumber = elems.empty('VolumeNumber');
+// -> true
+```
+
+#### AnitomyElements#size()
+Returns the number of category-value pairs this AnitomyElements has.
+```javascript
+const filename = '[TaigaSubs]_Toradora!_(2008)_-_01v2_-_Tiger_and_Dragon_[1280x720_H.264_FLAC][1234ABCD].mkv';
+const elems = anitomy.parseSync(filename);
+/* -> AnitomyElements {
+  AnimeTitle: 'Toradora!',
+  AnimeYear: '2008',
+  AudioTerm: 'FLAC',
+  EpisodeNumber: '01',
+  EpisodeTitle: 'Tiger and Dragon',
+  FileChecksum: '1234ABCD',
+  FileExtension: 'mkv',
+  FileName: '[TaigaSubs]_Toradora!_(2008)_-_01v2_-_Tiger_and_Dragon_[1280x720_H.264_FLAC][1234ABCD]',
+  ReleaseGroup: 'TaigaSubs',
+  ReleaseVersion: '2',
+  VideoResolution: '1280x720',
+  VideoTerm: 'H.264' } */
+const size = elems.size();
 // -> 12
+```
+
+### Element Categories
+The element category names are the same as in `anitomy::ElementCategory`, 
+without the `anitomy::kElement` prefix:
+```javascript
+[
+  'AnimeSeason',
+  'AnimeSeasonPrefix',
+  'AnimeTitle',
+  'AnimeType',
+  'AnimeYear',
+  'AudioTerm',
+  'DeviceCompatibility',
+  'EpisodeNumber',
+  'EpisodeNumberAlt',
+  'EpisodePrefix',
+  'EpisodeTitle',
+  'FileChecksum',
+  'FileExtension',
+  'FileName',
+  'Language',
+  'Other',
+  'ReleaseGroup',
+  'ReleaseInformation',
+  'ReleaseVersion',
+  'Source',
+  'Subtitles',
+  'VideoResolution',
+  'VideoTerm',
+  'VolumeNumber',
+  'VolumePrefix'
+]
 ```
 
 ## To Be Implemented

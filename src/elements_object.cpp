@@ -75,7 +75,27 @@ ElementsObject::ElementsObject(anitomy::Elements *elements) {
 
 NAN_METHOD(ElementsObject::Empty) {
   auto *obj = Unwrap<ElementsObject>(info.Holder());
-  info.GetReturnValue().Set(obj->Empty());
+
+  if (info.Length() == 0) {
+    info.GetReturnValue().Set(obj->Empty());
+    return;
+  }
+
+  std::wstring categoryName;
+
+  if (!NodeStringParam(info, 0, L"category", categoryName)) {
+    return;
+  }
+
+  auto category = GetElementCategory(categoryName);
+
+  if (category == anitomy::kElementUnknown) {
+    Nan::ThrowError(NodeLocalString(
+                      L"category must be a valid ElementCategory name"));
+    return;
+  }
+
+  info.GetReturnValue().Set(obj->Empty(category));
 }
 
 NAN_METHOD(ElementsObject::Size) {

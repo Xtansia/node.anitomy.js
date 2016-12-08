@@ -32,6 +32,8 @@ std::wstring NodeToWstr(v8::Local<v8::Value> value);
 
 bool NodeEnsureParamProvided(Nan::NAN_METHOD_ARGS_TYPE info, int index,
                              const std::wstring &name);
+bool NodeStringParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
+                     const std::wstring &name, std::wstring &out);
 bool NodeStringOrArrayParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
                             const std::wstring &name, std::vector<std::wstring> &out);
 bool NodeFunctionParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,

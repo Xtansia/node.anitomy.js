@@ -43,6 +43,10 @@ private:
     return elements_.empty();
   }
 
+  inline bool Empty(anitomy::ElementCategory category) const {
+    return elements_.count(category) == 0;
+  }
+
   inline size_t Size() const {
     return elements_.size();
   }

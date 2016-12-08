@@ -57,6 +57,22 @@ bool NodeEnsureParamProvided(Nan::NAN_METHOD_ARGS_TYPE info, int index,
   return true;
 }
 
+bool NodeStringParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
+                     const std::wstring &name, std::wstring &out) {
+  if (!NodeEnsureParamProvided(info, index, name)) {
+    return false;
+  }
+
+  if (!info[index]->IsString()) {
+    Nan::ThrowTypeError(NodeLocalString(name +
+                                        L" must be a string"));
+    return false;
+  }
+
+  out = NodeToWstr(info[index]);
+  return true;
+}
+
 bool NodeStringOrArrayParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
                             const std::wstring &name, std::vector<std::wstring> &out) {
   if (!NodeEnsureParamProvided(info, index, name)) {
