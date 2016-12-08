@@ -120,7 +120,7 @@ describe('Anitomy', function () {
       async.each(['', '[Hello]_World_-_01.mkv'], function (title, cb) {
         anitomy.parse(title, function (elems) {
           try {
-            expect(elems.empty()).to.eql(title == '');
+            expect(elems.empty()).to.eql(title === '');
             return cb();
           } catch (err) {
             return cb(err);
@@ -166,7 +166,7 @@ describe('Anitomy', function () {
 
     it('should return an empty AnitomyElements when filename is empty', function () {
       ['', '[Hello]_World_-_01.mkv'].forEach(function (title) {
-        expect(anitomy.parseSync(title).empty()).to.eql(title == '');
+        expect(anitomy.parseSync(title).empty()).to.eql(title === '');
       });
     });
   });
