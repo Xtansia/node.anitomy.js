@@ -30,6 +30,8 @@ private:
 
   static NAN_METHOD(New);
   static NAN_METHOD(Empty);
+  static NAN_METHOD(Size);
+
   static NAN_GETTER(ElementCategoryGetter);
 
   explicit ElementsObject(anitomy::Elements *elements);
@@ -37,6 +39,7 @@ private:
 
   std::size_t Count(anitomy::ElementCategory category) const;
   bool Empty() const;
+  std::size_t Size() const;
   std::vector<std::wstring> GetAll(anitomy::ElementCategory category) const;
 
   std::multimap<anitomy::ElementCategory, std::wstring> elements_;

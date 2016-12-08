@@ -202,12 +202,33 @@ AnitomyElements {
 ```
 
 #### AnitomyElements#empty()
-Returns true if the AnitomyElements has no category-value pairs. such as:
+Returns true if the AnitomyElements has no category-value pairs.
 ```javascript
 var elems = anitomy.parseSync('')
 // -> AnitomyElements {}
 elems.empty()
 // -> true
+```
+
+#### AnitomyElements#size()
+Returns the number of category-value pairs this AnitomyElements has.
+```javascript
+var elems = anitomy.parseSync('[TaigaSubs]_Toradora!_(2008)_-_01v2_-_Tiger_and_Dragon_[1280x720_H.264_FLAC][1234ABCD].mkv')
+/* -> AnitomyElements {
+  AnimeTitle: 'Toradora!',
+  AnimeYear: '2008',
+  AudioTerm: 'FLAC',
+  EpisodeNumber: '01',
+  EpisodeTitle: 'Tiger and Dragon',
+  FileChecksum: '1234ABCD',
+  FileExtension: 'mkv',
+  FileName: '[TaigaSubs]_Toradora!_(2008)_-_01v2_-_Tiger_and_Dragon_[1280x720_H.264_FLAC][1234ABCD]',
+  ReleaseGroup: 'TaigaSubs',
+  ReleaseVersion: '2',
+  VideoResolution: '1280x720',
+  VideoTerm: 'H.264' } */
+elems.size()
+// -> 12
 ```
 
 ## To Be Implemented

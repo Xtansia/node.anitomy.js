@@ -19,6 +19,7 @@ void ElementsObject::Init() {
   tpl->InstanceTemplate()->SetInternalFieldCount(1);
 
   Nan::SetPrototypeMethod(tpl, "empty", Empty);
+  Nan::SetPrototypeMethod(tpl, "size", Size);
 
   constructor().Reset(Nan::GetFunction(tpl).ToLocalChecked());
 }
@@ -78,6 +79,11 @@ NAN_METHOD(ElementsObject::Empty) {
   info.GetReturnValue().Set(obj->Empty());
 }
 
+NAN_METHOD(ElementsObject::Size) {
+  auto *obj = Unwrap<ElementsObject>(info.Holder());
+  info.GetReturnValue().Set(static_cast<uint32_t>(obj->Size()));
+}
+
 NAN_GETTER(ElementsObject::ElementCategoryGetter) {
   auto elemCatIt = NameToElementCategory.find(NodeToWstr(property));
 
@@ -114,6 +120,9 @@ bool ElementsObject::Empty() const {
   return elements_.empty();
 }
 
+size_t ElementsObject::Size() const {
+  return elements_.size();
+}
 
 std::vector<std::wstring> ElementsObject::GetAll(anitomy::ElementCategory
     category) const {
