@@ -12,6 +12,7 @@
 
 #include "nan_nowarn.h"
 #include <anitomy/options.h>
+#include <map>
 #include <string>
 
 #define CONCAT_INTERNAL(X, Y) X##Y
@@ -50,5 +51,18 @@ bool NodeObjectGet(v8::Local<v8::Object> obj,
 bool NodeObjectGet(v8::Local<v8::Object> obj,
                    const std::wstring &objName, const std::wstring &key,
                    bool &out);
+
+template <typename KeyType, typename ValueType>
+inline std::vector<ValueType> MultiMapGetAll(const
+    std::multimap<KeyType, ValueType>
+    &mmap, const KeyType &key) {
+  auto range = mmap.equal_range(key);
+  std::vector<ValueType> values;
+  std::transform(range.first, range.second, std::back_inserter(values),
+  [](std::pair<const KeyType, ValueType> pair) {
+    return pair.second;
+  });
+  return values;
+}
 
 #endif // !ANITOMY_LIB_UTILS_H

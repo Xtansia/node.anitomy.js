@@ -12,6 +12,7 @@
 
 #include "nan_nowarn.h"
 #include <anitomy/anitomy.h>
+#include <map>
 
 static constexpr uint32_t ELEMENT_CATEGORY_COUNT =
   static_cast<uint32_t>(anitomy::ElementCategory::kElementIterateLast) + 1;
@@ -19,7 +20,7 @@ static constexpr uint32_t ELEMENT_CATEGORY_COUNT =
 class ElementsObject : public Nan::ObjectWrap {
 public:
   static void Init();
-  static v8::Local<v8::Object> New(anitomy::element_container_t &elements);
+  static v8::Local<v8::Object> New(const anitomy::element_container_t &elements);
 
 private:
   static inline Nan::Persistent<v8::Function> &constructor() {
@@ -36,8 +37,9 @@ private:
 
   std::size_t Count(anitomy::ElementCategory category) const;
   bool Empty() const;
+  std::vector<std::wstring> GetAll(anitomy::ElementCategory category) const;
 
-  std::vector<std::wstring> elements_[ELEMENT_CATEGORY_COUNT];
+  std::multimap<anitomy::ElementCategory, std::wstring> elements_;
 };
 
 #endif // !ANITOMY_LIB_ANITOMY_ELEMENTS_H

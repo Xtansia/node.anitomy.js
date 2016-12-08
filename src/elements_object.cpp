@@ -50,17 +50,28 @@ NAN_METHOD(ElementsObject::New) {
   info.GetReturnValue().Set(info.This());
 }
 
-v8::Local<v8::Object> ElementsObject::New(anitomy::element_container_t
+v8::Local<v8::Object> ElementsObject::New(const anitomy::element_container_t
     &elements) {
   Nan::EscapableHandleScope scope;
 
+  auto *elems = new anitomy::element_container_t(elements);
+
   v8::Local<v8::Value> argv[] = {
-    Nan::New<v8::External>(&elements)
+    Nan::New<v8::External>(elems)
   };
 
   auto cons = Nan::New(constructor());
+  auto instance = Nan::NewInstance(cons, 1, argv).ToLocalChecked();
 
-  return scope.Escape(Nan::NewInstance(cons, 1, argv).ToLocalChecked());
+  delete elems;
+
+  return scope.Escape(instance);
+}
+
+ElementsObject::ElementsObject(anitomy::element_container_t *elements) {
+  for (const auto &it : *elements) {
+    elements_.insert(it);
+  }
 }
 
 NAN_METHOD(ElementsObject::Empty) {
@@ -77,7 +88,7 @@ NAN_GETTER(ElementsObject::ElementCategoryGetter) {
 
   auto category = elemCatIt->second;
   auto *obj = Unwrap<ElementsObject>(info.Holder());
-  auto &values = obj->elements_[category];
+  auto values = obj->GetAll(category);
 
   if (values.size() == 0) {
     return;
@@ -96,22 +107,16 @@ NAN_GETTER(ElementsObject::ElementCategoryGetter) {
   info.GetReturnValue().Set(arr);
 }
 
-ElementsObject::ElementsObject(anitomy::element_container_t *elements) {
-  for (const auto &it : *elements) {
-    elements_[it.first].push_back(it.second);
-  }
-}
-
-std::size_t ElementsObject::Count(anitomy::ElementCategory category) const {
-  return elements_[category].size();
+size_t ElementsObject::Count(anitomy::ElementCategory category) const {
+  return elements_.count(category);
 }
 
 bool ElementsObject::Empty() const {
-  for (uint32_t i = 0; i < ELEMENT_CATEGORY_COUNT; ++i) {
-    if (Count(anitomy::ElementCategory(i)) > 0) {
-      return false;
-    }
-  }
+  return elements_.empty();
+}
 
-  return true;
+
+std::vector<std::wstring> ElementsObject::GetAll(anitomy::ElementCategory
+    category) const {
+  return MultiMapGetAll(elements_, category);
 }
