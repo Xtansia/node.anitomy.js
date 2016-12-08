@@ -26,7 +26,7 @@ public:
 protected:
   const std::vector<std::wstring> filenames_;
   const anitomy::Options options_;
-  std::vector<anitomy::element_container_t> elements_;
+  std::vector<anitomy::Elements> elements_;
 };
 
 class ParseEachWorker : public ParseWorker {

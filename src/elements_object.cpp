@@ -36,7 +36,7 @@ NAN_METHOD(ElementsObject::New) {
   }
 
   auto ext = info[0].As<v8::External>();
-  auto *elements = static_cast<anitomy::element_container_t *>(ext->Value());
+  auto *elements = static_cast<anitomy::Elements *>(ext->Value());
   auto *obj = new ElementsObject(elements);
   obj->Wrap(info.This());
 
@@ -50,11 +50,10 @@ NAN_METHOD(ElementsObject::New) {
   info.GetReturnValue().Set(info.This());
 }
 
-v8::Local<v8::Object> ElementsObject::New(const anitomy::element_container_t
-    &elements) {
+v8::Local<v8::Object> ElementsObject::New(const anitomy::Elements &elements) {
   Nan::EscapableHandleScope scope;
 
-  auto *elems = new anitomy::element_container_t(elements);
+  auto *elems = new anitomy::Elements(elements);
 
   v8::Local<v8::Value> argv[] = {
     Nan::New<v8::External>(elems)
@@ -68,7 +67,7 @@ v8::Local<v8::Object> ElementsObject::New(const anitomy::element_container_t
   return scope.Escape(instance);
 }
 
-ElementsObject::ElementsObject(anitomy::element_container_t *elements) {
+ElementsObject::ElementsObject(anitomy::Elements *elements) {
   for (const auto &it : *elements) {
     elements_.insert(it);
   }

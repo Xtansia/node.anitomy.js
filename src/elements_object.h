@@ -20,7 +20,7 @@ static constexpr uint32_t ELEMENT_CATEGORY_COUNT =
 class ElementsObject : public Nan::ObjectWrap {
 public:
   static void Init();
-  static v8::Local<v8::Object> New(const anitomy::element_container_t &elements);
+  static v8::Local<v8::Object> New(const anitomy::Elements &elements);
 
 private:
   static inline Nan::Persistent<v8::Function> &constructor() {
@@ -32,7 +32,7 @@ private:
   static NAN_METHOD(Empty);
   static NAN_GETTER(ElementCategoryGetter);
 
-  explicit ElementsObject(anitomy::element_container_t *elements);
+  explicit ElementsObject(anitomy::Elements *elements);
   ~ElementsObject() {}
 
   std::size_t Count(anitomy::ElementCategory category) const;

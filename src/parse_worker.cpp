@@ -15,14 +15,10 @@
 void ParseWorker::Execute() {
   anitomy::Anitomy anitomy;
   anitomy.options() = options_;
-  anitomy::element_container_t elements;
 
   for (const auto &filename : filenames_) {
-    elements.clear();
     anitomy.Parse(filename);
-    std::copy(anitomy.elements().begin(), anitomy.elements().end(),
-              std::back_inserter(elements));
-    elements_.push_back(elements);
+    elements_.push_back(anitomy.elements());
   }
 }
 

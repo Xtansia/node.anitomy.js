@@ -82,13 +82,10 @@ NAN_METHOD(ParseSync) {
 
   anitomy::Anitomy anitomy;
   anitomy.options() = options;
-  anitomy::element_container_t elements;
 
   if (filenames.size() == 1) {
     anitomy.Parse(filenames[0]);
-    std::copy(anitomy.elements().begin(), anitomy.elements().end(),
-              std::back_inserter(elements));
-    info.GetReturnValue().Set(ElementsObject::New(elements));
+    info.GetReturnValue().Set(ElementsObject::New(anitomy.elements()));
     return;
   }
 
@@ -96,11 +93,8 @@ NAN_METHOD(ParseSync) {
   uint32_t i = 0;
 
   for (const auto &filename : filenames) {
-    elements.clear();
     anitomy.Parse(filename);
-    std::copy(anitomy.elements().begin(), anitomy.elements().end(),
-              std::back_inserter(elements));
-    Nan::Set(elementsArray, i++, ElementsObject::New(elements));
+    Nan::Set(elementsArray, i++, ElementsObject::New(anitomy.elements()));
   }
 
   info.GetReturnValue().Set(elementsArray);
@@ -164,17 +158,13 @@ NAN_METHOD(ParseEachSync) {
 
   anitomy::Anitomy anitomy;
   anitomy.options() = options;
-  anitomy::element_container_t elements;
 
   v8::Local<v8::Value> argv[2];
 
   for (const auto &filename : filenames) {
-    elements.clear();
     anitomy.Parse(filename);
-    std::copy(anitomy.elements().begin(), anitomy.elements().end(),
-              std::back_inserter(elements));
     argv[0] = NodeLocalString(filename);
-    argv[1] = ElementsObject::New(elements);
+    argv[1] = ElementsObject::New(anitomy.elements());
     Nan::Call(callback, Nan::GetCurrentContext()->Global(), 2, argv);
   }
 }
