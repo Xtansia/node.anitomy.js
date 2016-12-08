@@ -20,9 +20,6 @@
 #define STRINGIFY(X) STRINGIFY_INTERNAL(X)
 #define WIDE_STRINGIFY(X) CONCAT(L, STRINGIFY(X))
 
-#define IF_OBJ_HAS(obj, key) \
-  if (Nan::Has(obj, NodeLocalString(key)).FromMaybe(false))
-
 std::string WstrToStr(const std::wstring &input);
 std::wstring StrToWstr(const std::string &input);
 
@@ -38,7 +35,20 @@ bool NodeStringOrArrayParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
                             const std::wstring &name, std::vector<std::wstring> &out);
 bool NodeCallbackParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
                        const std::wstring &name, Nan::Callback *&out);
-bool NodeAnitomyOptionsParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
-                             const std::wstring &name, anitomy::Options &out);
+bool NodeObjectParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
+                     const std::wstring &name, v8::Local<v8::Object> &out);
+
+inline bool NodeObjectHas(v8::Local<v8::Object> obj, const std::wstring &key) {
+  return Nan::Has(obj, NodeLocalString(key)).FromMaybe(false);
+}
+
+bool NodeObjectGet(v8::Local<v8::Object> obj, const std::wstring &objName,
+                   const std::wstring &key, std::wstring &out);
+bool NodeObjectGet(v8::Local<v8::Object> obj,
+                   const std::wstring &objName, const std::wstring &key,
+                   std::vector<std::wstring> &out);
+bool NodeObjectGet(v8::Local<v8::Object> obj,
+                   const std::wstring &objName, const std::wstring &key,
+                   bool &out);
 
 #endif // !ANITOMY_LIB_UTILS_H

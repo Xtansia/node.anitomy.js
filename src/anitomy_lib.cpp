@@ -14,6 +14,25 @@
 #include <anitomy/anitomy.h>
 #include <iterator>
 
+bool GetOptionsFromObject(v8::Local<v8::Object> obj, anitomy::Options &out) {
+#define GET_OPTION(jsName, outVar) \
+  if (NodeObjectHas(obj, jsName) \
+      && !NodeObjectGet(obj, L"options", jsName, outVar)) { \
+    return false; \
+  }
+
+  GET_OPTION(L"allowedDelimiters", out.allowed_delimiters);
+  GET_OPTION(L"ignoredStrings", out.ignored_strings);
+  GET_OPTION(L"parseEpisodeNumber", out.parse_episode_number);
+  GET_OPTION(L"parseEpisodeTitle", out.parse_episode_title);
+  GET_OPTION(L"parseFileExtension", out.parse_file_extension);
+  GET_OPTION(L"parseReleaseGroup", out.parse_release_group);
+
+#undef GET_OPTION
+
+  return true;
+}
+
 NAN_METHOD(ParseAsync) {
   std::vector<std::wstring> filenames;
   anitomy::Options options;
@@ -27,7 +46,10 @@ NAN_METHOD(ParseAsync) {
   }
 
   if (info.Length() > 2) {
-    if (!NodeAnitomyOptionsParam(info, i++, L"options", options)) {
+    v8::Local<v8::Object> optionsObj;
+
+    if (!NodeObjectParam(info, i++, L"options", optionsObj)
+        || !GetOptionsFromObject(optionsObj, options)) {
       return;
     }
   }
@@ -48,9 +70,13 @@ NAN_METHOD(ParseSync) {
     return;
   }
 
-  if (info.Length() > 1
-      && !NodeAnitomyOptionsParam(info, 1, L"options", options)) {
-    return;
+  if (info.Length() > 1) {
+    v8::Local<v8::Object> optionsObj;
+
+    if (!NodeObjectParam(info, 1, L"options", optionsObj)
+        || !GetOptionsFromObject(optionsObj, options)) {
+      return;
+    }
   }
 
   anitomy::Anitomy anitomy;

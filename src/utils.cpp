@@ -105,8 +105,8 @@ bool NodeCallbackParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
   return true;
 }
 
-bool NodeAnitomyOptionsParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
-                             const std::wstring &name, anitomy::Options &out) {
+bool NodeObjectParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
+                     const std::wstring &name, v8::Local<v8::Object> &out) {
   if (!NodeEnsureParamProvided(info, index, name)) {
     return false;
   }
@@ -116,72 +116,62 @@ bool NodeAnitomyOptionsParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
     return false;
   }
 
-  auto opts = Nan::To<v8::Object>(info[index]).ToLocalChecked();
+  out = Nan::To<v8::Object>(info[index]).ToLocalChecked();
+  return true;
+}
 
-  IF_OBJ_HAS(opts, L"allowedDelimiters") {
-    auto allowedDelimiters = Nan::Get(opts,
-                                      NodeLocalString(L"allowedDelimiters"))
-                             .ToLocalChecked();
+bool NodeObjectGet(v8::Local<v8::Object> obj, const std::wstring &objName,
+                   const std::wstring &key, std::wstring &out) {
+  auto val = Nan::Get(obj, NodeLocalString(key));
 
-    if (allowedDelimiters->IsString()) {
-      out.allowed_delimiters = NodeToWstr(allowedDelimiters);
-    } else {
-      Nan::ThrowTypeError(NodeLocalString(name +
-                                          L".allowedDelimiters must be"
-                                          L" a string"));
+  if (val.IsEmpty() || !val.ToLocalChecked()->IsString()) {
+    Nan::ThrowTypeError(NodeLocalString(objName + L"." + key +
+                                        L" must be a string"));
+    return false;
+  }
+
+  out = NodeToWstr(val.ToLocalChecked());
+  return true;
+}
+
+bool NodeObjectGet(v8::Local<v8::Object> obj, const std::wstring &objName,
+                   const std::wstring &key, std::vector<std::wstring> &out) {
+  auto val = Nan::Get(obj, NodeLocalString(key));
+
+  if (val.IsEmpty() || !val.ToLocalChecked()->IsArray()) {
+    Nan::ThrowTypeError(NodeLocalString(objName + L"." + key +
+                                        L" must be an array of strings"));
+    return false;
+  }
+
+  auto arr = val.ToLocalChecked().As<v8::Array>();
+  Nan::MaybeLocal<v8::Value> elem;
+
+  for (auto i = 0U; i < arr->Length(); ++i) {
+    elem = Nan::Get(arr, i);
+
+    if (elem.IsEmpty() || !elem.ToLocalChecked()->IsString()) {
+      Nan::ThrowTypeError(NodeLocalString(objName + L"." + key +
+                                          L" must be an array of strings"));
       return false;
     }
+
+    out.push_back(NodeToWstr(elem.ToLocalChecked()));
   }
 
-  IF_OBJ_HAS(opts, L"ignoredStrings") {
-    auto ignoredStrings = Nan::Get(opts,
-                                   NodeLocalString(L"ignoredStrings"))
-                          .ToLocalChecked();
+  return true;
+}
 
-    if (ignoredStrings->IsArray()) {
-      auto ignoredStringsArray = ignoredStrings.As<v8::Array>();
-      v8::Local<v8::Value> elem;
+bool NodeObjectGet(v8::Local<v8::Object> obj, const std::wstring &objName,
+                   const std::wstring &key, bool &out) {
+  auto val = Nan::Get(obj, NodeLocalString(key));
 
-      for (uint32_t i = 0; i < ignoredStringsArray->Length(); ++i) {
-        elem = Nan::Get(ignoredStringsArray, i).ToLocalChecked();
-
-        if (elem->IsString()) {
-          out.ignored_strings.push_back(NodeToWstr(elem));
-        } else {
-          Nan::ThrowTypeError(NodeLocalString(name +
-                                              L".ignoredStrings must be an"
-                                              L" array of strings"));
-          return false;
-        }
-      }
-    } else {
-      Nan::ThrowTypeError(NodeLocalString(name +
-                                          L".ignoredStrings must be an array"
-                                          L" of strings"));
-      return false;
-    }
+  if (val.IsEmpty() || !val.ToLocalChecked()->IsBoolean()) {
+    Nan::ThrowTypeError(NodeLocalString(objName + L"." + key +
+                                        L" must be a boolean"));
+    return false;
   }
 
-#define GET_BOOLEAN_OPTION(jsName, anitomyName)                               \
-  IF_OBJ_HAS(opts, WIDE_STRINGIFY(jsName)) {                                  \
-    auto jsName = Nan::Get(opts, NodeLocalString(WIDE_STRINGIFY(jsName)))     \
-                  .ToLocalChecked();                                          \
-    if (jsName->IsBoolean()) {                                                \
-      out.anitomyName = Nan::To<bool>(jsName).FromJust();                     \
-    } else {                                                                  \
-      Nan::ThrowTypeError(NodeLocalString(name                                \
-                                          + L"." WIDE_STRINGIFY(jsName)       \
-                                          L" must be a boolean"));          \
-      return false;                                                           \
-    }                                                                         \
-  }
-
-  GET_BOOLEAN_OPTION(parseEpisodeNumber, parse_episode_number)
-  GET_BOOLEAN_OPTION(parseEpisodeTitle, parse_episode_title)
-  GET_BOOLEAN_OPTION(parseFileExtension, parse_file_extension)
-  GET_BOOLEAN_OPTION(parseReleaseGroup, parse_release_group)
-
-#undef GET_BOOLEAN_OPTION
-
+  out = Nan::To<bool>(val.ToLocalChecked()).FromMaybe(out);
   return true;
 }
