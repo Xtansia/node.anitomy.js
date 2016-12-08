@@ -44,8 +44,12 @@ const filename = '[TaigaSubs]_Toradora!_(2008)_-_01v2_-_Tiger_and_Dragon_[1280x7
 
 const elems = anitomy.parseSync(filename);
 
-console.log(elems.AnimeTitle + ' #' + elems.EpisodeNumber 
-            + ' by ' + elems.ReleaseGroup);
+console.log(elems.AnimeTitle + ' #' + elems.EpisodeNumber + 
+            ' by ' + elems.ReleaseGroup);
+```
+Would output:
+```
+Toradora! #01 by TaigaSubs
 ```
 
 ## API
@@ -57,15 +61,19 @@ Parses the filenames asynchronously.
 * `callback` must be a function, will be called passing the resulting elements
   as the first parameter.
   - If `filenames` was an array, then the passed value will be an array of
-    [AnitomyElements](#anitomyelements)
+    [AnitomyElements](#anitomyelements), with the same ordering as `filenames`.
   - If `filenames` was a string, then the passed value will be an
-    [AnitomyElements](#anitomyelements)
+    [AnitomyElements](#anitomyelements).
 ```javascript
 const filename = '[TaigaSubs]_Toradora!_(2008)_-_01v2_-_Tiger_and_Dragon_[1280x720_H.264_FLAC][1234ABCD].mkv';
 anitomy.parse(filename, function (elems) {
-  console.log(elems.AnimeTitle + ' #' + elems.EpisodeNumber 
-              + ' by ' + elems.ReleaseGroup);
+  console.log(elems.AnimeTitle + ' #' + elems.EpisodeNumber + 
+              ' by ' + elems.ReleaseGroup);
 });
+```
+Would output:
+```
+Toradora! #01 by TaigaSubs
 ```
 
 ### parseSync(filenames[, options])
@@ -75,14 +83,18 @@ Parses the filenames synchronously.
   [here](#parse-options).
 * Returns:
   - If `filenames` was an array, then the returned value will be an array of
-    [AnitomyElements](#anitomyelements)
+    [AnitomyElements](#anitomyelements), with the same ordering as `filenames`.
   - If `filenames` was a string, then the returned value will be an
-    [AnitomyElements](#anitomyelements)
+    [AnitomyElements](#anitomyelements).
 ```javascript
 const filename = '[TaigaSubs]_Toradora!_(2008)_-_01v2_-_Tiger_and_Dragon_[1280x720_H.264_FLAC][1234ABCD].mkv';
 const elems = anitomy.parseSync(filename);
-console.log(elems.AnimeTitle + ' #' + elems.EpisodeNumber 
-            + ' by ' + elems.ReleaseGroup);
+console.log(elems.AnimeTitle + ' #' + elems.EpisodeNumber + 
+            ' by ' + elems.ReleaseGroup);
+```
+Would output:
+```
+Toradora! #01 by TaigaSubs
 ```
 
 ### Parse Options
