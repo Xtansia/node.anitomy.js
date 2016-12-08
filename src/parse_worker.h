@@ -23,10 +23,21 @@ public:
   void Execute() override;
   void HandleOKCallback() override;
 
-private:
+protected:
   const std::vector<std::wstring> filenames_;
   const anitomy::Options options_;
   std::vector<anitomy::element_container_t> elements_;
+};
+
+class ParseEachWorker : public ParseWorker {
+public:
+  ParseEachWorker(Nan::Callback *callback, const std::wstring &filename,
+                  const anitomy::Options &options)
+    : ParseWorker(callback, {
+    filename
+  }, options) {}
+
+  void HandleOKCallback() override;
 };
 
 #endif // !ANITOMY_LIB_PARSE_WORKER_H

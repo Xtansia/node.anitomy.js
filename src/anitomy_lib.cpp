@@ -106,11 +106,87 @@ NAN_METHOD(ParseSync) {
   info.GetReturnValue().Set(elementsArray);
 }
 
+NAN_METHOD(ParseEachAsync) {
+  std::vector<std::wstring> filenames;
+  anitomy::Options options;
+  v8::Local<v8::Function> callback;
+
+  auto i = 0;
+
+  if (!NodeStringOrArrayParam(info, i++, L"filenames", filenames)
+      || filenames.empty()) {
+    return;
+  }
+
+  if (info.Length() > 2) {
+    v8::Local<v8::Object> optionsObj;
+
+    if (!NodeObjectParam(info, i++, L"options", optionsObj)
+        || !GetOptionsFromObject(optionsObj, options)) {
+      return;
+    }
+  }
+
+  if (!NodeFunctionParam(info, i, L"callback", callback)) {
+    return;
+  }
+
+  for (const auto &filename : filenames) {
+    Nan::AsyncQueueWorker(new ParseEachWorker(new Nan::Callback(callback), filename,
+                          options));
+  }
+}
+
+NAN_METHOD(ParseEachSync) {
+  std::vector<std::wstring> filenames;
+  anitomy::Options options;
+  v8::Local<v8::Function> callback;
+
+  auto i = 0;
+
+  if (!NodeStringOrArrayParam(info, i++, L"filenames", filenames)
+      || filenames.empty()) {
+    return;
+  }
+
+  if (info.Length() > 2) {
+    v8::Local<v8::Object> optionsObj;
+
+    if (!NodeObjectParam(info, i++, L"options", optionsObj)
+        || !GetOptionsFromObject(optionsObj, options)) {
+      return;
+    }
+  }
+
+  if (!NodeFunctionParam(info, i, L"callback", callback)) {
+    return;
+  }
+
+  anitomy::Anitomy anitomy;
+  anitomy.options() = options;
+  anitomy::element_container_t elements;
+
+  v8::Local<v8::Value> argv[2];
+
+  for (const auto &filename : filenames) {
+    elements.clear();
+    anitomy.Parse(filename);
+    std::copy(anitomy.elements().begin(), anitomy.elements().end(),
+              std::back_inserter(elements));
+    argv[0] = NodeLocalString(filename);
+    argv[1] = ElementsObject::New(elements);
+    Nan::Call(callback, Nan::GetCurrentContext()->Global(), 2, argv);
+  }
+}
 
 NAN_MODULE_INIT(Init) {
   ElementsObject::Init();
+
   Nan::Export(target, "parse", ParseAsync);
   Nan::Export(target, "parseSync", ParseSync);
+
+  Nan::Export(target, "parseEach", ParseEachAsync);
+  Nan::Export(target, "parseEachSync", ParseEachSync);
 }
 
 NODE_MODULE(anitomy_lib, Init)

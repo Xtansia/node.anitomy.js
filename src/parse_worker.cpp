@@ -45,3 +45,14 @@ void ParseWorker::HandleOKCallback() {
 
   callback->Call(1, argv);
 }
+
+void ParseEachWorker::HandleOKCallback() {
+  Nan::HandleScope scope;
+
+  v8::Local<v8::Value> argv[] = {
+    NodeLocalString(filenames_[0]),
+    ElementsObject::New(elements_[0])
+  };
+
+  callback->Call(2, argv);
+}

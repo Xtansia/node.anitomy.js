@@ -97,6 +97,76 @@ Would output:
 Toradora! #01 by TaigaSubs
 ```
 
+### parseEach(filenames[, options], callback)
+Parses each of the individual filenames asynchronously, as opposed to 
+[parse](#parsefilenames-options-callback) which parses them all in bulk. As it
+is asynchronous there is no ordering ensured.
+* `filenames` must be either a string, or an array of strings.
+* `options` is optional, if provided it must be an object, as set out
+  [here](#parse-options).
+* `callback` must be a function, will be called when each filename is parsed,
+  passing the filename and the resulting [AnitomyElements](#anitomyelements) as
+  the first and second parameters respectively.
+```javascript
+const filenames = [
+  '[TaigaSubs]_Toradora!_(2008)_-_01v2_-_Tiger_and_Dragon_[1280x720_H.264_FLAC][1234ABCD].mkv',
+  '[ANBU]_Princess_Lover!_-_01_[2048A39A].mkv',
+  '[ANBU-Menclave]_Canaan_-_01_[1024x576_H.264_AAC][12F00E89].mkv',
+  '[ANBU-umai]_Haiyoru!_Nyaru-Ani_[596DD8E6].mkv'
+];
+anitomy.parseEach(filenames, function (filename, elems) {
+  console.log(filename + '\n\t=> ' + elems.AnimeTitle + ' #' + elems.EpisodeNumber + 
+              ' by ' + elems.ReleaseGroup);
+});
+```
+Would output (though not necessarily in this order):
+```
+[ANBU]_Princess_Lover!_-_01_[2048A39A].mkv
+  => Princess Lover! #01 by ANBU
+[ANBU-Menclave]_Canaan_-_01_[1024x576_H.264_AAC][12F00E89].mkv
+  => Canaan #01 by ANBU-Menclave
+[ANBU-umai]_Haiyoru!_Nyaru-Ani_[596DD8E6].mkv
+  => Haiyoru! Nyaru-Ani #undefined by ANBU-umai
+[TaigaSubs]_Toradora!_(2008)_-_01v2_-_Tiger_and_Dragon_[1280x720_H.264_FLAC][1234ABCD].mkv
+  => Toradora! #01 by TaigaSubs
+```
+
+### parseEachSync(filenames[, options], callback)
+Same as [parseEach](#parseeachfilenames-options-callback) but synchronous, i.e.
+calls callback for each parsed filename, then returns. `callback` is ensured to
+be called in the same order as `filenames`.
+* `filenames` must be either a string, or an array of strings.
+* `options` is optional, if provided it must be an object, as set out
+  [here](#parse-options).
+* `callback` must be a function, will be called when each filename is parsed,
+  passing the filename and the resulting [AnitomyElements](#anitomyelements) as
+  the first and second parameters respectively.
+```javascript
+const filenames = [
+  '[TaigaSubs]_Toradora!_(2008)_-_01v2_-_Tiger_and_Dragon_[1280x720_H.264_FLAC][1234ABCD].mkv',
+  '[ANBU]_Princess_Lover!_-_01_[2048A39A].mkv',
+  '[ANBU-Menclave]_Canaan_-_01_[1024x576_H.264_AAC][12F00E89].mkv',
+  '[ANBU-umai]_Haiyoru!_Nyaru-Ani_[596DD8E6].mkv'
+];
+anitomy.parseEachSync(filenames, function (filename, elems) {
+  console.log(filename + '\n\t=> ' + elems.AnimeTitle + ' #' + elems.EpisodeNumber + 
+              ' by ' + elems.ReleaseGroup);
+});
+console.log('parseEachSync completed');
+```
+Would output:
+```
+[TaigaSubs]_Toradora!_(2008)_-_01v2_-_Tiger_and_Dragon_[1280x720_H.264_FLAC][1234ABCD].mkv
+  => Toradora! #01 by TaigaSubs
+[ANBU]_Princess_Lover!_-_01_[2048A39A].mkv
+  => Princess Lover! #01 by ANBU
+[ANBU-Menclave]_Canaan_-_01_[1024x576_H.264_AAC][12F00E89].mkv
+  => Canaan #01 by ANBU-Menclave
+[ANBU-umai]_Haiyoru!_Nyaru-Ani_[596DD8E6].mkv
+  => Haiyoru! Nyaru-Ani #undefined by ANBU-umai
+parseEachSync completed
+```
+
 ### Parse Options
 Options are given in the form of an object, with any or all of the following 
 properties set, if unset they default to these values (Anitomy's defaults):
