@@ -14,23 +14,20 @@
 #include <anitomy/anitomy.h>
 #include <iterator>
 
-bool GetOptionsFromObject(v8::Local<v8::Object> obj, anitomy::Options &out) {
-#define GET_OPTION(jsName, outVar) \
-  if (NodeObjectHas(obj, jsName) \
-      && !NodeObjectGet(obj, L"options", jsName, outVar)) { \
-    return false; \
-  }
-
-  GET_OPTION(L"allowedDelimiters", out.allowed_delimiters);
-  GET_OPTION(L"ignoredStrings", out.ignored_strings);
-  GET_OPTION(L"parseEpisodeNumber", out.parse_episode_number);
-  GET_OPTION(L"parseEpisodeTitle", out.parse_episode_title);
-  GET_OPTION(L"parseFileExtension", out.parse_file_extension);
-  GET_OPTION(L"parseReleaseGroup", out.parse_release_group);
-
-#undef GET_OPTION
-
-  return true;
+inline bool GetOptionsFromObject(v8::Local<v8::Object> obj,
+                                 anitomy::Options &out) {
+  return NodeObjectGetIfHas(obj, L"options", L"allowedDelimiters",
+                            out.allowed_delimiters)
+         && NodeObjectGetIfHas(obj, L"options", L"ignoredStrings",
+                               out.ignored_strings)
+         && NodeObjectGetIfHas(obj, L"options", L"parseEpisodeNumber",
+                               out.parse_episode_number)
+         && NodeObjectGetIfHas(obj, L"options", L"parseEpisodeTitle",
+                               out.parse_episode_title)
+         && NodeObjectGetIfHas(obj, L"options", L"parseFileExtension",
+                               out.parse_file_extension)
+         && NodeObjectGetIfHas(obj, L"options", L"parseReleaseGroup",
+                               out.parse_release_group);
 }
 
 NAN_METHOD(ParseAsync) {

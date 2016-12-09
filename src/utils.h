@@ -63,6 +63,12 @@ bool NodeObjectGet(v8::Local<v8::Object> obj,
                    const std::wstring &objName, const std::wstring &key,
                    bool &out);
 
+template <typename OutType>
+inline bool NodeObjectGetIfHas(v8::Local<v8::Object> obj,
+                               const std::wstring &objName, const std::wstring &key, OutType &out) {
+  return !NodeObjectHas(obj, key) || NodeObjectGet(obj, objName, key, out);
+}
+
 template <typename KeyType, typename ValueType>
 inline std::vector<ValueType> MultiMapGetAll(const
     std::multimap<KeyType, ValueType>
