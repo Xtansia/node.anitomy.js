@@ -13,6 +13,7 @@
 #include "nan_nowarn.h"
 #include <anitomy/options.h>
 #include <map>
+#include <iterator>
 #include <string>
 
 #define CONCAT_INTERNAL(X, Y) X##Y
