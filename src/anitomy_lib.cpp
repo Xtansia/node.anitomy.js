@@ -40,21 +40,20 @@ NAN_METHOD(ParseAsync) {
 
   auto i = 0;
 
-  if (!NodeStringOrArrayParam(info, i++, L"filenames", filenames)
-      || filenames.empty()) {
+  if (!NodeParam(info, i++, L"filenames", filenames) || filenames.empty()) {
     return;
   }
 
   if (info.Length() > 2) {
     v8::Local<v8::Object> optionsObj;
 
-    if (!NodeObjectParam(info, i++, L"options", optionsObj)
+    if (!NodeParam(info, i++, L"options", optionsObj)
         || !GetOptionsFromObject(optionsObj, options)) {
       return;
     }
   }
 
-  if (!NodeFunctionParam(info, i, L"callback", callback)) {
+  if (!NodeParam(info, i, L"callback", callback)) {
     return;
   }
 
@@ -66,15 +65,14 @@ NAN_METHOD(ParseSync) {
   std::vector<std::wstring> filenames;
   anitomy::Options options;
 
-  if (!NodeStringOrArrayParam(info, 0, L"filenames", filenames)
-      || filenames.empty()) {
+  if (!NodeParam(info, 0, L"filenames", filenames) || filenames.empty()) {
     return;
   }
 
   if (info.Length() > 1) {
     v8::Local<v8::Object> optionsObj;
 
-    if (!NodeObjectParam(info, 1, L"options", optionsObj)
+    if (!NodeParam(info, 1, L"options", optionsObj)
         || !GetOptionsFromObject(optionsObj, options)) {
       return;
     }
@@ -107,21 +105,20 @@ NAN_METHOD(ParseEachAsync) {
 
   auto i = 0;
 
-  if (!NodeStringOrArrayParam(info, i++, L"filenames", filenames)
-      || filenames.empty()) {
+  if (!NodeParam(info, i++, L"filenames", filenames) || filenames.empty()) {
     return;
   }
 
   if (info.Length() > 2) {
     v8::Local<v8::Object> optionsObj;
 
-    if (!NodeObjectParam(info, i++, L"options", optionsObj)
+    if (!NodeParam(info, i++, L"options", optionsObj)
         || !GetOptionsFromObject(optionsObj, options)) {
       return;
     }
   }
 
-  if (!NodeFunctionParam(info, i, L"callback", callback)) {
+  if (!NodeParam(info, i, L"callback", callback)) {
     return;
   }
 
@@ -138,7 +135,7 @@ NAN_METHOD(ParseEachSync) {
 
   auto i = 0;
 
-  if (!NodeStringOrArrayParam(info, i++, L"filenames", filenames)
+  if (!NodeParam(info, i++, L"filenames", filenames)
       || filenames.empty()) {
     return;
   }
@@ -146,13 +143,13 @@ NAN_METHOD(ParseEachSync) {
   if (info.Length() > 2) {
     v8::Local<v8::Object> optionsObj;
 
-    if (!NodeObjectParam(info, i++, L"options", optionsObj)
+    if (!NodeParam(info, i++, L"options", optionsObj)
         || !GetOptionsFromObject(optionsObj, options)) {
       return;
     }
   }
 
-  if (!NodeFunctionParam(info, i, L"callback", callback)) {
+  if (!NodeParam(info, i, L"callback", callback)) {
     return;
   }
 

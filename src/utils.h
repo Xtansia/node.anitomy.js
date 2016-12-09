@@ -31,16 +31,24 @@ inline v8::Local<v8::String> NodeLocalString(const std::wstring &str) {
 
 std::wstring NodeToWstr(v8::Local<v8::Value> value);
 
-bool NodeEnsureParamProvided(Nan::NAN_METHOD_ARGS_TYPE info, int index,
-                             const std::wstring &name);
-bool NodeStringParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
-                     const std::wstring &name, std::wstring &out);
-bool NodeStringOrArrayParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
-                            const std::wstring &name, std::vector<std::wstring> &out);
-bool NodeFunctionParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
-                       const std::wstring &name, v8::Local<v8::Function> &out);
-bool NodeObjectParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
-                     const std::wstring &name, v8::Local<v8::Object> &out);
+inline bool NodeEnsureParamProvided(Nan::NAN_METHOD_ARGS_TYPE info, int index,
+                                    const std::wstring &name) {
+  if (info.Length() <= index || info[index]->IsUndefined()) {
+    Nan::ThrowError(NodeLocalString(name + L" must be provided"));
+    return false;
+  }
+
+  return true;
+}
+
+bool NodeParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
+               const std::wstring &name, std::wstring &out);
+bool NodeParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
+               const std::wstring &name, std::vector<std::wstring> &out);
+bool NodeParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
+               const std::wstring &name, v8::Local<v8::Function> &out);
+bool NodeParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
+               const std::wstring &name, v8::Local<v8::Object> &out);
 
 inline bool NodeObjectHas(v8::Local<v8::Object> obj, const std::wstring &key) {
   return Nan::Has(obj, NodeLocalString(key)).FromMaybe(false);

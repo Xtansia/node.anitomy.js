@@ -47,18 +47,8 @@ std::wstring NodeToWstr(v8::Local<v8::Value> value) {
   }
 }
 
-bool NodeEnsureParamProvided(Nan::NAN_METHOD_ARGS_TYPE info, int index,
-                             const std::wstring &name) {
-  if (info.Length() <= index || info[index]->IsUndefined()) {
-    Nan::ThrowError(NodeLocalString(name + L" must be provided"));
-    return false;
-  }
-
-  return true;
-}
-
-bool NodeStringParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
-                     const std::wstring &name, std::wstring &out) {
+bool NodeParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
+               const std::wstring &name, std::wstring &out) {
   if (!NodeEnsureParamProvided(info, index, name)) {
     return false;
   }
@@ -73,8 +63,8 @@ bool NodeStringParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
   return true;
 }
 
-bool NodeStringOrArrayParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
-                            const std::wstring &name, std::vector<std::wstring> &out) {
+bool NodeParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
+               const std::wstring &name, std::vector<std::wstring> &out) {
   if (!NodeEnsureParamProvided(info, index, name)) {
     return false;
   }
@@ -106,8 +96,8 @@ bool NodeStringOrArrayParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
   return true;
 }
 
-bool NodeFunctionParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
-                       const std::wstring &name, v8::Local<v8::Function> &out) {
+bool NodeParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
+               const std::wstring &name, v8::Local<v8::Function> &out) {
   if (!NodeEnsureParamProvided(info, index, name)) {
     return false;
   }
@@ -121,8 +111,8 @@ bool NodeFunctionParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
   return true;
 }
 
-bool NodeObjectParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
-                     const std::wstring &name, v8::Local<v8::Object> &out) {
+bool NodeParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
+               const std::wstring &name, v8::Local<v8::Object> &out) {
   if (!NodeEnsureParamProvided(info, index, name)) {
     return false;
   }

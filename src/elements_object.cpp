@@ -83,7 +83,7 @@ NAN_METHOD(ElementsObject::Empty) {
 
   std::wstring categoryName;
 
-  if (!NodeStringParam(info, 0, L"category", categoryName)) {
+  if (!NodeParam(info, 0, L"category", categoryName)) {
     return;
   }
 
