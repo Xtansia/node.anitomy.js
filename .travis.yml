@@ -16,6 +16,7 @@ env:
     - RUNTIME="node" RVERSION="0.12"
     - RUNTIME="node" RVERSION="4"
     - RUNTIME="node" RVERSION="6"
+    - RUNTIME="node" RVERSION="7"
 
 addons:
   apt:
