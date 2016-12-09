@@ -25,13 +25,13 @@ void ElementsObject::Init() {
 
 NAN_METHOD(ElementsObject::New) {
   if (!info.IsConstructCall()) {
-    Nan::ThrowError(
-      "Cannot call constructor as function, you need to use 'new' keyword");
+    NodeThrowError(
+      L"Cannot call constructor as function, you need to use 'new' keyword");
     return;
   }
 
   if (!info[0]->IsExternal()) {
-    Nan::ThrowError("Cannot create AnitomyElements directly");
+    NodeThrowError(L"Cannot create AnitomyElements directly");
     return;
   }
 
@@ -90,7 +90,7 @@ NAN_METHOD(ElementsObject::Empty) {
   auto category = GetElementCategory(categoryName);
 
   if (category == anitomy::kElementUnknown) {
-    Nan::ThrowError(WstrToNode(L"category must be a valid ElementCategory name"));
+    NodeThrowError(L"category must be a valid ElementCategory name");
     return;
   }
 

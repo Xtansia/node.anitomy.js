@@ -15,7 +15,7 @@ bool NodeParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
   }
 
   if (!info[index]->IsString()) {
-    Nan::ThrowTypeError(WstrToNode(name + L" must be a string"));
+    NodeThrowTypeError(name + L" must be a string");
     return false;
   }
 
@@ -33,8 +33,7 @@ bool NodeParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
     out.push_back(NodeToWstr(info[index]));
     return true;
   } else if (!info[index]->IsArray()) {
-    Nan::ThrowTypeError(WstrToNode(name +
-                                   L" must be a string or an array of strings"));
+    NodeThrowTypeError(name + L" must be a string or an array of strings");
     return false;
   }
 
@@ -47,8 +46,7 @@ bool NodeParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
     if (elem->IsString()) {
       out.push_back(NodeToWstr(elem));
     } else {
-      Nan::ThrowTypeError(WstrToNode(name +
-                                     L" must be a string or an array of strings"));
+      NodeThrowTypeError(name + L" must be a string or an array of strings");
       return false;
     }
   }
@@ -63,7 +61,7 @@ bool NodeParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
   }
 
   if (!info[index]->IsFunction()) {
-    Nan::ThrowTypeError(WstrToNode(name + L" must be a function"));
+    NodeThrowTypeError(name + L" must be a function");
     return false;
   }
 
@@ -78,7 +76,7 @@ bool NodeParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
   }
 
   if (!info[index]->IsObject()) {
-    Nan::ThrowTypeError(WstrToNode(name + L" must be an object"));
+    NodeThrowTypeError(name + L" must be an object");
     return false;
   }
 
@@ -91,7 +89,7 @@ bool NodeObjectGet(v8::Local<v8::Object> obj, const std::wstring &objName,
   auto val = Nan::Get(obj, WstrToNode(key));
 
   if (val.IsEmpty() || !val.ToLocalChecked()->IsString()) {
-    Nan::ThrowTypeError(WstrToNode(objName + L"." + key + L" must be a string"));
+    NodeThrowTypeError(objName + L"." + key + L" must be a string");
     return false;
   }
 
@@ -104,8 +102,7 @@ bool NodeObjectGet(v8::Local<v8::Object> obj, const std::wstring &objName,
   auto val = Nan::Get(obj, WstrToNode(key));
 
   if (val.IsEmpty() || !val.ToLocalChecked()->IsArray()) {
-    Nan::ThrowTypeError(WstrToNode(objName + L"." + key +
-                                   L" must be an array of strings"));
+    NodeThrowTypeError(objName + L"." + key + L" must be an array of strings");
     return false;
   }
 
@@ -116,8 +113,7 @@ bool NodeObjectGet(v8::Local<v8::Object> obj, const std::wstring &objName,
     elem = Nan::Get(arr, i);
 
     if (elem.IsEmpty() || !elem.ToLocalChecked()->IsString()) {
-      Nan::ThrowTypeError(WstrToNode(objName + L"." + key +
-                                     L" must be an array of strings"));
+      NodeThrowTypeError(objName + L"." + key + L" must be an array of strings");
       return false;
     }
 
@@ -132,8 +128,7 @@ bool NodeObjectGet(v8::Local<v8::Object> obj, const std::wstring &objName,
   auto val = Nan::Get(obj, WstrToNode(key));
 
   if (val.IsEmpty() || !val.ToLocalChecked()->IsBoolean()) {
-    Nan::ThrowTypeError(WstrToNode(objName + L"." + key +
-                                   L" must be a boolean"));
+    NodeThrowTypeError(objName + L"." + key + L" must be a boolean");
     return false;
   }
 

@@ -60,10 +60,18 @@ inline std::wstring NodeToWstr(v8::Local<v8::Value> value) {
   return str.length() > 0 ? StrToWstr(*str) : L"";
 }
 
+inline void NodeThrowError(const std::wstring &error) {
+  Nan::ThrowError(WstrToNode(error));
+}
+
+inline void NodeThrowTypeError(const std::wstring &error) {
+  Nan::ThrowTypeError(WstrToNode(error));
+}
+
 inline bool NodeEnsureParamProvided(Nan::NAN_METHOD_ARGS_TYPE info, int index,
                                     const std::wstring &name) {
   if (info.Length() <= index || info[index]->IsUndefined()) {
-    Nan::ThrowError(WstrToNode(name + L" must be provided"));
+    NodeThrowError(name + L" must be provided");
     return false;
   }
 
