@@ -14,7 +14,7 @@ void ElementsObject::Init() {
   Nan::HandleScope scope;
 
   auto tpl = Nan::New<v8::FunctionTemplate>(New);
-  tpl->SetClassName(NodeLocalString(L"AnitomyElements"));
+  tpl->SetClassName(WstrToNode(L"AnitomyElements"));
   tpl->InstanceTemplate()->SetInternalFieldCount(1);
 
   Nan::SetPrototypeMethod(tpl, "empty", Empty);
@@ -42,7 +42,7 @@ NAN_METHOD(ElementsObject::New) {
 
   for (const auto &category : ElementCategories) {
     if (!obj->Empty(category)) {
-      Nan::SetAccessor(info.This(), NodeLocalString(GetName(category)),
+      Nan::SetAccessor(info.This(), WstrToNode(GetName(category)),
                        ElementCategoryGetter);
     }
   }
@@ -90,8 +90,7 @@ NAN_METHOD(ElementsObject::Empty) {
   auto category = GetElementCategory(categoryName);
 
   if (category == anitomy::kElementUnknown) {
-    Nan::ThrowError(NodeLocalString(
-                      L"category must be a valid ElementCategory name"));
+    Nan::ThrowError(WstrToNode(L"category must be a valid ElementCategory name"));
     return;
   }
 
@@ -116,7 +115,7 @@ NAN_GETTER(ElementsObject::ElementCategoryGetter) {
   if (values.size() == 0) {
     return;
   } else if (values.size() == 1) {
-    info.GetReturnValue().Set(NodeLocalString(values[0]));
+    info.GetReturnValue().Set(WstrToNode(values[0]));
     return;
   }
 
@@ -124,7 +123,7 @@ NAN_GETTER(ElementsObject::ElementCategoryGetter) {
   uint32_t i = 0;
 
   for (const auto &val : values) {
-    Nan::Set(arr, i++, NodeLocalString(val));
+    Nan::Set(arr, i++, WstrToNode(val));
   }
 
   info.GetReturnValue().Set(arr);

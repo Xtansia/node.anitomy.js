@@ -157,7 +157,7 @@ NAN_METHOD(ParseEachSync) {
 
   for (const auto &filename : filenames) {
     anitomy.Parse(filename);
-    argv[0] = NodeLocalString(filename);
+    argv[0] = WstrToNode(filename);
     argv[1] = ElementsObject::New(anitomy.elements());
     Nan::Call(callback, Nan::GetCurrentContext()->Global(), 2, argv);
   }
