@@ -19,6 +19,7 @@ void ElementsObject::Init() {
 
   Nan::SetPrototypeMethod(tpl, "empty", Empty);
   Nan::SetPrototypeMethod(tpl, "size", Size);
+  Nan::SetPrototypeMethod(tpl, "count", Count);
   Nan::SetPrototypeMethod(tpl, "get", Get);
   Nan::SetPrototypeMethod(tpl, "getAll", GetAll);
 
@@ -95,6 +96,17 @@ NAN_METHOD(ElementsObject::Empty) {
 NAN_METHOD(ElementsObject::Size) {
   auto *obj = Unwrap<ElementsObject>(info.Holder());
   info.GetReturnValue().Set(static_cast<uint32_t>(obj->Size()));
+}
+
+NAN_METHOD(ElementsObject::Count) {
+  auto *obj = Unwrap<ElementsObject>(info.Holder());
+  anitomy::ElementCategory category;
+
+  if (!NodeParam(info, 0, L"category", category)) {
+    return;
+  }
+
+  info.GetReturnValue().Set(static_cast<uint32_t>(obj->Count(category)));
 }
 
 NAN_METHOD(ElementsObject::Get) {

@@ -29,6 +29,7 @@ private:
   static NAN_METHOD(New);
   static NAN_METHOD(Empty);
   static NAN_METHOD(Size);
+  static NAN_METHOD(Count);
   static NAN_METHOD(Get);
   static NAN_METHOD(GetAll);
 
