@@ -205,8 +205,8 @@ AnitomyElements {
 #### AnitomyElements#empty([category])
 Returns true if the AnitomyElements has no category-value pairs.
 * `category` is optional, if provided must be a string representing an
-  [ElementCategory](#element-categories), return value will then be true if the AnitomyElements has no
-  values for that category.
+  [ElementCategory](#element-categories), return value will then be true if the 
+  AnitomyElements has no values for that category.
 ```javascript
 const filename = '[TaigaSubs]_Toradora!_(2008)_-_01v2_-_Tiger_and_Dragon_[1280x720_H.264_FLAC][1234ABCD].mkv';
 const elems = anitomy.parseSync(filename);
@@ -227,6 +227,23 @@ const isEmpty = elems.empty();
 // -> false
 const hasNoVolumeNumber = elems.empty('VolumeNumber');
 // -> true
+```
+
+#### AnitomyElements#count(category)
+Returns the number of values associated with the category in this AnitomyElements.
+* `category` must be a string representing an [ElementCategory](#element-categories).
+```javascript
+const filename = 'Detective Conan - 316-317 [DCTP][2411959B].mkv';
+const elems = anitomy.parseSync(filename);
+/* -> AnitomyElements {
+  AnimeTitle: 'Detective Conan',
+  EpisodeNumber: [ '316', '317' ],
+  FileChecksum: '2411959B',
+  FileExtension: 'mkv',
+  FileName: 'Detective Conan - 316-317 [DCTP][2411959B]',
+  ReleaseGroup: 'DCTP' } */
+const numOfEpNumbers = elems.count('EpisodeNumber');
+// -> 2
 ```
 
 #### AnitomyElements#size()
