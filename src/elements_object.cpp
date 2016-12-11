@@ -19,6 +19,8 @@ void ElementsObject::Init() {
 
   Nan::SetPrototypeMethod(tpl, "empty", Empty);
   Nan::SetPrototypeMethod(tpl, "size", Size);
+  Nan::SetPrototypeMethod(tpl, "get", Get);
+  Nan::SetPrototypeMethod(tpl, "getAll", GetAll);
 
   constructor().Reset(Nan::GetFunction(tpl).ToLocalChecked());
 }
@@ -81,16 +83,9 @@ NAN_METHOD(ElementsObject::Empty) {
     return;
   }
 
-  std::wstring categoryName;
+  anitomy::ElementCategory category;
 
-  if (!NodeParam(info, 0, L"category", categoryName)) {
-    return;
-  }
-
-  auto category = GetElementCategory(categoryName);
-
-  if (category == anitomy::kElementUnknown) {
-    NodeThrowError(L"category must be a valid ElementCategory name");
+  if (!NodeParam(info, 0, L"category", category)) {
     return;
   }
 
@@ -100,6 +95,37 @@ NAN_METHOD(ElementsObject::Empty) {
 NAN_METHOD(ElementsObject::Size) {
   auto *obj = Unwrap<ElementsObject>(info.Holder());
   info.GetReturnValue().Set(static_cast<uint32_t>(obj->Size()));
+}
+
+NAN_METHOD(ElementsObject::Get) {
+  auto *obj = Unwrap<ElementsObject>(info.Holder());
+  anitomy::ElementCategory category;
+
+  if (!NodeParam(info, 0, L"category", category)) {
+    return;
+  }
+
+  info.GetReturnValue().Set(WstrToNode(obj->Get(category)));
+}
+
+NAN_METHOD(ElementsObject::GetAll) {
+  auto *obj = Unwrap<ElementsObject>(info.Holder());
+  anitomy::ElementCategory category;
+
+  if (!NodeParam(info, 0, L"category", category)) {
+    return;
+  }
+
+  auto values = obj->GetAll(category);
+
+  auto arr = Nan::New<v8::Array>();
+  uint32_t i = 0;
+
+  for (const auto &val : values) {
+    Nan::Set(arr, i++, WstrToNode(val));
+  }
+
+  info.GetReturnValue().Set(arr);
 }
 
 NAN_GETTER(ElementsObject::ElementCategoryGetter) {

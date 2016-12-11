@@ -8,6 +8,8 @@
 
 #include "utils.h"
 
+#include "element_categories.h"
+
 bool NodeParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
                const std::wstring &name, std::wstring &out) {
   if (!NodeEnsureParamProvided(info, index, name)) {
@@ -81,6 +83,26 @@ bool NodeParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
   }
 
   out = Nan::To<v8::Object>(info[index]).ToLocalChecked();
+  return true;
+}
+
+bool NodeParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
+               const std::wstring &name, anitomy::ElementCategory &out) {
+  std::wstring categoryName;
+
+  if (!NodeParam(info, index, name, categoryName)) {
+    return false;
+  }
+
+  auto category = GetElementCategory(categoryName);
+
+  if (category == anitomy::kElementUnknown) {
+    NodeThrowError(name + L" must be a valid ElementCategory name");
+    return false;
+  }
+
+  out = category;
+
   return true;
 }
 

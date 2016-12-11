@@ -29,6 +29,8 @@ private:
   static NAN_METHOD(New);
   static NAN_METHOD(Empty);
   static NAN_METHOD(Size);
+  static NAN_METHOD(Get);
+  static NAN_METHOD(GetAll);
 
   static NAN_GETTER(ElementCategoryGetter);
 
@@ -49,6 +51,11 @@ private:
 
   inline size_t Size() const {
     return elements_.size();
+  }
+
+  inline std::wstring Get(anitomy::ElementCategory category) const {
+    const auto it = elements_.lower_bound(category);
+    return it->first == category ? it->second : L"";
   }
 
   inline std::vector<std::wstring> GetAll(anitomy::ElementCategory category)

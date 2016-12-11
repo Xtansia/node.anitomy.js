@@ -11,6 +11,7 @@
 #define ANITOMY_LIB_UTILS_H
 
 #include "nan_nowarn.h"
+#include <anitomy/element.h>
 #include <anitomy/options.h>
 #include <map>
 #include <iterator>
@@ -86,6 +87,8 @@ bool NodeParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
                const std::wstring &name, v8::Local<v8::Function> &out);
 bool NodeParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
                const std::wstring &name, v8::Local<v8::Object> &out);
+bool NodeParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
+               const std::wstring &name, anitomy::ElementCategory &out);
 
 inline bool NodeObjectHas(v8::Local<v8::Object> obj, const std::wstring &key) {
   return Nan::Has(obj, WstrToNode(key)).FromMaybe(false);
