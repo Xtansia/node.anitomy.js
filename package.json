@@ -5,7 +5,13 @@
   "main": "anitomy.js",
   "scripts": {
     "test": "mocha test/test.js",
-    "install": "cmake-js compile"
+    "install": "cmake-js compile",
+
+    "flow:version": "npm version --no-git-tag-version",
+    "preversion": "git checkout develop && git flow release start $npm_package_version",
+    "version": "git add package.json && git commit -m $npm_package_version",
+    "prepublish": "git flow release finish $npm_package_version && git checkout v$npm_package_version",
+    "postpublish": "git checkout develop && git push && git push --tags"
   },
   "repository": {
     "type": "git",
