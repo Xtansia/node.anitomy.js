@@ -81,16 +81,9 @@ NAN_METHOD(ElementsObject::Empty) {
     return;
   }
 
-  std::wstring categoryName;
+  anitomy::ElementCategory category;
 
-  if (!NodeParam(info, 0, L"category", categoryName)) {
-    return;
-  }
-
-  auto category = GetElementCategory(categoryName);
-
-  if (category == anitomy::kElementUnknown) {
-    NodeThrowError(L"category must be a valid ElementCategory name");
+  if (!NodeParam(info, 0, L"category", category)) {
     return;
   }
 
