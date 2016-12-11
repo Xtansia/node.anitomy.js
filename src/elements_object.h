@@ -29,6 +29,7 @@ private:
   static NAN_METHOD(New);
   static NAN_METHOD(Empty);
   static NAN_METHOD(Size);
+  static NAN_METHOD(GetAll);
 
   static NAN_GETTER(ElementCategoryGetter);
 
