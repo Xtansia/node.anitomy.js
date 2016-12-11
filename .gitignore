@@ -1,5 +1,6 @@
 __pycache__/
 build/
 node_modules/
+npm-debug.log
 
 CMakeLists.txt.user
