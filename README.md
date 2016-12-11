@@ -286,6 +286,24 @@ const firstEpNum = elems.get('EpisodeNumber');
 // -> '316'
 ```
 
+#### AnitomyElements#getAll(category)
+Returns an array of all the values associated with the category in this 
+AnitomyElements, or an empty array if none.
+* `category` must be a string representing an [ElementCategory](#element-categories).
+```javascript
+const filename = 'Detective Conan - 316-317 [DCTP][2411959B].mkv';
+const elems = anitomy.parseSync(filename);
+/* -> AnitomyElements {
+  AnimeTitle: 'Detective Conan',
+  EpisodeNumber: [ '316', '317' ],
+  FileChecksum: '2411959B',
+  FileExtension: 'mkv',
+  FileName: 'Detective Conan - 316-317 [DCTP][2411959B]',
+  ReleaseGroup: 'DCTP' } */
+const epNums = elems.getAll('EpisodeNumber');
+// -> [ '316', '317' ]
+```
+
 ### Element Categories
 The element category names are the same as in `anitomy::ElementCategory`, 
 without the `anitomy::kElement` prefix:
