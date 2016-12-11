@@ -268,6 +268,24 @@ const size = elems.size();
 // -> 12
 ```
 
+#### AnitomyElements#get(category)
+Returns the first value associated with the category in this AnitomyElements,
+or an empty string if none.
+* `category` must be a string representing an [ElementCategory](#element-categories).
+```javascript
+const filename = 'Detective Conan - 316-317 [DCTP][2411959B].mkv';
+const elems = anitomy.parseSync(filename);
+/* -> AnitomyElements {
+  AnimeTitle: 'Detective Conan',
+  EpisodeNumber: [ '316', '317' ],
+  FileChecksum: '2411959B',
+  FileExtension: 'mkv',
+  FileName: 'Detective Conan - 316-317 [DCTP][2411959B]',
+  ReleaseGroup: 'DCTP' } */
+const firstEpNum = elems.get('EpisodeNumber');
+// -> '316'
+```
+
 ### Element Categories
 The element category names are the same as in `anitomy::ElementCategory`, 
 without the `anitomy::kElement` prefix:
