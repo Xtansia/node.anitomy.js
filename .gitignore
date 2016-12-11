@@ -1,6 +1,8 @@
 __pycache__/
 build/
 node_modules/
-npm-debug.log
 
+.jshintrc
+.syntastic_cpp
 CMakeLists.txt.user
+npm-debug.log
