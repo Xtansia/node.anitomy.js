@@ -7,8 +7,8 @@
 */
 
 #pragma once
-#ifndef ANITOMY_LIB_ANITOMY_ASYNC_H
-#define ANITOMY_LIB_ANITOMY_ASYNC_H
+#ifndef ANITOMY_LIB_PARSE_WORKER_H
+#define ANITOMY_LIB_PARSE_WORKER_H
 
 #include "nan_nowarn.h"
 #include <anitomy/anitomy.h>
@@ -16,18 +16,28 @@
 class ParseWorker : public Nan::AsyncWorker {
 public:
   ParseWorker(Nan::Callback *callback, const std::vector<std::wstring> &filenames,
-              const anitomy::Options &options);
+              const anitomy::Options &options)
+    : Nan::AsyncWorker(callback), filenames_(filenames), options_(options) {}
   ~ParseWorker() {}
 
   void Execute() override;
   void HandleOKCallback() override;
 
-private:
+protected:
   const std::vector<std::wstring> filenames_;
   const anitomy::Options options_;
-  std::vector<anitomy::element_container_t> elements_;
+  std::vector<anitomy::Elements> elements_;
 };
 
-NAN_METHOD(ParseAsync);
+class ParseEachWorker : public ParseWorker {
+public:
+  ParseEachWorker(Nan::Callback *callback, const std::wstring &filename,
+                  const anitomy::Options &options)
+    : ParseWorker(callback, {
+    filename
+  }, options) {}
 
-#endif // !ANITOMY_LIB_ANITOMY_ASYNC_H
+  void HandleOKCallback() override;
+};
+
+#endif // !ANITOMY_LIB_PARSE_WORKER_H

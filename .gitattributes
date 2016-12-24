@@ -1,8 +1,0 @@
-*.cpp   text diff=cpp
-*.h     text diff=cpp
-*.js    text
-*.json  text
-*.yml   text
-*.txt   text
-*.md    text
-LICENSE text
