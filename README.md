@@ -10,7 +10,7 @@ video filenames.
 You can install *node.anitomy.js* as a dependency of your project using NPM like
 so, provided you have met the dependencies listed below.
 ```
-> npm install --save Xtansia/node.anitomy.js
+> npm install --save anitomyjs
 ```
 
 ### Dependencies
