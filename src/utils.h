@@ -10,7 +10,14 @@
 #ifndef ANITOMY_LIB_UTILS_H
 #define ANITOMY_LIB_UTILS_H
 
+#if defined(_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable : 4100 4201)
+#endif
 #include <nan.h>
+#if defined(_MSC_VER)
+#pragma warning(pop)
+#endif
 
 #include <anitomy/element.h>
 #include <anitomy/options.h>

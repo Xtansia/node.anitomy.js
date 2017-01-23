@@ -10,7 +10,14 @@
 #ifndef ANITOMY_LIB_ELEMENTS_OBJECT_H
 #define ANITOMY_LIB_ELEMENTS_OBJECT_H
 
+#if defined(_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable : 4100 4201)
+#endif
 #include <nan.h>
+#if defined(_MSC_VER)
+#pragma warning(pop)
+#endif
 
 #include "utils.h"
 

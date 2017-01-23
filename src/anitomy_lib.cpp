@@ -6,7 +6,14 @@
 ** file, You can obtain one at https://mozilla.org/MPL/2.0/.
 */
 
+#if defined(_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable : 4100 4201)
+#endif
 #include <nan.h>
+#if defined(_MSC_VER)
+#pragma warning(pop)
+#endif
 
 #include "elements_object.h"
 #include "parse_worker.h"
