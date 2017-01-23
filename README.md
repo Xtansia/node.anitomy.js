@@ -2,6 +2,7 @@
 [![License](https://img.shields.io/badge/license-MPL--2.0-blue.svg?style=flat-square&maxAge=2592000)](https://github.com/Xtansia/node.anitomy.js/raw/master/LICENSE)
 [![Linux & OSX Build Status](https://img.shields.io/travis/Xtansia/node.anitomy.js/master.svg?label=linux+%26+osx&style=flat-square&maxAge=2592000)](https://travis-ci.org/Xtansia/node.anitomy.js)
 [![Windows Build Status](https://img.shields.io/appveyor/ci/Xtansia/node-anitomy-js/master.svg?label=windows&style=flat-square&maxAge=2592000)](https://ci.appveyor.com/project/Xtansia/node-anitomy-js)  
+[![NPM](https://nodei.co/npm/anitomyjs.png)](https://nodei.co/npm/anitomyjs/)  
 *node.anitomy.js* is a Node.js binding for
 [Anitomy](https://github.com/erengy/anitomy) a C++ library for parsing anime
 video filenames.
