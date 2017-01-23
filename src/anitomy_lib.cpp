@@ -6,9 +6,17 @@
 ** file, You can obtain one at https://mozilla.org/MPL/2.0/.
 */
 
-#include "nan_nowarn.h"
-#include "parse_worker.h"
+#if defined(_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable : 4100 4201)
+#endif
+#include <nan.h>
+#if defined(_MSC_VER)
+#pragma warning(pop)
+#endif
+
 #include "elements_object.h"
+#include "parse_worker.h"
 #include "utils.h"
 
 #include <anitomy/anitomy.h>
@@ -17,17 +25,17 @@
 inline bool GetOptionsFromObject(v8::Local<v8::Object> obj,
                                  anitomy::Options &out) {
   return NodeObjectGetIfHas(obj, L"options", L"allowedDelimiters",
-                            out.allowed_delimiters)
-         && NodeObjectGetIfHas(obj, L"options", L"ignoredStrings",
-                               out.ignored_strings)
-         && NodeObjectGetIfHas(obj, L"options", L"parseEpisodeNumber",
-                               out.parse_episode_number)
-         && NodeObjectGetIfHas(obj, L"options", L"parseEpisodeTitle",
-                               out.parse_episode_title)
-         && NodeObjectGetIfHas(obj, L"options", L"parseFileExtension",
-                               out.parse_file_extension)
-         && NodeObjectGetIfHas(obj, L"options", L"parseReleaseGroup",
-                               out.parse_release_group);
+                            out.allowed_delimiters) &&
+         NodeObjectGetIfHas(obj, L"options", L"ignoredStrings",
+                            out.ignored_strings) &&
+         NodeObjectGetIfHas(obj, L"options", L"parseEpisodeNumber",
+                            out.parse_episode_number) &&
+         NodeObjectGetIfHas(obj, L"options", L"parseEpisodeTitle",
+                            out.parse_episode_title) &&
+         NodeObjectGetIfHas(obj, L"options", L"parseFileExtension",
+                            out.parse_file_extension) &&
+         NodeObjectGetIfHas(obj, L"options", L"parseReleaseGroup",
+                            out.parse_release_group);
 }
 
 NAN_METHOD(ParseAsync) {
@@ -44,8 +52,8 @@ NAN_METHOD(ParseAsync) {
   if (info.Length() > 2) {
     v8::Local<v8::Object> optionsObj;
 
-    if (!NodeParam(info, i++, L"options", optionsObj)
-        || !GetOptionsFromObject(optionsObj, options)) {
+    if (!NodeParam(info, i++, L"options", optionsObj) ||
+        !GetOptionsFromObject(optionsObj, options)) {
       return;
     }
   }
@@ -54,8 +62,8 @@ NAN_METHOD(ParseAsync) {
     return;
   }
 
-  Nan::AsyncQueueWorker(new ParseWorker(new Nan::Callback(callback), filenames,
-                                        options));
+  Nan::AsyncQueueWorker(
+      new ParseWorker(new Nan::Callback(callback), filenames, options));
 }
 
 NAN_METHOD(ParseSync) {
@@ -69,8 +77,8 @@ NAN_METHOD(ParseSync) {
   if (info.Length() > 1) {
     v8::Local<v8::Object> optionsObj;
 
-    if (!NodeParam(info, 1, L"options", optionsObj)
-        || !GetOptionsFromObject(optionsObj, options)) {
+    if (!NodeParam(info, 1, L"options", optionsObj) ||
+        !GetOptionsFromObject(optionsObj, options)) {
       return;
     }
   }
@@ -109,8 +117,8 @@ NAN_METHOD(ParseEachAsync) {
   if (info.Length() > 2) {
     v8::Local<v8::Object> optionsObj;
 
-    if (!NodeParam(info, i++, L"options", optionsObj)
-        || !GetOptionsFromObject(optionsObj, options)) {
+    if (!NodeParam(info, i++, L"options", optionsObj) ||
+        !GetOptionsFromObject(optionsObj, options)) {
       return;
     }
   }
@@ -120,8 +128,8 @@ NAN_METHOD(ParseEachAsync) {
   }
 
   for (const auto &filename : filenames) {
-    Nan::AsyncQueueWorker(new ParseEachWorker(new Nan::Callback(callback), filename,
-                          options));
+    Nan::AsyncQueueWorker(
+        new ParseEachWorker(new Nan::Callback(callback), filename, options));
   }
 }
 
@@ -132,16 +140,15 @@ NAN_METHOD(ParseEachSync) {
 
   auto i = 0;
 
-  if (!NodeParam(info, i++, L"filenames", filenames)
-      || filenames.empty()) {
+  if (!NodeParam(info, i++, L"filenames", filenames) || filenames.empty()) {
     return;
   }
 
   if (info.Length() > 2) {
     v8::Local<v8::Object> optionsObj;
 
-    if (!NodeParam(info, i++, L"options", optionsObj)
-        || !GetOptionsFromObject(optionsObj, options)) {
+    if (!NodeParam(info, i++, L"options", optionsObj) ||
+        !GetOptionsFromObject(optionsObj, options)) {
       return;
     }
   }

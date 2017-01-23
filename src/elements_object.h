@@ -10,8 +10,17 @@
 #ifndef ANITOMY_LIB_ELEMENTS_OBJECT_H
 #define ANITOMY_LIB_ELEMENTS_OBJECT_H
 
-#include "nan_nowarn.h"
+#if defined(_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable : 4100 4201)
+#endif
+#include <nan.h>
+#if defined(_MSC_VER)
+#pragma warning(pop)
+#endif
+
 #include "utils.h"
+
 #include <anitomy/anitomy.h>
 #include <map>
 
@@ -42,25 +51,21 @@ private:
     return elements_.count(category);
   }
 
-  inline bool Empty() const {
-    return elements_.empty();
-  }
+  inline bool Empty() const { return elements_.empty(); }
 
   inline bool Empty(anitomy::ElementCategory category) const {
     return elements_.count(category) == 0;
   }
 
-  inline size_t Size() const {
-    return elements_.size();
-  }
+  inline size_t Size() const { return elements_.size(); }
 
   inline std::wstring Get(anitomy::ElementCategory category) const {
     const auto it = elements_.lower_bound(category);
     return it->first == category ? it->second : L"";
   }
 
-  inline std::vector<std::wstring> GetAll(anitomy::ElementCategory category)
-  const {
+  inline std::vector<std::wstring>
+  GetAll(anitomy::ElementCategory category) const {
     return MultiMapGetAll(elements_, category);
   }
 

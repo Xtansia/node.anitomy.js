@@ -45,10 +45,8 @@ void ParseWorker::HandleOKCallback() {
 void ParseEachWorker::HandleOKCallback() {
   Nan::HandleScope scope;
 
-  v8::Local<v8::Value> argv[] = {
-    WstrToNode(filenames_[0]),
-    ElementsObject::New(elements_[0])
-  };
+  v8::Local<v8::Value> argv[] = {WstrToNode(filenames_[0]),
+                                 ElementsObject::New(elements_[0])};
 
   callback->Call(2, argv);
 }

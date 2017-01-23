@@ -12,46 +12,46 @@
 
 #include "utils.h"
 
-#include <map>
 #include <anitomy/element.h>
+#include <map>
 
-#define ELEMENT_CATEGORIES \
-  ENUM(AnimeSeason) \
-  ENUM(AnimeSeasonPrefix) \
-  ENUM(AnimeTitle) \
-  ENUM(AnimeType) \
-  ENUM(AnimeYear) \
-  ENUM(AudioTerm) \
-  ENUM(DeviceCompatibility) \
-  ENUM(EpisodeNumber) \
-  ENUM(EpisodeNumberAlt) \
-  ENUM(EpisodePrefix) \
-  ENUM(EpisodeTitle) \
-  ENUM(FileChecksum) \
-  ENUM(FileExtension) \
-  ENUM(FileName) \
-  ENUM(Language) \
-  ENUM(Other) \
-  ENUM(ReleaseGroup) \
-  ENUM(ReleaseInformation) \
-  ENUM(ReleaseVersion) \
-  ENUM(Source) \
-  ENUM(Subtitles) \
-  ENUM(VideoResolution) \
-  ENUM(VideoTerm) \
-  ENUM(VolumeNumber) \
+#define ELEMENT_CATEGORIES                                                     \
+  ENUM(AnimeSeason)                                                            \
+  ENUM(AnimeSeasonPrefix)                                                      \
+  ENUM(AnimeTitle)                                                             \
+  ENUM(AnimeType)                                                              \
+  ENUM(AnimeYear)                                                              \
+  ENUM(AudioTerm)                                                              \
+  ENUM(DeviceCompatibility)                                                    \
+  ENUM(EpisodeNumber)                                                          \
+  ENUM(EpisodeNumberAlt)                                                       \
+  ENUM(EpisodePrefix)                                                          \
+  ENUM(EpisodeTitle)                                                           \
+  ENUM(FileChecksum)                                                           \
+  ENUM(FileExtension)                                                          \
+  ENUM(FileName)                                                               \
+  ENUM(Language)                                                               \
+  ENUM(Other)                                                                  \
+  ENUM(ReleaseGroup)                                                           \
+  ENUM(ReleaseInformation)                                                     \
+  ENUM(ReleaseVersion)                                                         \
+  ENUM(Source)                                                                 \
+  ENUM(Subtitles)                                                              \
+  ENUM(VideoResolution)                                                        \
+  ENUM(VideoTerm)                                                              \
+  ENUM(VolumeNumber)                                                           \
   ENUM(VolumePrefix)
 
-const std::vector<anitomy::ElementCategory> ElementCategories {
+const std::vector<anitomy::ElementCategory> ElementCategories{
 #define ENUM(name) anitomy::kElement##name,
-  ELEMENT_CATEGORIES
+    ELEMENT_CATEGORIES
 #undef ENUM
 };
 
 inline anitomy::ElementCategory GetElementCategory(const std::wstring &name) {
-  static const std::map<std::wstring, anitomy::ElementCategory> nameToCategory {
-#define ENUM(name) { WIDE_STRINGIFY(name), anitomy::kElement##name },
-    ELEMENT_CATEGORIES
+  static const std::map<std::wstring, anitomy::ElementCategory> nameToCategory{
+#define ENUM(name) {WIDE_STRINGIFY(name), anitomy::kElement##name},
+      ELEMENT_CATEGORIES
 #undef ENUM
   };
 
@@ -65,9 +65,9 @@ inline anitomy::ElementCategory GetElementCategory(const std::wstring &name) {
 }
 
 inline std::wstring GetName(anitomy::ElementCategory category) {
-  static const std::map<anitomy::ElementCategory, std::wstring> categoryToName {
-#define ENUM(name) { anitomy::kElement##name, WIDE_STRINGIFY(name) },
-    ELEMENT_CATEGORIES
+  static const std::map<anitomy::ElementCategory, std::wstring> categoryToName{
+#define ENUM(name) {anitomy::kElement##name, WIDE_STRINGIFY(name)},
+      ELEMENT_CATEGORIES
 #undef ENUM
   };
 

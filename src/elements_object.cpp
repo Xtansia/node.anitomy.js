@@ -29,7 +29,7 @@ void ElementsObject::Init() {
 NAN_METHOD(ElementsObject::New) {
   if (!info.IsConstructCall()) {
     NodeThrowError(
-      L"Cannot call constructor as function, you need to use 'new' keyword");
+        L"Cannot call constructor as function, you need to use 'new' keyword");
     return;
   }
 
@@ -58,9 +58,7 @@ v8::Local<v8::Object> ElementsObject::New(const anitomy::Elements &elements) {
 
   auto *elems = new anitomy::Elements(elements);
 
-  v8::Local<v8::Value> argv[] = {
-    Nan::New<v8::External>(elems)
-  };
+  v8::Local<v8::Value> argv[] = {Nan::New<v8::External>(elems)};
 
   auto cons = Nan::New(constructor());
   auto instance = Nan::NewInstance(cons, 1, argv).ToLocalChecked();
