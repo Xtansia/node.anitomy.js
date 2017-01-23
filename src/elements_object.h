@@ -44,25 +44,21 @@ private:
     return elements_.count(category);
   }
 
-  inline bool Empty() const {
-    return elements_.empty();
-  }
+  inline bool Empty() const { return elements_.empty(); }
 
   inline bool Empty(anitomy::ElementCategory category) const {
     return elements_.count(category) == 0;
   }
 
-  inline size_t Size() const {
-    return elements_.size();
-  }
+  inline size_t Size() const { return elements_.size(); }
 
   inline std::wstring Get(anitomy::ElementCategory category) const {
     const auto it = elements_.lower_bound(category);
     return it->first == category ? it->second : L"";
   }
 
-  inline std::vector<std::wstring> GetAll(anitomy::ElementCategory category)
-  const {
+  inline std::vector<std::wstring>
+  GetAll(anitomy::ElementCategory category) const {
     return MultiMapGetAll(elements_, category);
   }
 

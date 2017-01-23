@@ -135,7 +135,8 @@ bool NodeObjectGet(v8::Local<v8::Object> obj, const std::wstring &objName,
     elem = Nan::Get(arr, i);
 
     if (elem.IsEmpty() || !elem.ToLocalChecked()->IsString()) {
-      NodeThrowTypeError(objName + L"." + key + L" must be an array of strings");
+      NodeThrowTypeError(objName + L"." + key +
+                         L" must be an array of strings");
       return false;
     }
 

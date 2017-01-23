@@ -16,9 +16,10 @@
 
 class ParseWorker : public Nan::AsyncWorker {
 public:
-  ParseWorker(Nan::Callback *callback, const std::vector<std::wstring> &filenames,
+  ParseWorker(Nan::Callback *callback,
+              const std::vector<std::wstring> &filenames,
               const anitomy::Options &options)
-    : Nan::AsyncWorker(callback), filenames_(filenames), options_(options) {}
+      : Nan::AsyncWorker(callback), filenames_(filenames), options_(options) {}
   ~ParseWorker() {}
 
   void Execute() override;
@@ -34,9 +35,7 @@ class ParseEachWorker : public ParseWorker {
 public:
   ParseEachWorker(Nan::Callback *callback, const std::wstring &filename,
                   const anitomy::Options &options)
-    : ParseWorker(callback, {
-    filename
-  }, options) {}
+      : ParseWorker(callback, {filename}, options) {}
 
   void HandleOKCallback() override;
 };

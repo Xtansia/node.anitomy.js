@@ -14,15 +14,15 @@
 
 #include <anitomy/element.h>
 #include <anitomy/options.h>
-#include <map>
 #include <iterator>
+#include <map>
 #include <string>
 
 #ifdef NODE_ANITOMY_USE_BOOST
-  #include <boost/locale/encoding_utf.hpp>
+#include <boost/locale/encoding_utf.hpp>
 #else
-  #include <codecvt>
-  #include <locale>
+#include <codecvt>
+#include <locale>
 #endif
 
 #define CONCAT_INTERNAL(X, Y) X##Y
@@ -32,7 +32,7 @@
 #define WIDE_STRINGIFY(X) CONCAT(L, STRINGIFY(X))
 
 #ifndef NODE_ANITOMY_USE_BOOST
-  typedef std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> wstr_conv;
+typedef std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> wstr_conv;
 #endif
 
 inline std::string WstrToStr(const std::wstring &input) {
@@ -97,29 +97,27 @@ inline bool NodeObjectHas(v8::Local<v8::Object> obj, const std::wstring &key) {
 
 bool NodeObjectGet(v8::Local<v8::Object> obj, const std::wstring &objName,
                    const std::wstring &key, std::wstring &out);
-bool NodeObjectGet(v8::Local<v8::Object> obj,
-                   const std::wstring &objName, const std::wstring &key,
-                   std::vector<std::wstring> &out);
-bool NodeObjectGet(v8::Local<v8::Object> obj,
-                   const std::wstring &objName, const std::wstring &key,
-                   bool &out);
+bool NodeObjectGet(v8::Local<v8::Object> obj, const std::wstring &objName,
+                   const std::wstring &key, std::vector<std::wstring> &out);
+bool NodeObjectGet(v8::Local<v8::Object> obj, const std::wstring &objName,
+                   const std::wstring &key, bool &out);
 
 template <typename OutType>
 inline bool NodeObjectGetIfHas(v8::Local<v8::Object> obj,
-                               const std::wstring &objName, const std::wstring &key, OutType &out) {
+                               const std::wstring &objName,
+                               const std::wstring &key, OutType &out) {
   return !NodeObjectHas(obj, key) || NodeObjectGet(obj, objName, key, out);
 }
 
 template <typename KeyType, typename ValueType>
-inline std::vector<ValueType> MultiMapGetAll(const
-    std::multimap<KeyType, ValueType>
-    &mmap, const KeyType &key) {
+inline std::vector<ValueType>
+MultiMapGetAll(const std::multimap<KeyType, ValueType> &mmap,
+               const KeyType &key) {
   auto range = mmap.equal_range(key);
   std::vector<ValueType> values;
-  std::transform(range.first, range.second, std::back_inserter(values),
-  [](std::pair<const KeyType, ValueType> pair) {
-    return pair.second;
-  });
+  std::transform(
+      range.first, range.second, std::back_inserter(values),
+      [](std::pair<const KeyType, ValueType> pair) { return pair.second; });
   return values;
 }
 
