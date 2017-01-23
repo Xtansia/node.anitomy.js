@@ -10,8 +10,10 @@
 #ifndef ANITOMY_LIB_ELEMENTS_OBJECT_H
 #define ANITOMY_LIB_ELEMENTS_OBJECT_H
 
-#include "nan_nowarn.h"
+#include <nan.h>
+
 #include "utils.h"
+
 #include <anitomy/anitomy.h>
 #include <map>
 

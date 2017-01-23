@@ -6,7 +6,8 @@
 ** file, You can obtain one at https://mozilla.org/MPL/2.0/.
 */
 
-#include "nan_nowarn.h"
+#include <nan.h>
+
 #include "parse_worker.h"
 #include "elements_object.h"
 #include "utils.h"

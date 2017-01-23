@@ -10,7 +10,8 @@
 #ifndef ANITOMY_LIB_PARSE_WORKER_H
 #define ANITOMY_LIB_PARSE_WORKER_H
 
-#include "nan_nowarn.h"
+#include <nan.h>
+
 #include <anitomy/anitomy.h>
 
 class ParseWorker : public Nan::AsyncWorker {

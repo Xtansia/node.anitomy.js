@@ -55,7 +55,6 @@ set(ADDON_SOURCE_FILES
     src/element_categories.h
     src/elements_object.cpp
     src/elements_object.h
-    src/nan_nowarn.h
     src/parse_worker.cpp
     src/parse_worker.h
     src/utils.cpp
@@ -94,7 +93,7 @@ add_library(${PROJECT_NAME} SHARED ${ADDON_SOURCE_FILES} ${ANITOMY_SOURCE_FILES}
 set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "" SUFFIX ".node")
 
 # Include JS and Anitomy directories
-target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_JS_INC})
+target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${CMAKE_JS_INC})
 target_include_directories(${PROJECT_NAME} PRIVATE lib/anitomy)
 
 # Link against JS libraries

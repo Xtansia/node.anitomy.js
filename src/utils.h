@@ -10,7 +10,8 @@
 #ifndef ANITOMY_LIB_UTILS_H
 #define ANITOMY_LIB_UTILS_H
 
-#include "nan_nowarn.h"
+#include <nan.h>
+
 #include <anitomy/element.h>
 #include <anitomy/options.h>
 #include <map>
