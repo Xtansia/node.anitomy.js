@@ -12,11 +12,11 @@ os:
 env:
   matrix:
     # node
-    - RUNTIME="node" RVERSION="0.10"
-    - RUNTIME="node" RVERSION="0.12"
     - RUNTIME="node" RVERSION="4"
+    - RUNTIME="node" RVERSION="5"
     - RUNTIME="node" RVERSION="6"
     - RUNTIME="node" RVERSION="7"
+    - RUNTIME="node" RVERSION="8"
 
 addons:
   apt:

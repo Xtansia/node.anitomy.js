@@ -6,3 +6,5 @@ node_modules/
 .syntastic_cpp
 CMakeLists.txt.user
 npm-debug.log
+
+build-debug/

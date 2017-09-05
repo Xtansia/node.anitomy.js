@@ -15,7 +15,7 @@ so, provided you have met the dependencies listed below.
 ```
 
 ### Dependencies
-* Node.JS >= 0.10.0
+* Node.JS >= 4.0.0
   - Can also be used with [NW.js](https://github.com/nwjs/nw.js) and 
     [Electron](https://github.com/atom/electron) by setting the desired runtime
     in your applications `package.json` as explained 

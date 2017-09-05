@@ -1,5 +1,5 @@
 /*
-** Copyright (c) 2016, Thomas Farr
+** Copyright (c) 2016-2017, Thomas Farr
 **
 ** This Source Code Form is subject to the terms of the Mozilla Public
 ** License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -53,17 +53,13 @@ NAN_METHOD(ElementsObject::New) {
   info.GetReturnValue().Set(info.This());
 }
 
-v8::Local<v8::Object> ElementsObject::New(const anitomy::Elements &elements) {
+v8::Local<v8::Object> ElementsObject::New(anitomy::Elements &elements) {
   Nan::EscapableHandleScope scope;
 
-  auto *elems = new anitomy::Elements(elements);
-
-  v8::Local<v8::Value> argv[] = {Nan::New<v8::External>(elems)};
+  v8::Local<v8::Value> argv[] = {Nan::New<v8::External>(&elements)};
 
   auto cons = Nan::New(constructor());
   auto instance = Nan::NewInstance(cons, 1, argv).ToLocalChecked();
-
-  delete elems;
 
   return scope.Escape(instance);
 }
