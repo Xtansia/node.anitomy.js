@@ -7,8 +7,6 @@
 */
 
 #pragma once
-#ifndef ANITOMY_LIB_UTILS_H
-#define ANITOMY_LIB_UTILS_H
 
 #if defined(_MSC_VER)
 #pragma warning(push)
@@ -126,5 +124,3 @@ MultiMapGetAll(const std::multimap<KeyType, ValueType> &mmap,
       [](std::pair<const KeyType, ValueType> pair) { return pair.second; });
   return values;
 }
-
-#endif // !ANITOMY_LIB_UTILS_H

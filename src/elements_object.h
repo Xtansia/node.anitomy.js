@@ -7,8 +7,6 @@
 */
 
 #pragma once
-#ifndef ANITOMY_LIB_ELEMENTS_OBJECT_H
-#define ANITOMY_LIB_ELEMENTS_OBJECT_H
 
 #if defined(_MSC_VER)
 #pragma warning(push)
@@ -72,5 +70,3 @@ private:
 
   std::multimap<anitomy::ElementCategory, std::wstring> elements_;
 };
-
-#endif // !ANITOMY_LIB_ELEMENTS_OBJECT_H

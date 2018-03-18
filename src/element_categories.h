@@ -7,8 +7,6 @@
 */
 
 #pragma once
-#ifndef ANITOMY_LIB_ELEMENT_CATEGORIES_H
-#define ANITOMY_LIB_ELEMENT_CATEGORIES_H
 
 #include "utils.h"
 
@@ -81,5 +79,3 @@ inline std::wstring GetName(const anitomy::ElementCategory category) {
 }
 
 #undef ELEMENT_CATEGORIES
-
-#endif // !ANITOMY_LIB_ELEMENT_CATEGORIES_H

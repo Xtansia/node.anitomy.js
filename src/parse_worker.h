@@ -7,8 +7,6 @@
 */
 
 #pragma once
-#ifndef ANITOMY_LIB_PARSE_WORKER_H
-#define ANITOMY_LIB_PARSE_WORKER_H
 
 #if defined(_MSC_VER)
 #pragma warning(push)
@@ -50,5 +48,3 @@ public:
 
   void HandleOKCallback() override;
 };
-
-#endif // !ANITOMY_LIB_PARSE_WORKER_H
