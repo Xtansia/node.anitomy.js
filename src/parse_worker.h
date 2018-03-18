@@ -26,7 +26,8 @@ public:
   ParseWorker(Nan::Callback *callback,
               const std::vector<std::wstring> &filenames,
               const anitomy::Options &options)
-      : Nan::AsyncWorker(callback), filenames_(filenames), options_(options) {}
+      : Nan::AsyncWorker(callback, "anitomyjs:ParseWorker"),
+        filenames_(filenames), options_(options) {}
   ~ParseWorker() {}
 
   void Execute() override;
