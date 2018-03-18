@@ -39,7 +39,7 @@ void ParseWorker::HandleOKCallback() {
     argv[0] = elementsArray;
   }
 
-  callback->Call(1, argv);
+  callback->Call(1, argv, async_resource);
 }
 
 void ParseEachWorker::HandleOKCallback() {
@@ -48,5 +48,5 @@ void ParseEachWorker::HandleOKCallback() {
   v8::Local<v8::Value> argv[] = {WstrToNode(filenames_[0]),
                                  ElementsObject::New(elements_[0])};
 
-  callback->Call(2, argv);
+  callback->Call(2, argv, async_resource);
 }
