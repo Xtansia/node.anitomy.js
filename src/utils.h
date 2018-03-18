@@ -12,7 +12,7 @@
 
 #if defined(_MSC_VER)
 #pragma warning(push)
-#pragma warning(disable : 4100 4201)
+#pragma warning(disable : 4100 4201 4251)
 #endif
 #include <nan.h>
 #if defined(_MSC_VER)
