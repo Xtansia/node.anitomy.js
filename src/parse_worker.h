@@ -20,15 +20,15 @@
 #endif
 
 #include <anitomy/anitomy.h>
+#include <utility>
 
 class ParseWorker : public Nan::AsyncWorker {
 public:
-  ParseWorker(Nan::Callback *callback,
-              const std::vector<std::wstring> &filenames,
-              const anitomy::Options &options)
-      : Nan::AsyncWorker(callback, "anitomyjs:ParseWorker"),
-        filenames_(filenames), options_(options) {}
-  ~ParseWorker() {}
+  ParseWorker(Nan::Callback *callback, std::vector<std::wstring> filenames,
+              anitomy::Options options)
+      : AsyncWorker(callback, "anitomyjs:ParseWorker"),
+        filenames_(std::move(filenames)), options_(std::move(options)) {}
+  ~ParseWorker() = default;
 
   void Execute() override;
   void HandleOKCallback() override;
@@ -37,6 +37,9 @@ protected:
   const std::vector<std::wstring> filenames_;
   const anitomy::Options options_;
   std::vector<anitomy::Elements> elements_;
+
+private:
+  NAN_DISALLOW_ASSIGN_COPY_MOVE(ParseWorker)
 };
 
 class ParseEachWorker : public ParseWorker {

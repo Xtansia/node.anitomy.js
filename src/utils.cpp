@@ -10,7 +10,7 @@
 
 #include "element_categories.h"
 
-bool NodeParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
+bool NodeParam(Nan::NAN_METHOD_ARGS_TYPE info, const int index,
                const std::wstring &name, std::wstring &out) {
   if (!NodeEnsureParamProvided(info, index, name)) {
     return false;
@@ -25,7 +25,7 @@ bool NodeParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
   return true;
 }
 
-bool NodeParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
+bool NodeParam(Nan::NAN_METHOD_ARGS_TYPE info, const int index,
                const std::wstring &name, std::vector<std::wstring> &out) {
   if (!NodeEnsureParamProvided(info, index, name)) {
     return false;
@@ -34,16 +34,16 @@ bool NodeParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
   if (info[index]->IsString()) {
     out.push_back(NodeToWstr(info[index]));
     return true;
-  } else if (!info[index]->IsArray()) {
+  }
+  if (!info[index]->IsArray()) {
     NodeThrowTypeError(name + L" must be a string or an array of strings");
     return false;
   }
 
-  auto stringArray = info[index].As<v8::Array>();
-  v8::Local<v8::Value> elem;
+  const auto stringArray = info[index].As<v8::Array>();
 
   for (uint32_t i = 0; i < stringArray->Length(); ++i) {
-    elem = Nan::Get(stringArray, i).ToLocalChecked();
+    const auto elem = Nan::Get(stringArray, i).ToLocalChecked();
 
     if (elem->IsString()) {
       out.push_back(NodeToWstr(elem));
@@ -56,7 +56,7 @@ bool NodeParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
   return true;
 }
 
-bool NodeParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
+bool NodeParam(Nan::NAN_METHOD_ARGS_TYPE info, const int index,
                const std::wstring &name, v8::Local<v8::Function> &out) {
   if (!NodeEnsureParamProvided(info, index, name)) {
     return false;
@@ -71,7 +71,7 @@ bool NodeParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
   return true;
 }
 
-bool NodeParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
+bool NodeParam(Nan::NAN_METHOD_ARGS_TYPE info, const int index,
                const std::wstring &name, v8::Local<v8::Object> &out) {
   if (!NodeEnsureParamProvided(info, index, name)) {
     return false;
@@ -86,7 +86,7 @@ bool NodeParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
   return true;
 }
 
-bool NodeParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
+bool NodeParam(Nan::NAN_METHOD_ARGS_TYPE info, const int index,
                const std::wstring &name, anitomy::ElementCategory &out) {
   std::wstring categoryName;
 
@@ -94,7 +94,7 @@ bool NodeParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
     return false;
   }
 
-  auto category = GetElementCategory(categoryName);
+  const auto category = GetElementCategory(categoryName);
 
   if (category == anitomy::kElementUnknown) {
     NodeThrowError(name + L" must be a valid ElementCategory name");
@@ -106,7 +106,7 @@ bool NodeParam(Nan::NAN_METHOD_ARGS_TYPE info, int index,
   return true;
 }
 
-bool NodeObjectGet(v8::Local<v8::Object> obj, const std::wstring &objName,
+bool NodeObjectGet(const v8::Local<v8::Object> obj, const std::wstring &objName,
                    const std::wstring &key, std::wstring &out) {
   auto val = Nan::Get(obj, WstrToNode(key));
 
@@ -119,24 +119,24 @@ bool NodeObjectGet(v8::Local<v8::Object> obj, const std::wstring &objName,
   return true;
 }
 
-bool NodeObjectGet(v8::Local<v8::Object> obj, const std::wstring &objName,
+bool NodeObjectGet(const v8::Local<v8::Object> obj, const std::wstring &objName,
                    const std::wstring &key, std::vector<std::wstring> &out) {
   auto val = Nan::Get(obj, WstrToNode(key));
 
   if (val.IsEmpty() || !val.ToLocalChecked()->IsArray()) {
-    NodeThrowTypeError(objName + L"." + key + L" must be an array of strings");
+    NodeThrowTypeError(std::wstring(objName).append(L".").append(key).append(
+        L" must be an array of strings"));
     return false;
   }
 
-  auto arr = val.ToLocalChecked().As<v8::Array>();
-  Nan::MaybeLocal<v8::Value> elem;
+  const auto arr = val.ToLocalChecked().As<v8::Array>();
 
   for (auto i = 0U; i < arr->Length(); ++i) {
-    elem = Nan::Get(arr, i);
+    auto elem = Nan::Get(arr, i);
 
     if (elem.IsEmpty() || !elem.ToLocalChecked()->IsString()) {
-      NodeThrowTypeError(objName + L"." + key +
-                         L" must be an array of strings");
+      NodeThrowTypeError(std::wstring(objName).append(L".").append(key).append(
+          L" must be an array of strings"));
       return false;
     }
 
@@ -146,7 +146,7 @@ bool NodeObjectGet(v8::Local<v8::Object> obj, const std::wstring &objName,
   return true;
 }
 
-bool NodeObjectGet(v8::Local<v8::Object> obj, const std::wstring &objName,
+bool NodeObjectGet(const v8::Local<v8::Object> obj, const std::wstring &objName,
                    const std::wstring &key, bool &out) {
   auto val = Nan::Get(obj, WstrToNode(key));
 

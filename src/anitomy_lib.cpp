@@ -22,7 +22,7 @@
 #include <anitomy/anitomy.h>
 #include <iterator>
 
-inline bool GetOptionsFromObject(v8::Local<v8::Object> obj,
+inline bool GetOptionsFromObject(const v8::Local<v8::Object> obj,
                                  anitomy::Options &out) {
   return NodeObjectGetIfHas(obj, L"options", L"allowedDelimiters",
                             out.allowed_delimiters) &&
@@ -92,7 +92,7 @@ NAN_METHOD(ParseSync) {
     return;
   }
 
-  auto elementsArray = Nan::New<v8::Array>();
+  const auto elementsArray = Nan::New<v8::Array>();
   uint32_t i = 0;
 
   for (const auto &filename : filenames) {

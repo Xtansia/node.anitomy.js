@@ -30,7 +30,7 @@ public:
   static v8::Local<v8::Object> New(anitomy::Elements &elements);
 
 private:
-  static inline Nan::Persistent<v8::Function> &constructor() {
+  static Nan::Persistent<v8::Function> &constructor() {
     static Nan::Persistent<v8::Function> constructor_;
     return constructor_;
   }
@@ -45,27 +45,28 @@ private:
   static NAN_GETTER(ElementCategoryGetter);
 
   explicit ElementsObject(anitomy::Elements *elements);
-  ~ElementsObject() {}
+  NAN_DISALLOW_ASSIGN_COPY_MOVE(ElementsObject)
+  ~ElementsObject() = default;
 
-  inline size_t Count(anitomy::ElementCategory category) const {
+  size_t Count(const anitomy::ElementCategory category) const {
     return elements_.count(category);
   }
 
-  inline bool Empty() const { return elements_.empty(); }
+  bool Empty() const { return elements_.empty(); }
 
-  inline bool Empty(anitomy::ElementCategory category) const {
+  bool Empty(const anitomy::ElementCategory category) const {
     return elements_.count(category) == 0;
   }
 
-  inline size_t Size() const { return elements_.size(); }
+  size_t Size() const { return elements_.size(); }
 
-  inline std::wstring Get(anitomy::ElementCategory category) const {
+  std::wstring Get(const anitomy::ElementCategory category) const {
     const auto it = elements_.lower_bound(category);
     return it->first == category ? it->second : L"";
   }
 
-  inline std::vector<std::wstring>
-  GetAll(anitomy::ElementCategory category) const {
+  std::vector<std::wstring>
+  GetAll(const anitomy::ElementCategory category) const {
     return MultiMapGetAll(elements_, category);
   }
 

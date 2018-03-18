@@ -38,15 +38,16 @@ NAN_METHOD(ElementsObject::New) {
     return;
   }
 
-  auto ext = info[0].As<v8::External>();
+  const auto ext = info[0].As<v8::External>();
   auto *elements = static_cast<anitomy::Elements *>(ext->Value());
+  // ReSharper disable once CppNonReclaimedResourceAcquisition
   auto *obj = new ElementsObject(elements);
   obj->Wrap(info.This());
 
   for (const auto &category : ElementCategories) {
     if (!obj->Empty(category)) {
-      Nan::SetAccessor(info.This(), WstrToNode(GetName(category)),
-                       ElementCategoryGetter);
+      SetAccessor(info.This(), WstrToNode(GetName(category)),
+                  ElementCategoryGetter);
     }
   }
 
@@ -58,8 +59,8 @@ v8::Local<v8::Object> ElementsObject::New(anitomy::Elements &elements) {
 
   v8::Local<v8::Value> argv[] = {Nan::New<v8::External>(&elements)};
 
-  auto cons = Nan::New(constructor());
-  auto instance = Nan::NewInstance(cons, 1, argv).ToLocalChecked();
+  const auto cons = Nan::New(constructor());
+  const auto instance = Nan::NewInstance(cons, 1, argv).ToLocalChecked();
 
   return scope.Escape(instance);
 }
@@ -124,7 +125,7 @@ NAN_METHOD(ElementsObject::GetAll) {
 
   auto values = obj->GetAll(category);
 
-  auto arr = Nan::New<v8::Array>();
+  const auto arr = Nan::New<v8::Array>();
   uint32_t i = 0;
 
   for (const auto &val : values) {
@@ -135,7 +136,7 @@ NAN_METHOD(ElementsObject::GetAll) {
 }
 
 NAN_GETTER(ElementsObject::ElementCategoryGetter) {
-  auto category = GetElementCategory(NodeToWstr(property));
+  const auto category = GetElementCategory(NodeToWstr(property));
 
   if (category == anitomy::kElementUnknown) {
     return;
@@ -144,14 +145,15 @@ NAN_GETTER(ElementsObject::ElementCategoryGetter) {
   auto *obj = Unwrap<ElementsObject>(info.Holder());
   auto values = obj->GetAll(category);
 
-  if (values.size() == 0) {
+  if (values.empty()) {
     return;
-  } else if (values.size() == 1) {
+  }
+  if (values.size() == 1) {
     info.GetReturnValue().Set(WstrToNode(values[0]));
     return;
   }
 
-  auto arr = Nan::New<v8::Array>();
+  const auto arr = Nan::New<v8::Array>();
   uint32_t i = 0;
 
   for (const auto &val : values) {
