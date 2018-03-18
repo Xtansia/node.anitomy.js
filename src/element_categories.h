@@ -1,5 +1,5 @@
 /*
-** Copyright (c) 2016-2017, Thomas Farr
+** Copyright (c) 2016-2018, Thomas Farr
 **
 ** This Source Code Form is subject to the terms of the Mozilla Public
 ** License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -7,8 +7,6 @@
 */
 
 #pragma once
-#ifndef ANITOMY_LIB_ELEMENT_CATEGORIES_H
-#define ANITOMY_LIB_ELEMENT_CATEGORIES_H
 
 #include "utils.h"
 
@@ -55,7 +53,7 @@ inline anitomy::ElementCategory GetElementCategory(const std::wstring &name) {
 #undef ENUM
   };
 
-  auto it = nameToCategory.find(name);
+  const auto it = nameToCategory.find(name);
 
   if (it == nameToCategory.end()) {
     return anitomy::kElementUnknown;
@@ -64,14 +62,14 @@ inline anitomy::ElementCategory GetElementCategory(const std::wstring &name) {
   return it->second;
 }
 
-inline std::wstring GetName(anitomy::ElementCategory category) {
+inline std::wstring GetName(const anitomy::ElementCategory category) {
   static const std::map<anitomy::ElementCategory, std::wstring> categoryToName{
 #define ENUM(name) {anitomy::kElement##name, WIDE_STRINGIFY(name)},
       ELEMENT_CATEGORIES
 #undef ENUM
   };
 
-  auto it = categoryToName.find(category);
+  const auto it = categoryToName.find(category);
 
   if (it == categoryToName.end()) {
     return L"Unknown";
@@ -81,5 +79,3 @@ inline std::wstring GetName(anitomy::ElementCategory category) {
 }
 
 #undef ELEMENT_CATEGORIES
-
-#endif // !ANITOMY_LIB_ELEMENT_CATEGORIES_H

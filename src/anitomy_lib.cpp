@@ -1,5 +1,5 @@
 /*
-** Copyright (c) 2016-2017, Thomas Farr
+** Copyright (c) 2016-2018, Thomas Farr
 **
 ** This Source Code Form is subject to the terms of the Mozilla Public
 ** License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -8,7 +8,7 @@
 
 #if defined(_MSC_VER)
 #pragma warning(push)
-#pragma warning(disable : 4100 4201)
+#pragma warning(disable : 4100 4201 4251)
 #endif
 #include <nan.h>
 #if defined(_MSC_VER)
@@ -22,7 +22,7 @@
 #include <anitomy/anitomy.h>
 #include <iterator>
 
-inline bool GetOptionsFromObject(v8::Local<v8::Object> obj,
+inline bool GetOptionsFromObject(const v8::Local<v8::Object> obj,
                                  anitomy::Options &out) {
   return NodeObjectGetIfHas(obj, L"options", L"allowedDelimiters",
                             out.allowed_delimiters) &&
@@ -92,7 +92,7 @@ NAN_METHOD(ParseSync) {
     return;
   }
 
-  auto elementsArray = Nan::New<v8::Array>();
+  const auto elementsArray = Nan::New<v8::Array>();
   uint32_t i = 0;
 
   for (const auto &filename : filenames) {

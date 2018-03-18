@@ -1,5 +1,5 @@
 /*
-** Copyright (c) 2016-2017, Thomas Farr
+** Copyright (c) 2016-2018, Thomas Farr
 **
 ** This Source Code Form is subject to the terms of the Mozilla Public
 ** License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -10,7 +10,6 @@
 
 #include "elements_object.h"
 #include "utils.h"
-#include <iterator>
 
 void ParseWorker::Execute() {
   anitomy::Anitomy anitomy;
@@ -30,7 +29,7 @@ void ParseWorker::HandleOKCallback() {
   if (elements_.size() == 1) {
     argv[0] = ElementsObject::New(elements_[0]);
   } else {
-    auto elementsArray = Nan::New<v8::Array>();
+    const auto elementsArray = Nan::New<v8::Array>();
 
     for (uint32_t i = 0; i < elements_.size(); ++i) {
       Nan::Set(elementsArray, i, ElementsObject::New(elements_[i]));
@@ -39,7 +38,8 @@ void ParseWorker::HandleOKCallback() {
     argv[0] = elementsArray;
   }
 
-  callback->Call(1, argv);
+  // ReSharper disable once CppExpressionWithoutSideEffects
+  callback->Call(1, argv, async_resource);
 }
 
 void ParseEachWorker::HandleOKCallback() {
@@ -48,5 +48,6 @@ void ParseEachWorker::HandleOKCallback() {
   v8::Local<v8::Value> argv[] = {WstrToNode(filenames_[0]),
                                  ElementsObject::New(elements_[0])};
 
-  callback->Call(2, argv);
+  // ReSharper disable once CppExpressionWithoutSideEffects
+  callback->Call(2, argv, async_resource);
 }
