@@ -22,12 +22,8 @@
 #include <map>
 #include <string>
 
-#ifdef NODE_ANITOMY_USE_BOOST
-#include <boost/locale/encoding_utf.hpp>
-#else
 #include <codecvt>
 #include <locale>
-#endif
 
 #define CONCAT_INTERNAL(X, Y) X##Y
 #define CONCAT(X, Y) CONCAT_INTERNAL(X, Y)
@@ -35,26 +31,16 @@
 #define STRINGIFY(X) STRINGIFY_INTERNAL(X)
 #define WIDE_STRINGIFY(X) CONCAT(L, STRINGIFY(X))
 
-#ifndef NODE_ANITOMY_USE_BOOST
 typedef std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> wstr_conv;
-#endif
 
 inline std::string WstrToStr(const std::wstring &input) {
-#ifdef NODE_ANITOMY_USE_BOOST
-  return boost::locale::conv::utf_to_utf<char>(input);
-#else
   static wstr_conv conv;
   return conv.to_bytes(input);
-#endif
 }
 
 inline std::wstring StrToWstr(const std::string &input) {
-#ifdef NODE_ANITOMY_USE_BOOST
-  return boost::locale::conv::utf_to_utf<wchar_t>(input);
-#else
   static wstr_conv conv;
   return conv.from_bytes(input);
-#endif
 }
 
 inline v8::Local<v8::String> WstrToNode(const std::wstring &str) {

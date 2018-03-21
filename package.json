@@ -27,7 +27,6 @@
   "homepage": "https://github.com/Xtansia/node.anitomy.js#readme",
   "dependencies": {
     "bindings": "^1.3.0",
-    "boost-lib": "^0.11.3",
     "cmake-js": "^3.6.2",
     "nan": "^2.10.0"
   },

@@ -18,37 +18,6 @@ else(UNIX)
   endif(MSVC)
 endif(UNIX)
 
-if(NOT NODE_ANITOMY_USE_BOOST)
-  try_compile(CAN_USE_CODECVT "${CMAKE_CURRENT_BINARY_DIR}/compiler_tests" "${CMAKE_CURRENT_SOURCE_DIR}/compiler_tests/codecvt_test.cpp")
-  if(NOT CAN_USE_CODECVT)
-    message(WARNING "<codecvt> not available, automatically enabling boost-lib")
-    set(NODE_ANITOMY_USE_BOOST ON)
-  endif()
-endif()
-
-if(NODE_ANITOMY_USE_BOOST)
-  set(NODE_MODULES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/node_modules")
-
-  if(NOT IS_DIRECTORY "${NODE_MODULES_DIR}")
-    get_filename_component(PARENT_DIR "${CMAKE_CURRENT_SOURCE_DIR}" DIRECTORY)
-    get_filename_component(PARENT_DIR_NAME "${PARENT_DIR}" NAME)
-    if(PARENT_DIR_NAME STREQUAL "node_modules")
-      set(NODE_MODULES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/..")
-    endif()
-  endif()
-
-  if(NOT EXISTS "${NODE_MODULES_DIR}/boost-lib/cmake/BoostLib.cmake")
-    message(FATAL_ERROR "Couldn't find boost-lib cmake file")
-  endif()
-
-  set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${NODE_MODULES_DIR}/boost-lib/cmake")
-
-  include(BoostLib)
-  require_boost_libs(">= v1.58.0" locale)
-
-  add_definitions(-DNODE_ANITOMY_USE_BOOST)
-endif()
-
 # Addon source files
 set(ADDON_SOURCE_FILES
     src/anitomy_lib.cpp
@@ -98,9 +67,3 @@ target_include_directories(${PROJECT_NAME} PRIVATE lib/anitomy)
 
 # Link against JS libraries
 target_link_libraries(${PROJECT_NAME} PRIVATE ${CMAKE_JS_LIB})
-
-if(NODE_ANITOMY_USE_BOOST)
-  # Include and link against Boost
-  target_include_directories(${PROJECT_NAME} PRIVATE ${Boost_INCLUDE_DIRS})
-  target_link_libraries(${PROJECT_NAME} PRIVATE ${Boost_LIBRARIES})
-endif()
