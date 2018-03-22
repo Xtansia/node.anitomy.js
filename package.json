@@ -1,11 +1,11 @@
 {
   "name": "anitomyjs",
-  "version": "1.4.4",
+  "version": "1.5.0",
   "description": "Node.js binding for the Anitomy anime video filename parsing library",
   "main": "anitomy.js",
   "scripts": {
     "test": "mocha test/test.js",
-    "install": "cmake-js compile"
+    "install": "cmake-js compile --std=c++14"
   },
   "repository": {
     "type": "git",
@@ -27,7 +27,6 @@
   "homepage": "https://github.com/Xtansia/node.anitomy.js#readme",
   "dependencies": {
     "bindings": "^1.3.0",
-    "boost-lib": "^0.11.3",
     "cmake-js": "^3.6.2",
     "nan": "^2.10.0"
   },

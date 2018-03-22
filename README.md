@@ -21,21 +21,11 @@ so, provided you have met the dependencies listed below.
     in your applications `package.json` as explained 
     [here](https://github.com/cmake-js/cmake-js#runtimes).
 * CMake >= 3.2
-* A C++11 compatible compiler
-  - GCC >= 4.9
+* A C++14 compatible compiler
+  - GCC >= 5
   - Clang >= 3.3 (Probably?)
-  - [Visual Studio 2015](https://www.visualstudio.com/products/vs-2015-product-editions) 
-    OR [Visual C++ Build Tools](http://landinghub.visualstudio.com/visual-cpp-build-tools)
-
-### Note About Installing/Building
-Before building the binding, the buildscript will test if the compiler supports 
-the `<codecvt>` header, if it doesn't, like GCC-4.9, the buildscript will 
-automatically enable using Boost::Locale, downloading and building Boost using 
-[boost-lib](https://github.com/cmake-js/boost-lib). You can force using 
-Boost::Locale by using `npm config` before installing or compiling like so:
-```
-> npm config set cmake_NODE_ANITOMY_USE_BOOST ON
-```
+  - [Visual Studio 2017](https://www.visualstudio.com/downloads/) 
+    OR [Build Tools for Visual Studio 2017](https://aka.ms/BuildTools)
 
 ## Example Usage
 ```javascript
