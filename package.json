@@ -1,6 +1,6 @@
 {
   "name": "anitomyjs",
-  "version": "1.4.4",
+  "version": "1.5.0",
   "description": "Node.js binding for the Anitomy anime video filename parsing library",
   "main": "anitomy.js",
   "scripts": {
