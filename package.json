@@ -5,7 +5,7 @@
   "main": "anitomy.js",
   "scripts": {
     "test": "mocha test/test.js",
-    "install": "cmake-js compile"
+    "install": "cmake-js compile --std=c++14"
   },
   "repository": {
     "type": "git",
