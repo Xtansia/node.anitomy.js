@@ -328,9 +328,6 @@ without the `anitomy::kElement` prefix:
 ]
 ```
 
-## To Be Implemented
-  * Methods on AnitomyElements much like those on anitomy::Elements
-
 ## License
 *node.anitomy.js* is licensed under
 [Mozilla Public License 2.0](https://www.mozilla.org/en-US/MPL/2.0/FAQ/).
