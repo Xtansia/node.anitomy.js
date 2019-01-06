@@ -23,7 +23,7 @@ so, provided you have met the dependencies listed below.
 * CMake >= 3.2
 * A C++14 compatible compiler
   - GCC >= 5
-  - Clang >= 3.3 (Probably?)
+  - Clang >= 3.4 (According to the [Clang CXX status page](https://clang.llvm.org/cxx_status.html))
   - [Visual Studio 2017](https://www.visualstudio.com/downloads/) 
     OR [Build Tools for Visual Studio 2017](https://aka.ms/BuildTools)
 
@@ -327,9 +327,6 @@ without the `anitomy::kElement` prefix:
   'VolumePrefix'
 ]
 ```
-
-## To Be Implemented
-  * Methods on AnitomyElements much like those on anitomy::Elements
 
 ## License
 *node.anitomy.js* is licensed under
