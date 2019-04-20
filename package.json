@@ -26,16 +26,16 @@
   },
   "homepage": "https://github.com/Xtansia/node.anitomy.js#readme",
   "dependencies": {
-    "bindings": "^1.3.0",
-    "cmake-js": "^4.0.1",
-    "nan": "^2.10.0"
+    "bindings": "^1.5.0",
+    "cmake-js": "^5.2.0",
+    "nan": "^2.13.2"
   },
   "devDependencies": {
-    "JSONStream": "^1.3.2",
-    "async": "^2.6.0",
-    "chai": "^4.1.2",
-    "event-stream": "^3.3.4",
-    "mocha": "^5.0.4"
+    "JSONStream": "^1.3.5",
+    "async": "^2.6.2",
+    "chai": "^4.2.0",
+    "event-stream": "^4.0.1",
+    "mocha": "^6.1.4"
   },
   "engines": {
     "node": ">= 0.10.0"
