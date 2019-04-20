@@ -1,5 +1,5 @@
 /*
-** Copyright (c) 2016-2017, Thomas Farr
+** Copyright (c) 2016-2019, Thomas Farr
 **
 ** This Source Code Form is subject to the terms of the Mozilla Public
 ** License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -59,7 +59,7 @@ function parseAsync(filename, callback) {
 
 function streamTestData() {
   const filename = path.join(__dirname, '../lib/anitomy/test/data.json');
-  const stream = fs.createReadStream(filename, {encoding: 'utf8'});
+  const stream = fs.createReadStream(filename, { encoding: 'utf8' });
   const parser = JSONStream.parse('*');
   return stream.pipe(parser);
 }
@@ -85,7 +85,7 @@ describe('Anitomy', function () {
     it('should throw Error when callback is not provided', function () {
       expect(parseAsync('')).to.throw('callback must be provided');
 
-      expect(parseAsync('', function(){})).to.not.throw('callback must be provided');
+      expect(parseAsync('', function () { })).to.not.throw('callback must be provided');
     });
 
     it('should throw TypeError when callback is provided but isn\'t a function', function () {
@@ -95,7 +95,7 @@ describe('Anitomy', function () {
       expect(parseAsync('', [])).to.throw(TypeError, 'callback must be a function');
       expect(parseAsync('', {})).to.throw(TypeError, 'callback must be a function');
 
-      expect(parseAsync('', function(){})).to.not.throw(TypeError, 'callback must be a function');
+      expect(parseAsync('', function () { })).to.not.throw(TypeError, 'callback must be a function');
     });
 
     it('should correctly parse some basic info from filenames', function (done) {
