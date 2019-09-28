@@ -27,7 +27,7 @@
   "homepage": "https://github.com/Xtansia/node.anitomy.js#readme",
   "dependencies": {
     "bindings": "^1.5.0",
-    "cmake-js": "^5.3.0",
+    "cmake-js": "^5.3.2",
     "nan": "^2.14.0"
   },
   "devDependencies": {
