@@ -21,9 +21,9 @@ so, provided you have met the dependencies listed below.
     in your applications `package.json` as explained 
     [here](https://github.com/cmake-js/cmake-js#runtimes).
 * CMake >= 3.2
-* A C++14 compatible compiler
-  - GCC >= 5
-  - Clang >= 3.4 (According to the [Clang CXX status page](https://clang.llvm.org/cxx_status.html))
+* A C++17 compatible compiler
+  - GCC >= 7
+  - Clang >= 5 (According to the [Clang CXX status page](https://clang.llvm.org/cxx_status.html))
   - [Visual Studio 2017](https://www.visualstudio.com/downloads/) 
     OR [Build Tools for Visual Studio 2017](https://aka.ms/BuildTools)
 

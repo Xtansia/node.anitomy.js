@@ -60,7 +60,7 @@ add_library(${PROJECT_NAME} SHARED ${ADDON_SOURCE_FILES} ${ANITOMY_SOURCE_FILES}
 
 # Set properties for NodeJS addon library file naming
 set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "" SUFFIX ".node")
-set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED ON)
+set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
 
 # Include JS and Anitomy directories
 target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${CMAKE_JS_INC})
@@ -68,3 +68,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE lib/anitomy)
 
 # Link against JS libraries
 target_link_libraries(${PROJECT_NAME} PRIVATE ${CMAKE_JS_LIB})
+
+if(MSVC)
+  target_compile_definitions(${PROJECT_NAME} PRIVATE _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING)
+endif(MSVC)
